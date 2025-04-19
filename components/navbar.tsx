@@ -1,17 +1,23 @@
 'use client'
-import React from 'react'
-import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react'
+import { usePathname, useRouter } from 'next/navigation';
 import { Button } from './ui/button';
 import { supabaseBrowser } from '@/lib/supabase/browser';
 
 export default function Navbar({session}: {session: any}) {
-    const router = useRouter();
 
+    const router = useRouter();
+    const pathname = usePathname(); // Get the current route
     const supabase = supabaseBrowser();
 
     const handleLogout = async () => {
         await supabase.auth.signOut();
         router.refresh();
+    }
+
+    // Hide the Navbar on the /auth route
+    if (pathname === '/auth') {
+        return null;
     }
 
     return (
@@ -27,7 +33,8 @@ export default function Navbar({session}: {session: any}) {
             ) : (
                 <Button onClick={() => router.push('/auth')}>Login</Button>
             )}
-            <Button onClick={() => router.push('/admin')}>Go to Admin</Button>
+            
+            <Button onClick={() => router.push('/admin')}>Admin</Button>
             
         </main>
     )

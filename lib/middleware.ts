@@ -1,7 +1,7 @@
 // Middleware to check if the user is an admin
 import { supabaseServer } from '@/lib/supabase/server';
 
-export async function isAdmin() {
+export async function isAdminServerSide(): Promise<boolean> {
 
   const supabase = await supabaseServer();
   const { data: authData, error: authError } = await supabase.auth.getUser();

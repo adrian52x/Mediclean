@@ -27,6 +27,7 @@ export default async function RootLayout({
 
   const supabase = await supabaseServer();
   const { data: session, error: authError } = await supabase.auth.getUser();
+
   return (
     <html lang="en">
       <body
