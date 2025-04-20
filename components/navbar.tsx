@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { useState } from 'react';
 import Link from 'next/link';
@@ -32,7 +32,8 @@ import { usePathname } from 'next/navigation';
 import { supabaseBrowser } from '@/lib/supabase/browser';
 
 export default function Navbar({ session }: { session: any }) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false); // Check this later where it is used
+  const [scrolled, setScrolled] = useState(false);
 
   const router = useRouter();
   const pathname = usePathname(); // Get the current route
@@ -43,13 +44,44 @@ export default function Navbar({ session }: { session: any }) {
     router.refresh();
   };
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const isScrolled = window.scrollY > 10;
+      if (isScrolled !== scrolled) {
+        setScrolled(isScrolled);
+      }
+    };
+
+    // Add scroll event listener
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    // Check initial scroll position
+    handleScroll();
+
+    // Clean up event listener
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [scrolled]);
+
+  // Only apply scroll-based classes after hydration is complete
+  const navClasses = cn(
+    'sticky top-0 z-50 border-b transition-all duration-300',
+    // Only apply conditional classes when scrolled is not null (after hydration)
+    scrolled === null
+      ? 'bg-background' // Initial state for SSR
+      : scrolled
+        ? 'bg-background shadow-md dark:bg-background dark:border-border'
+        : 'bg-background/80 backdrop-blur-sm dark:bg-background/80 dark:border-border',
+  );
+
   // Hide the Navbar on the /auth route
   if (pathname === '/auth') {
     return null;
   }
 
   return (
-    <nav className="border-b">
+    <nav className={navClasses}>
       <div className="container mx-auto flex h-16 items-center px-4">
         {/* Logo */}
         <div className="flex-shrink-0">
@@ -62,7 +94,7 @@ export default function Navbar({ session }: { session: any }) {
           <Input
             type="search"
             placeholder="Search products..."
-            className="w-full pl-8"
+            className="w-full rounded-full bg-stone-50 pl-8 shadow-lg focus-visible:ring-0 dark:bg-zinc-700 dark:text-white"
           />
         </div>
 
@@ -75,7 +107,7 @@ export default function Navbar({ session }: { session: any }) {
                 <Button variant="outline" onClick={handleLogout}>
                   Logout
                 </Button>
-                <span>{session.user.email}</span>
+                {/* <span>{session.user.email}</span> */}
               </div>
               <Button onClick={() => router.push('/admin')}>Admin</Button>
             </div>
