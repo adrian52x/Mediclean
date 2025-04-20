@@ -1,8 +1,10 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
-import Navbar from '@/components/navbar';
+
 import { supabaseServer } from '@/lib/supabase/server';
+import { ThemeProvider } from 'next-themes';
+import Navbar from '@/components/navbar';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -16,7 +18,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: 'Mediclean',
-  description: 'Medical products and services'
+  description: 'Medical products and services',
 };
 
 export default async function RootLayout({
@@ -24,17 +26,23 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   const supabase = await supabaseServer();
   const { data: session, error: authError } = await supabase.auth.getUser();
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Navbar session={session}/>
-        {children}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Navbar session={session} />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

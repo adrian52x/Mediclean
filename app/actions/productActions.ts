@@ -20,7 +20,6 @@ export async function addProduct(data: {
   price: number;
   discount: number;
 }) {
-
   // Check if the user is the admin
   // const admin = await isAdmin();
   // if (!admin) {
