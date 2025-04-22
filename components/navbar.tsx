@@ -26,7 +26,7 @@ import {
 } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 import LogoWithText from './logo-with-text';
-import ThemeToggle from './ThemeToggle';
+import ThemeToggle from './theme-toggle';
 import { useRouter } from 'next/navigation';
 import { usePathname } from 'next/navigation';
 import { supabaseBrowser } from '@/lib/supabase/browser';
@@ -82,7 +82,7 @@ export default function Navbar({ session }: { session: any }) {
 
   return (
     <nav className={navClasses}>
-      <div className="container mx-auto flex h-16 items-center px-4">
+      <div className="flex h-16 items-center px-[1.4rem] md:px-[4rem] lg:px-[6rem] xl:px-[8rem] 2xl:px-[12rem]">
         {/* Logo */}
         <div className="flex-shrink-0">
           <LogoWithText />

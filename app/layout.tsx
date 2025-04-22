@@ -19,6 +19,10 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: 'Mediclean',
   description: 'Medical products and services',
+  keywords: ['E-Commerce', 'Store', 'Shop', 'Medical', 'Products'],
+  authors: [{ name: 'adrian52x', url: 'https://github.com/adrian52x' }],
+  creator: 'adrian52x',
+  publisher: 'adrian52x',
 };
 
 export default async function RootLayout({
@@ -41,7 +45,9 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           <Navbar session={session} />
-          {children}
+          <div className="px-[1.4rem] md:px-[4rem] lg:px-[6rem] xl:px-[8rem] 2xl:px-[12rem]">
+            {children}
+          </div>
         </ThemeProvider>
       </body>
     </html>
