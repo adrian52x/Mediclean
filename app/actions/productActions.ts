@@ -2,6 +2,7 @@
 
 import prisma from '@/prisma/prisma';
 import { isAdminServerSide } from '@/lib/supabase/middleware';
+import { supabaseServer } from '@/lib/supabase/server';
 
 export async function getProducts() {
   // const admin = await isAdmin();
@@ -30,4 +31,33 @@ export async function addProduct(data: {
   return await prisma.products.create({
     data,
   });
+}
+
+
+export async function getImages() {
+  const supabase = await supabaseServer();
+
+  // Fetch the list of files in the `product-images` bucket
+  const { data: files, error } = await supabase.storage
+    .from('product-images') // Replace with your bucket name
+    .list();
+
+  if (error) {
+    console.error('Error fetching product images:', error.message);
+    return [];
+  }
+
+  // Generate public URLs for the images
+  const images = files.map((file) => {
+    const { data } = supabase.storage
+      .from('product-images') // Replace with your bucket name
+      .getPublicUrl(file.name);
+
+    return {
+      name: file.name,
+      url: data.publicUrl,
+    };
+  });
+
+  return images;
 }

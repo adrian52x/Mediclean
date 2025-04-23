@@ -58,9 +58,8 @@ export const Product = ({ product }: { product: any }) => {
           <div className="relative h-60 w-full">
             <Image
               className="rounded-t-lg"
-              //  src={product?.images[0]}
-              src="/images/mediclean-logo.jpg"
-              alt="product image"
+              src={product?.images || '/images/mediclean-logo.jpg'} // Use placeholder if no image is available
+              alt={product?.title || 'Placeholder image'}
               fill
               sizes="(min-width: 1000px) 30vw, 50vw"
               style={{ objectFit: 'cover' }}
