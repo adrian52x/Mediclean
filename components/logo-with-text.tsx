@@ -3,8 +3,12 @@ import Link from 'next/link';
 export default function LogoWithText() {
   return (
     <div className="flex">
-      <Link href="/" className="flex items-center h-16">
-      <img src="/images/med-logo.png" alt="Mediclean Logo" className="h-20 w-auto" />
+      <Link href="/" className="flex h-16 items-center">
+        <img
+          src="/images/med-logo.png"
+          alt="Mediclean Logo"
+          className="h-20 w-auto"
+        />
         <div className="flex flex-col">
           <span
             className="text-[1rem] font-bold tracking-wide md:text-[1.5rem]"

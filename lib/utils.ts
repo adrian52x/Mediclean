@@ -6,13 +6,18 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function isVariableValid(variable: any) {
-  return variable !== null && variable !== undefined
+  return variable !== null && variable !== undefined;
 }
 
 export function validateBoolean(variable: any, value: any) {
   if (isVariableValid(variable) && variable === value) {
-     return true
+    return true;
   }
 
-  return false
+  return false;
+}
+
+export function isUserAdminClientSide(session: any): boolean {
+  const userEmail = session.user.email;
+  return userEmail === process.env.NEXT_PUBLIC_ADMIN_EMAIL;
 }

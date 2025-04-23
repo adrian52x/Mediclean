@@ -1,7 +1,7 @@
 'use server';
 
 import prisma from '@/prisma/prisma';
-import { isAdminServerSide } from '@/lib/middleware';
+import { isAdminServerSide } from '@/lib/supabase/middleware';
 
 export async function getProducts() {
   // const admin = await isAdmin();

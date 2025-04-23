@@ -2,13 +2,14 @@
 
 import { Button } from '@/components/ui/button';
 import { supabaseBrowser } from '@/lib/supabase/browser';
+import { supabaseServer } from '@/lib/supabase/server';
 import { KeyRound } from 'lucide-react';
 import React from 'react';
 
 import { FcGoogle } from 'react-icons/fc';
 
 export default function page() {
-  const handleLoginWithOAuth = () => {
+  const handleLoginWithOAuth = async () => {
     const supabase = supabaseBrowser();
 
     supabase.auth.signInWithOAuth({

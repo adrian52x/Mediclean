@@ -4,7 +4,13 @@ import React, { useEffect } from 'react';
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { ShoppingCart, ChevronDown, Search } from 'lucide-react';
+import {
+  ShoppingCart,
+  ChevronDown,
+  Search,
+  LogInIcon,
+  ShoppingBasketIcon,
+} from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -25,54 +31,21 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
-import LogoWithText from './logo-with-text';
-import ThemeToggle from './theme-toggle';
+import LogoWithText from '../logo-with-text';
+import ThemeToggle from '../theme-toggle';
 import { useRouter } from 'next/navigation';
 import { usePathname } from 'next/navigation';
-import { supabaseBrowser } from '@/lib/supabase/browser';
+import { UserNav } from './user-nav';
 
 export default function Navbar({ session }: { session: any }) {
   const [isOpen, setIsOpen] = useState(false); // Check this later where it is used
-  const [scrolled, setScrolled] = useState(false);
-
-  const router = useRouter();
   const pathname = usePathname(); // Get the current route
-  const supabase = supabaseBrowser();
 
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    router.refresh();
-  };
+  console.log('session navbar', session);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const isScrolled = window.scrollY > 10;
-      if (isScrolled !== scrolled) {
-        setScrolled(isScrolled);
-      }
-    };
-
-    // Add scroll event listener
-    window.addEventListener('scroll', handleScroll, { passive: true });
-
-    // Check initial scroll position
-    handleScroll();
-
-    // Clean up event listener
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [scrolled]);
-
-  // Only apply scroll-based classes after hydration is complete
   const navClasses = cn(
     'sticky top-0 z-50 border-b transition-all duration-300',
-    // Only apply conditional classes when scrolled is not null (after hydration)
-    scrolled === null
-      ? 'bg-background' // Initial state for SSR
-      : scrolled
-        ? 'bg-background shadow-md dark:bg-background dark:border-border'
-        : 'bg-background/80 backdrop-blur-sm dark:bg-background/80 dark:border-border',
+    'bg-background/80 backdrop-blur-sm dark:bg-background/80 dark:border-border shadow-sm',
   );
 
   // Hide the Navbar on the /auth route
@@ -89,34 +62,17 @@ export default function Navbar({ session }: { session: any }) {
         </div>
 
         {/* Search Bar */}
-        <div className="relative mx-4 hidden w-full max-w-sm lg:flex">
+        {/* <div className="relative mx-4 hidden w-full max-w-sm lg:flex">
           <Search className="text-muted-foreground absolute top-2.5 left-2.5 h-4 w-4" />
           <Input
             type="search"
             placeholder="Search products..."
             className="w-full rounded-full bg-stone-50 pl-8 shadow-lg focus-visible:ring-0 dark:bg-zinc-700 dark:text-white"
           />
-        </div>
+        </div> */}
 
         {/* Navigation Items - Desktop */}
         <div className="ml-auto flex items-center space-x-4">
-          {/* Regular Button */}
-          {session && session.user ? (
-            <div className="hidden space-x-2 md:flex">
-              <div>
-                <Button variant="outline" onClick={handleLogout}>
-                  Logout
-                </Button>
-                {/* <span>{session.user.email}</span> */}
-              </div>
-              <Button onClick={() => router.push('/admin')}>Admin</Button>
-            </div>
-          ) : (
-            <Button variant="outline" onClick={() => router.push('/auth')}>
-              Login
-            </Button>
-          )}
-
           {/* Navigation Menu for Dropdowns */}
           <NavigationMenu className="hidden md:flex">
             <NavigationMenuList>
@@ -154,7 +110,7 @@ export default function Navbar({ session }: { session: any }) {
 
               {/* Account Dropdown */}
               <NavigationMenuItem>
-                <NavigationMenuTrigger>Account</NavigationMenuTrigger>
+                <NavigationMenuTrigger>Services</NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <ul className="grid w-[200px] gap-3 p-4">
                     <ListItem href="/profile" title="Profile">
@@ -175,16 +131,26 @@ export default function Navbar({ session }: { session: any }) {
             </NavigationMenuList>
           </NavigationMenu>
 
-          {/* Cart Icon */}
-          <Button variant="ghost" size="icon" className="relative">
-            <ShoppingCart className="h-5 w-5" />
-            <span className="bg-primary text-primary-foreground absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full text-xs">
-              3
-            </span>
+          {/* Search Bar V2*/}
+          <Button
+            variant="outline"
+            className="text-muted-foreground relative w-full justify-start text-sm font-light sm:pr-12 md:w-40 lg:w-64"
+          >
+            <Search className="text-muted-foreground absolute top-2.5 left-2.5 h-4 w-4" />
+            <span className="inline-flex pl-6">Search...</span>
           </Button>
 
+          {/* Cart Icon */}
+          <CartNav />
+
           {/* Dark/Light Mode */}
-          <ThemeToggle />
+          {/* <ThemeToggle /> */}
+
+          {session && session.user ? (
+            <UserNav session={session} />
+          ) : (
+            <LoginDialog />
+          )}
 
           {/* Mobile Menu Trigger */}
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -258,9 +224,31 @@ export default function Navbar({ session }: { session: any }) {
   );
 }
 
+function LoginDialog() {
+  return (
+    <Link href="/auth">
+      <Button className="flex gap-2 font-medium">
+        <LogInIcon className="h-4" />
+        <p>Login</p>
+      </Button>
+    </Link>
+  );
+}
+
+export function CartNav() {
+  return (
+    <Link href="/cart">
+      <Button size="icon" variant="outline" className="h-9">
+        <ShoppingBasketIcon className="h-4" />
+      </Button>
+    </Link>
+  );
+}
+
 // Helper component for navigation menu items
 const ListItem = React.forwardRef<
-  React.ElementRef<'a'>,
+  //React.ElementRef<'a'>,
+  React.ComponentRef<'a'>,
   React.ComponentPropsWithoutRef<'a'> & {
     title: string;
   }

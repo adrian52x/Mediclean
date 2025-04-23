@@ -8,12 +8,12 @@ import { ProductGrid, ProductSkeletonGrid } from '@/components/Product';
 export default async function Home() {
   const products = await getProducts();
   return (
-    <main className="py-4">
-       {isVariableValid(products) ? (
-            <ProductGrid products={products} />
-         ) : (
-            <ProductSkeletonGrid />
-         )}
+    <main className="py-6">
+      {isVariableValid(products) ? (
+        <ProductGrid products={products} />
+      ) : (
+        <ProductSkeletonGrid />
+      )}
     </main>
   );
 }

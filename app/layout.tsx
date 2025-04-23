@@ -2,9 +2,7 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 
-import { supabaseServer } from '@/lib/supabase/server';
 import { ThemeProvider } from 'next-themes';
-import Navbar from '@/components/navbar';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -30,9 +28,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const supabase = await supabaseServer();
-  const { data: session, error: authError } = await supabase.auth.getUser();
-
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -44,10 +39,7 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Navbar session={session} />
-          <div className="px-[1.4rem] md:px-[4rem] lg:px-[6rem] xl:px-[8rem] 2xl:px-[12rem]">
-            {children}
-          </div>
+          {children}
         </ThemeProvider>
       </body>
     </html>
