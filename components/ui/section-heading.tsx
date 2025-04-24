@@ -1,7 +1,3 @@
-import Link from 'next/link';
-import { Button } from './button';
-import { ShoppingBasketIcon } from 'lucide-react';
-
 interface HeadingProps {
   title: string;
   description?: string;
