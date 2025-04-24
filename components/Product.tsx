@@ -72,7 +72,7 @@ export const Product = ({ product }: { product: any }) => {
         <CardContent className="grid gap-1 p-4">
           <Badge variant="outline" className="w-min text-neutral-500">
             {/* {product?.categories[0]?.title} */}
-            {product?.title}
+            category
           </Badge>
 
           <h2 className="mt-2">{product.title}</h2>
@@ -81,7 +81,7 @@ export const Product = ({ product }: { product: any }) => {
           </p>
         </CardContent>
         <CardFooter>
-          {product?.isAvailable ? (
+          {true ? (
             <Price />
           ) : (
             <Badge variant="secondary">Out of stock</Badge>
