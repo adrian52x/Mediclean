@@ -41,7 +41,7 @@ export default function Navbar({ session }: { session: any }) {
   const [isOpen, setIsOpen] = useState(false); // Check this later where it is used
   const pathname = usePathname(); // Get the current route
 
-  console.log('session navbar', session);
+  //console.log('session navbar', session);
 
   const navClasses = cn(
     'sticky top-0 z-50 border-b transition-all duration-300',
@@ -55,7 +55,8 @@ export default function Navbar({ session }: { session: any }) {
 
   return (
     <nav className={navClasses}>
-      <div className="flex h-16 items-center px-[1.4rem] md:px-[4rem] lg:px-[6rem] xl:px-[8rem] 2xl:px-[12rem]">
+      {/* <div className="flex h-16 items-center px-[1.4rem] md:px-[4rem] lg:px-[6rem] xl:px-[8rem] 2xl:px-[12rem]"> */}
+      <div className="container mx-auto flex px-8">
         {/* Logo */}
         <div className="flex-shrink-0">
           <LogoWithText />
@@ -92,17 +93,20 @@ export default function Navbar({ session }: { session: any }) {
                         </a>
                       </NavigationMenuLink>
                     </li> */}
-                    <ListItem href="/electronics" title="Electronics">
-                      Phones, laptops, and gadgets
+                    <ListItem href="#products" title="Disinfectants">
+                      Surface Disinfectants, Hand Sanitizers, Alcohol Wipes
                     </ListItem>
-                    <ListItem href="/clothing" title="Clothing">
-                      Fashion and apparel
+                    <ListItem href="#products" title="Medical Equipment">
+                      Thermometers
                     </ListItem>
-                    <ListItem href="/home" title="Home & Garden">
-                      Furniture and decor
+                    <ListItem href="#products" title="Medical Supplies">
+                      First Aid Kits
                     </ListItem>
-                    <ListItem href="/sports" title="Sports & Outdoors">
-                      Equipment and gear
+                    <ListItem href="#products" title="Hygiene Products">
+                      Surface Cleaners, Dispensers (Soap/Sanitizer)
+                    </ListItem>
+                    <ListItem href="#products" title="Consumables">
+                      Vitamins & Supplements
                     </ListItem>
                   </ul>
                 </NavigationMenuContent>
@@ -113,17 +117,20 @@ export default function Navbar({ session }: { session: any }) {
                 <NavigationMenuTrigger>Services</NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <ul className="grid w-[200px] gap-3 p-4">
-                    <ListItem href="/profile" title="Profile">
-                      Manage your account
+                    <ListItem href="#services" title="Testing & Diagnostics">
+                      Workplace Health Screening
                     </ListItem>
-                    <ListItem href="/orders" title="Orders">
-                      View your order history
+                    <ListItem
+                      href="#services"
+                      title="Consulting / Advisory Services"
+                    >
+                      Hygiene & Safety Compliance Audits
                     </ListItem>
-                    <ListItem href="/wishlist" title="Wishlist">
-                      Your saved items
-                    </ListItem>
-                    <ListItem href="/signout" title="Sign Out">
-                      Log out of your account
+                    <ListItem
+                      href="#services"
+                      title="Equipment Maintenance & Setup"
+                    >
+                      Medical Equipment Installation
                     </ListItem>
                   </ul>
                 </NavigationMenuContent>
@@ -132,13 +139,15 @@ export default function Navbar({ session }: { session: any }) {
           </NavigationMenu>
 
           {/* Search Bar V2*/}
-          <Button
-            variant="outline"
-            className="text-muted-foreground relative w-full justify-start text-sm font-light sm:pr-12 md:w-40 lg:w-64"
-          >
-            <Search className="text-muted-foreground absolute top-2.5 left-2.5 h-4 w-4" />
-            <span className="inline-flex pl-6">Search...</span>
-          </Button>
+          <div className="hidden sm:block">
+            <Button
+              variant="outline"
+              className="text-muted-foreground relative w-full justify-start text-sm font-light sm:pr-12 md:w-40 lg:w-64"
+            >
+              <Search className="text-muted-foreground absolute top-2.5 left-2.5 h-4 w-4" />
+              <span className="inline-flex pl-6">Search...</span>
+            </Button>
+          </div>
 
           {/* Cart Icon */}
           <CartNav />

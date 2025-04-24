@@ -12,23 +12,23 @@ export default function LogoWithText() {
           width={80}
           height={80}
         />
-        <div className="flex flex-col">
+        <div className="hidden flex-col sm:flex">
           <span
-        className="text-[1rem] font-bold tracking-wide md:text-[1.5rem]"
-        id="main-text"
+            className="text-[1rem] font-bold tracking-wide md:text-[1.5rem]"
+            id="main-text"
           >
-        MEDICLEAN
+            MEDICLEAN
           </span>
           <span
-        className="text-muted-foreground text-[0.5rem] uppercase md:text-[0.6rem]"
-        style={{
-          width: '100%',
-          display: 'block',
-          transform: 'scaleX(0.85)',
-          transformOrigin: 'left',
-        }}
+            className="text-muted-foreground text-[0.5rem] uppercase md:text-[0.6rem]"
+            style={{
+              width: '100%',
+              display: 'block',
+              transform: 'scaleX(0.85)',
+              transformOrigin: 'left',
+            }}
           >
-        DESINFECTANTS & MEDICAL SUPPLIES
+            DESINFECTANTS & MEDICAL SUPPLIES
           </span>
         </div>
       </Link>

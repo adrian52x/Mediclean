@@ -4,7 +4,7 @@ import './globals.css';
 
 import { ThemeProvider } from 'next-themes';
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ['latin'] });
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -32,9 +32,7 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${inter.className} antialiased`}
-      >
+      <body className={`${inter.className} antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
