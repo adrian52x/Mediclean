@@ -11,23 +11,34 @@ import {
 //import { ProductWithIncludes } from '@/types/prisma'
 import Image from 'next/image';
 import Link from 'next/link';
+import { Button } from './ui/button';
+import { WrapText } from 'lucide-react';
 
 export const ProductGrid = ({ products }: { products: any[] }) => {
   return (
-    <div
-      className="mb-4 grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4"
-      id="products"
-    >
-      {products.map((product) => (
-        <Product product={product} key={product.id} />
-      ))}
-    </div>
+    <>
+      <div
+        className="mb-10 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4"
+        id="products"
+      >
+        {products.map((product) => (
+          <Product product={product} key={product.id} />
+        ))}
+      </div>
+
+      <Link href={'#products'} className="flex justify-center">
+        <Button className="font-bold" variant={'outline'}>
+          <WrapText />
+          <p>Vezi toate produsele</p>
+        </Button>
+      </Link>
+    </>
   );
 };
 
 export const ProductSkeletonGrid = () => {
   return (
-    <div className="mb-4 grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+    <div className="mb-4 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
       {[...Array(12)].map(() => (
         <ProductSkeleton key={Math.random()} />
       ))}
@@ -56,7 +67,7 @@ export const Product = ({ product }: { product: any }) => {
 
   return (
     <Link className="" href={`/products/${product.id}`}>
-      <Card className="h-full">
+      <Card className="h-full transition-transform duration-300 ease-in-out hover:scale-105">
         <CardHeader className="p-0">
           <div className="relative h-60 w-full">
             <Image
@@ -81,11 +92,7 @@ export const Product = ({ product }: { product: any }) => {
           </p>
         </CardContent>
         <CardFooter>
-          {true ? (
-            <Price />
-          ) : (
-            <Badge variant="secondary">Out of stock</Badge>
-          )}
+          {true ? <Price /> : <Badge variant="secondary">Out of stock</Badge>}
         </CardFooter>
       </Card>
     </Link>

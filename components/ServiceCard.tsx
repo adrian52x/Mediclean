@@ -11,7 +11,7 @@ import Link from 'next/link';
 
 export function ServiceGrid({ services }: { services: any[] }) {
   return (
-    <div className="grid grid-cols-1 gap-3 md:grid-cols-3" id="services">
+    <div className="grid grid-cols-1 gap-6 md:grid-cols-3" id="services">
       {services.map((service: any) => (
         <ServiceCard key={service.id} service={service} />
       ))}
@@ -21,7 +21,7 @@ export function ServiceGrid({ services }: { services: any[] }) {
 
 export function ServiceSkeletonGrid() {
   return (
-    <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+    <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
       {[...Array(3)].map(() => (
         <ServiceSkeleton key={Math.random()} />
       ))}
@@ -34,7 +34,7 @@ export function ServiceCard({ service }: { service: any }) {
 
   return (
     <Link href={`/services/${id}`}>
-      <Card className="h-full">
+      <Card className="h-full transition-transform duration-300 ease-in-out hover:scale-105">
         <CardHeader className="p-0">
           <div className="relative h-60 w-full">
             <Image

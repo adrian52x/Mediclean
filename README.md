@@ -89,4 +89,7 @@ Find out how to create custom roles in supabase.
 continue page protection role
 https://www.youtube.com/watch?v=WUD1RLSd3U0
 
-mix the navbar (not fully)
+finish the navbar
+
+https://support.google.com/sites/answer/97459?hl=en
+google analytics

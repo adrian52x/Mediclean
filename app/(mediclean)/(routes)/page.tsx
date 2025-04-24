@@ -12,6 +12,7 @@ import Carousel from '@/components/Carousel';
 import { Separator } from '@/components/ui/separator';
 import { SectionHeading } from '@/components/ui/section-heading';
 import { ServiceGrid, ServiceSkeletonGrid } from '@/components/ServiceCard';
+import Maps from '@/components/Maps';
 
 export default async function Home() {
   const products = await getProducts();
@@ -66,6 +67,14 @@ export default async function Home() {
       ) : (
         <ServiceSkeletonGrid />
       )}
+
+      <Separator className="my-8" />
+
+      <SectionHeading
+        title="Locatie"
+        description="Str. Mihail Kogălniceanu 1, Chișinău, Moldova"
+      />
+      <Maps />
     </main>
   );
 }
