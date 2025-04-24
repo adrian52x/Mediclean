@@ -1,11 +1,10 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { useState } from 'react';
 import Link from 'next/link';
 import {
-  ShoppingCart,
   ChevronDown,
   Search,
   LogInIcon,
@@ -32,8 +31,6 @@ import {
 } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 import LogoWithText from '../logo-with-text';
-import ThemeToggle from '../theme-toggle';
-import { useRouter } from 'next/navigation';
 import { usePathname } from 'next/navigation';
 import { UserNav } from './user-nav';
 

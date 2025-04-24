@@ -6,19 +6,13 @@ import {
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { supabaseBrowser } from '@/lib/supabase/browser';
 import { isUserAdminClientSide } from '@/lib/utils';
 import {
-  CreditCardIcon,
-  HeartIcon,
-  ListOrderedIcon,
   LogOutIcon,
-  MapPinIcon,
   MonitorCog,
   UserIcon,
 } from 'lucide-react';

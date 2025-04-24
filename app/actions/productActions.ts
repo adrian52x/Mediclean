@@ -1,7 +1,6 @@
 'use server';
 
 import prisma from '@/prisma/prisma';
-import { isAdminServerSide } from '@/lib/supabase/middleware';
 import { supabaseServer } from '@/lib/supabase/server';
 
 export async function getProducts() {

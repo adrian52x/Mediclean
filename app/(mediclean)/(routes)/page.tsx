@@ -1,6 +1,4 @@
-import { Button } from '@/components/ui/button';
 import React from 'react';
-import { ProductDetails } from '@/types';
 import {
   getProducts,
   getProductsImages,

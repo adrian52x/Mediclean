@@ -2,7 +2,6 @@
 
 import { Button } from '@/components/ui/button';
 import { supabaseBrowser } from '@/lib/supabase/browser';
-import { supabaseServer } from '@/lib/supabase/server';
 import { KeyRound } from 'lucide-react';
 import React from 'react';
 
