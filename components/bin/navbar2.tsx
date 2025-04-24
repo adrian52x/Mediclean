@@ -1,9 +1,9 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import { Button } from './ui/button';
+import { Button } from '../ui/button';
 import { supabaseBrowser } from '@/lib/supabase/browser';
-import ThemeToggle from './theme-toggle';
+import ThemeToggle from '../theme-toggle';
 import Link from 'next/link';
 
 export default function Navbar2({ session }: { session: any }) {
