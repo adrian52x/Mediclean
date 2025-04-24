@@ -6,7 +6,7 @@ export default function Maps() {
       <iframe
         //src="http://maps.google.com/maps?q=47.027449,28.831051&z=13&output=embed"
         src="https://www.google.com/maps?q=Str.+Mihail+Kogălniceanu+1,+Chișinău,+Moldova&z=13&output=embed"
-        width="400"
+        width="350"
         height="225"
         style={{ border: 0 }}
         allowFullScreen
