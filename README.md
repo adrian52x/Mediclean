@@ -93,3 +93,11 @@ finish the navbar
 
 https://support.google.com/sites/answer/97459?hl=en
 google analytics
+
+
+o sa fie un singur serviciu - remove (Services button from navbar)
+langa servicu - formular: nume, prenume, institutie, nr telefon, email.
+
+
+
+vezi toate produsele - click - pagina noua, display 3 main categorii (clickable)

@@ -42,7 +42,7 @@ export default function Carousel({
                 fill
                 className="object-cover"
                 alt=""
-                priority={i === 0} // Add priority only to the first image
+                priority // Add priority only to the first image priority={i === 0}
               />
             </div>
           ))}

@@ -41,7 +41,7 @@ export function ServiceCard({ service }: { service: any }) {
               alt="product image"
               fill
               sizes="(min-width: 1000px) 30vw, 50vw"
-              style={{ objectFit: 'cover' }}
+              // style={{ objectFit: 'cover' }}
             />
           </div>
         </CardHeader>

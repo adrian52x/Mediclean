@@ -11,6 +11,7 @@ export default async function DashboardLayout({
   const supabase = await supabaseServer();
   const { data: session, error: authError } = await supabase.auth.getUser();
 
+  console.log('session', session);
   return (
     <>
       <Navbar session={session} />
