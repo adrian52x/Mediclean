@@ -12,3 +12,10 @@ export interface ProductDetails {
   discount: number;
   created_at: Date;
 }
+
+export interface InsertProduct {
+  title: string;
+  description?: string;
+  price: number;
+  image: string;
+}

@@ -1,9 +1,4 @@
 import React from 'react';
-import {
-  getProducts,
-  getProductsImages,
-  getServicesImages,
-} from '@/app/actions/productActions';
 import { isVariableValid } from '@/lib/utils';
 import { ProductGrid, ProductSkeletonGrid } from '@/components/Product';
 import Carousel from '@/components/Carousel';
@@ -11,11 +6,13 @@ import { Separator } from '@/components/ui/separator';
 import { SectionHeading } from '@/components/ui/section-heading';
 import { ServiceGrid, ServiceSkeletonGrid } from '@/components/ServiceCard';
 import Maps from '@/components/Maps';
+import { ImagesAPI } from '@/lib/api/ImagesAPI';
+import { HeroSection } from '@/components/HeroSection';
 
 export default async function Home() {
-  const products = await getProducts();
-  const bannerImages = await getProductsImages();
-  const servicesImages = await getServicesImages();
+
+  const bannerImages = await ImagesAPI.getProductsImages();
+  const servicesImages = await ImagesAPI.getServicesImages();
 
   const services = [
     {
@@ -40,7 +37,9 @@ export default async function Home() {
 
   return (
     <main className="py-6">
-      <Carousel images={bannerImages} />
+      {/* <Carousel images={bannerImages} /> */}
+
+      <HeroSection images={servicesImages}/>
 
       <Separator className="my-8" />
 
@@ -48,11 +47,9 @@ export default async function Home() {
         title="Produse"
         description="Below is a list of products we have available for you."
       />
-      {isVariableValid(products) ? (
-        <ProductGrid products={products} />
-      ) : (
-        <ProductSkeletonGrid />
-      )}
+
+      <ProductGrid />
+
 
       <Separator className="my-8" />
 
