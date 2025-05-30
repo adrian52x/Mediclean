@@ -3,26 +3,28 @@ import { ProductsAPI } from "../api/ProductsAPI";
 import { InsertProduct } from "@/types";
 
 
-
-export const useProducts = () => {
-    const queryClient = useQueryClient();
-
-    // Fetch products
+export const useGetProducts = () => {
     const { data: products, isLoading, isError } = useQuery({
         queryKey: ["products"],
         queryFn: ProductsAPI.fetchProducts,
-
+        retry: 2
     });
+
+    return { products, isLoading, isError };
+}
+
+
+export const useCreateProducts = () => {
+    const queryClient = useQueryClient();
 
     const createProduct = useMutation({
         mutationFn: (product: InsertProduct) => ProductsAPI.addProduct(product),
         onSuccess: () => {
-            // Invalidate and refetch
             queryClient.invalidateQueries({ queryKey: ["products"] });
         }
     });
 
-    return { products, isLoading, isError, createProduct };
+    return { createProduct };
 }
 
 

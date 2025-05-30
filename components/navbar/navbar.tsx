@@ -76,58 +76,30 @@ export default function Navbar({ session }: { session: any }) {
             <NavigationMenuList>
               {/* Categories Dropdown */}
               <NavigationMenuItem>
-                <NavigationMenuTrigger>Categories</NavigationMenuTrigger>
+                <NavigationMenuTrigger>Produse</NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <ul className="grid w-[200px] gap-3 p-4">
-                    {/* <li className="row-span-3">
+                  <ul className="grid w-[250px] gap-3 p-4">
+                    <li className="row-span-3">
                       <NavigationMenuLink asChild>
                         <a
-                          className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
+                          className="flex h-full w-full select-none flex-col  rounded-md bg-gradient-to-b from-muted/50 to-muted no-underline outline-none focus:shadow-md"
                           href="/"
                         >
-                          <div className="mb-2 mt-4 text-lg font-medium">All Categories</div>
-                          <p className="text-sm leading-tight text-muted-foreground">Browse all product categories</p>
+                          <div className="my-2 text-lg font-medium text-center">Toate produsele</div>
                         </a>
                       </NavigationMenuLink>
-                    </li> */}
-                    <ListItem href="#products" title="Disinfectants">
-                      Surface Disinfectants, Hand Sanitizers, Alcohol Wipes
+                    </li>
+                    <ListItem href="#products" title="1.1 Dezinfectanți">
+                      Medicina generală
                     </ListItem>
-                    <ListItem href="#products" title="Medical Equipment">
-                      Thermometers
+                    <ListItem href="#products" title="1.2 Dezinfectanți">
+                      Stomatologie
                     </ListItem>
-                    <ListItem href="#products" title="Medical Supplies">
-                      First Aid Kits
+                    <ListItem href="#products" title="2. Echipament">
+                      Text.. ?
                     </ListItem>
-                    <ListItem href="#products" title="Hygiene Products">
-                      Surface Cleaners, Dispensers (Soap/Sanitizer)
-                    </ListItem>
-                    <ListItem href="#products" title="Consumables">
-                      Vitamins & Supplements
-                    </ListItem>
-                  </ul>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-
-              {/* Account Dropdown */}
-              <NavigationMenuItem>
-                <NavigationMenuTrigger>Services</NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <ul className="grid w-[200px] gap-3 p-4">
-                    <ListItem href="#services" title="Testing & Diagnostics">
-                      Workplace Health Screening
-                    </ListItem>
-                    <ListItem
-                      href="#services"
-                      title="Consulting / Advisory Services"
-                    >
-                      Hygiene & Safety Compliance Audits
-                    </ListItem>
-                    <ListItem
-                      href="#services"
-                      title="Equipment Maintenance & Setup"
-                    >
-                      Medical Equipment Installation
+                    <ListItem href="#products" title="3. Consultanță">
+                      Text.. ?
                     </ListItem>
                   </ul>
                 </NavigationMenuContent>

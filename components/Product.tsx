@@ -12,10 +12,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from './ui/button';
 import { WrapText } from 'lucide-react';
-import { useProducts } from '@/lib/hooks/useProducts';
+import { useGetProducts } from '@/lib/hooks/useProducts';
 
 export const ProductGrid: React.FC = () => {
-    const { products, isLoading, isError } = useProducts();
+    const { products, isLoading, isError } = useGetProducts();
 
     if (isLoading) {
         return (
