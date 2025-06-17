@@ -13,6 +13,15 @@ export const useGetProducts = () => {
     return { products, isLoading, isError };
 }
 
+export const useGetProductById = (id: string) => {
+    const { data: product, isLoading, isError } = useQuery({
+        queryKey: ["product", id],
+        queryFn: () => ProductsAPI.fetchProductById(id),
+        retry: 2
+    });
+
+    return { product, isLoading, isError };
+}
 
 export const useCreateProducts = () => {
     const queryClient = useQueryClient();

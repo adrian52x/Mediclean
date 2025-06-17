@@ -18,4 +18,5 @@ export interface InsertProduct {
   description?: string;
   price: number;
   image: string;
+  doc_url?: string; // Optional field for PDF upload
 }
