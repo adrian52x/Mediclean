@@ -11,7 +11,7 @@ import { HeroSection } from '@/components/HeroSection';
 
 export default async function Home() {
 
-  const bannerImages = await ImagesAPI.getProductsImages();
+  //const bannerImages = await ImagesAPI.getProductsImages();
   const servicesImages = await ImagesAPI.getServicesImages();
 
   const services = [

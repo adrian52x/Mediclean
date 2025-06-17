@@ -1,10 +1,22 @@
 'use client';
 
 import { useGetProductById } from "@/lib/hooks/useProducts";
+import { Loader } from "./ui/loader";
 
+interface ProductPageViewProps {
+    productId: string;
+}
 
-export default function ProductPageView({ id }: { id: string }) {
-    const { product, isLoading, isError } = useGetProductById(id);
+export const ProductPageView: React.FC<ProductPageViewProps> = ({ productId }) => {
+    const { product, isLoading } = useGetProductById(productId);
+
+    if (isLoading) {
+        return (
+            <div className="flex justify-center items-center h-40 text-gray-500">
+                <Loader/>
+            </div>
+        );
+    }
 
     if (!product) return <div>Produsul nu a fost găsit.</div>;
 

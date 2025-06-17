@@ -13,6 +13,7 @@ import Link from 'next/link';
 import { Button } from './ui/button';
 import { WrapText } from 'lucide-react';
 import { useGetProducts } from '@/lib/hooks/useProducts';
+import { ProductDetails } from '@/types';
 
 export const ProductGrid: React.FC = () => {
     const { products, isLoading, isError } = useGetProducts();
@@ -65,7 +66,7 @@ export const ProductSkeletonGrid = () => {
   );
 };
 
-export const Product = ({ product }: { product: any }) => {
+export const Product = ({ product }: { product: ProductDetails }) => {
   function Price() {
     if (product?.discount > 0) {
       const price = product?.price - product?.discount;
@@ -91,7 +92,7 @@ export const Product = ({ product }: { product: any }) => {
           <div className="relative h-60 w-full">
             <Image
               className="rounded-t-lg"
-              src={product?.images || '/images/mediclean-logo.jpg'} // Use placeholder if no image is available
+              src={'/images/mediclean-logo.jpg'} // Use placeholder for now
               alt={product?.title || 'Placeholder image'}
               fill
               sizes="(min-width: 1000px) 30vw, 50vw"

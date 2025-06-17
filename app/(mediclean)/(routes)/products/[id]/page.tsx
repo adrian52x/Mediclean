@@ -1,12 +1,12 @@
-import ProductPageView from "@/components/ProductPageView";
+import { ProductPageView } from "@/components/ProductPageView";
 
-export default function ProductPage(props: { params: { id: string } }) {
-    const { params } = props;
-    const productId = params.id;
+export default async function ProductPage({params}: {params: Promise<{ id: string }>}) {
+    
+    const { id } = await params;
   
     return (
         <ProductPageView
-            id={productId}
+            productId={id}
         />
     );
 }
