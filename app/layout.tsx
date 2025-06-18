@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 
 import { ThemeProvider } from 'next-themes';
+import TanstackQueryProvider from '@/providers/TanstackQueryProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -39,7 +40,9 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <TanstackQueryProvider>
+            {children}
+          </TanstackQueryProvider>
         </ThemeProvider>
       </body>
     </html>

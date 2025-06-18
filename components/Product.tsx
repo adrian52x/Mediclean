@@ -1,3 +1,4 @@
+'use client';
 import { ImageSkeleton } from '@/components/ui/icons';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -11,27 +12,48 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from './ui/button';
 import { WrapText } from 'lucide-react';
+import { useGetProducts } from '@/lib/hooks/useProducts';
+import { ProductDetails } from '@/types';
 
-export const ProductGrid = ({ products }: { products: any[] }) => {
-  return (
-    <>
-      <div
-        className="mb-10 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4"
-        id="products"
-      >
-        {products.map((product) => (
-          <Product product={product} key={product.id} />
-        ))}
-      </div>
+export const ProductGrid: React.FC = () => {
+    const { products, isLoading, isError } = useGetProducts();
 
-      <Link href={'#products'} className="flex justify-center">
-        <Button className="font-bold" variant={'outline'}>
-          <WrapText />
-          <p>Vezi toate produsele</p>
-        </Button>
-      </Link>
-    </>
-  );
+    if (isLoading) {
+        return (
+            <ProductSkeletonGrid />
+        )
+    }
+
+    if (isError) {
+        return (
+            <div className="flex justify-center items-center h-40 text-red-500">
+                Eroare la încărcarea produselor.
+            </div>
+        );
+    }
+    
+    return (
+        <>
+            <div
+                className="mb-10 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4"
+                id="products"
+            >
+                {products && products.map((product) => (
+                    <Product product={product} key={product.id} />
+                ))}
+                
+            </div> 
+
+            <div className="flex justify-center">
+                <Link href={'#products'} className="flex justify-center">
+                    <Button className="font-bold" variant={'outline'}>
+                        <WrapText />
+                        <p>Vezi toate produsele</p>
+                    </Button>
+                </Link>
+            </div>
+        </>
+    );
 };
 
 export const ProductSkeletonGrid = () => {
@@ -44,7 +66,7 @@ export const ProductSkeletonGrid = () => {
   );
 };
 
-export const Product = ({ product }: { product: any }) => {
+export const Product = ({ product }: { product: ProductDetails }) => {
   function Price() {
     if (product?.discount > 0) {
       const price = product?.price - product?.discount;
@@ -70,7 +92,7 @@ export const Product = ({ product }: { product: any }) => {
           <div className="relative h-60 w-full">
             <Image
               className="rounded-t-lg"
-              src={product?.images || '/images/mediclean-logo.jpg'} // Use placeholder if no image is available
+              src={'/images/mediclean-logo.jpg'} // Use placeholder for now
               alt={product?.title || 'Placeholder image'}
               fill
               sizes="(min-width: 1000px) 30vw, 50vw"

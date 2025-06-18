@@ -77,11 +77,13 @@ ALTER DEFAULT PRIVILEGES FOR ROLE postgres IN SCHEMA public GRANT ALL ON SEQUENC
 Then add policy to your Table:
 Example: Policy Command (Select) -> Target Roles (anon + authenticated)
 
-<!-- # Trying DaisyUI
-npm install daisyui
-comment out :root and .dark inside global.css -->
-
-Shadcn added dark mode
+Summary Table
+Use Case	               Prisma	Supabase Client
+Full DB control	            ✅	❌
+RLS/Policies enforced	      ❌	✅
+Supabase Auth/Storage	      ❌	✅
+Edge/Serverless ready	      ❌ (limited)	✅
+Type safety	                ✅	❌ (unless generated)
 
 TO DO:
 Find out how to create custom roles in supabase.
@@ -109,3 +111,4 @@ nume, descriere, cantitate, volum(optinal), document (optional pdf/img)
 
 vezi toate produsele - click - pagina noua, display 3 main categorii (clickable)
 
+!!! NEXT_PUBLIC_ exposes this value to the browser. Verify it is safe to share publicly. - CHECK this later

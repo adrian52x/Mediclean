@@ -124,15 +124,17 @@ export async function isAdminServerSide(): Promise<boolean> {
 }
 
 export async function isUserAdmin() {
-  const supabase = await supabaseServer();
-  const { data: authData, error: authError } = await supabase.auth.getUser();
+    const supabase = await supabaseServer();
+    const { data: authData, error: authError } = await supabase.auth.getUser();
 
-  if (authError || !authData?.user) {
-    return false; // User is not authenticated
-  }
+    if (authError || !authData?.user) {
+        return false; // User is not authenticated
+    }
+    console.log(authData);
+    
 
-  const userEmail = authData.user.email;
+    const userEmail = authData.user.email;
 
-  // Check if the user's email matches the admin email from the environment variable
-  return userEmail === process.env.NEXT_PUBLIC_ADMIN_EMAIL;
+    // Check if the user's email matches the admin email from the environment variable
+    return userEmail === process.env.NEXT_PUBLIC_ADMIN_EMAIL || userEmail === process.env.NEXT_PUBLIC_ADMIN_EMAIL2 
 }
