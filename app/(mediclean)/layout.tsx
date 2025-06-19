@@ -12,15 +12,15 @@ export default async function DashboardLayout({
   const { data: session, error: authError } = await supabase.auth.getUser();
 
   //console.log('session', session);
-  return (
-    <>
-      <Navbar session={session} />
-      {/* <div className="px-[1.4rem] md:px-[4rem] lg:px-[6rem] xl:px-[8rem] 2xl:px-[12rem]"> */}
-      <div className="container mx-auto px-8">{children}</div>
-      {/* Dark/Light Mode */}
-      <ThemeToggle />
+    return (
+        <div className="min-h-screen flex flex-col">
+            <Navbar session={session} />
+            
+            <div className="flex-1 container mx-auto px-8">{children}</div>
 
-      <Footer />
-    </>
-  );
+            <ThemeToggle />
+            
+            <Footer />
+        </div>
+    );
 }
