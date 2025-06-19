@@ -5,6 +5,7 @@ import { supabaseBrowser } from "@/lib/supabase/browser";
 import { ProductsAPI } from "@/lib/api/ProductsAPI";
 import { InsertProduct } from "@/types";
 import { Loader } from "./ui/loader";
+import { toast } from "sonner";
 
 export default function AddProductForm() {
     const { createProduct } = useCreateProducts();
@@ -41,7 +42,16 @@ export default function AddProductForm() {
 		};
 
         //2. Add product to DB
-        createProduct.mutate(productData);
+        createProduct.mutate(productData, {
+            onSuccess: () => {
+                toast("Product has been created.")
+            }
+        });
+
+        console.log("Product data to create:", createProduct);
+        
+
+
 
         // Reset form
         (e.target as HTMLFormElement).reset();
@@ -87,6 +97,10 @@ export default function AddProductForm() {
                 Add Product
             </button>
             </form>
+
+            <button onClick={() => toast("This is a test toast!")} className="mt-4 bg-green-600 text-white px-4 py-2 rounded">
+                show toast
+            </button>
         </div>
     );
 }

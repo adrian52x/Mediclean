@@ -112,3 +112,5 @@ nume, descriere, cantitate, volum(optinal), document (optional pdf/img)
 vezi toate produsele - click - pagina noua, display 3 main categorii (clickable)
 
 !!! NEXT_PUBLIC_ exposes this value to the browser. Verify it is safe to share publicly. - CHECK this later
+
+npx shadcn@latest add sonner

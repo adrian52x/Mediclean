@@ -4,6 +4,7 @@ import './globals.css';
 
 import { ThemeProvider } from 'next-themes';
 import TanstackQueryProvider from '@/providers/TanstackQueryProvider';
+import { Toaster } from '@/components/ui/sonner';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -27,24 +28,25 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({
-  children,
+    children,
 }: Readonly<{
-  children: React.ReactNode;
+    children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} antialiased`}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <TanstackQueryProvider>
-            {children}
-          </TanstackQueryProvider>
-        </ThemeProvider>
-      </body>
-    </html>
-  );
+    return (
+        <html lang="en" suppressHydrationWarning>
+            <body className={`${inter.className} antialiased`}>
+                <ThemeProvider
+                    attribute="class"
+                    defaultTheme="system"
+                    enableSystem
+                    disableTransitionOnChange
+                >
+                    <TanstackQueryProvider>
+                        {children}
+                        <Toaster closeButton position="top-center"/>
+                    </TanstackQueryProvider>
+                </ThemeProvider>
+            </body>
+        </html>
+    );
 }
