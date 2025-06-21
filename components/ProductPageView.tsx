@@ -8,12 +8,12 @@ interface ProductPageViewProps {
 }
 
 export const ProductPageView: React.FC<ProductPageViewProps> = ({ productId }) => {
-    const { product, isLoading } = useGetProductById(productId);
+    const { product, isPending } = useGetProductById(productId);
 
-    if (isLoading) {
+    if (isPending) {
         return (
-            <div className="flex justify-center items-center h-40 text-gray-500">
-                <Loader/>
+            <div className="flex h-screen items-center justify-center">
+                <Loader />
             </div>
         );
     }
@@ -34,6 +34,7 @@ export const ProductPageView: React.FC<ProductPageViewProps> = ({ productId }) =
                 width="100%"
                 height="600px"
                 className="border rounded"
+                allow="fullscreen"
             />
             {/* Or, for download: */}
             {/* <a href={product.doc_url} target="_blank" rel="noopener" className="text-blue-600 underline">Descarcă PDF</a> */}

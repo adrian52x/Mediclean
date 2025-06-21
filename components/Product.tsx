@@ -16,9 +16,9 @@ import { useGetProducts } from '@/lib/hooks/useProducts';
 import { ProductDetails } from '@/types';
 
 export const ProductGrid: React.FC = () => {
-    const { products, isLoading, isError } = useGetProducts();
+    const { products, isPending, isError } = useGetProducts();
 
-    if (isLoading) {
+    if (isPending) {
         return (
             <ProductSkeletonGrid />
         )
@@ -92,7 +92,7 @@ export const Product = ({ product }: { product: ProductDetails }) => {
           <div className="relative h-60 w-full">
             <Image
               className="rounded-t-lg"
-              src={'/images/mediclean-logo.jpg'} // Use placeholder for now
+              src={product?.image || '/images/mediclean-logo.jpg'} 
               alt={product?.title || 'Placeholder image'}
               fill
               sizes="(min-width: 1000px) 30vw, 50vw"

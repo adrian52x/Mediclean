@@ -29,10 +29,12 @@ export class ProductsAPI {
         return data ?? [];
     }
 
-    static async uploadPdf(file: File): Promise<{ url: string | undefined, error: any }> {
+    static async uploadPdf(file: File, title: string, price: number): Promise<{ url: string | undefined, path: string | undefined, error: any }> {
         const supabase = supabaseBrowser();
         const fileExt = file.name.split('.').pop();
-        const fileName = `${Date.now()}.${fileExt}`;
+        // Sanitize title for filename
+        const safeTitle = title.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+        const fileName = `${safeTitle}_${price}_.${fileExt}`;
 
         // Upload the file
         const { data, error } = await supabase.storage
@@ -41,7 +43,7 @@ export class ProductsAPI {
 
         if (error || !data) {
             // Return error if upload failed
-            return { url: undefined, error };
+            return { url: undefined, path: undefined, error };
         }
 
         // Get the public URL
@@ -50,7 +52,35 @@ export class ProductsAPI {
             .getPublicUrl(data.path);
 
         // Success: return the URL
-        return { url: urlData.publicUrl, error: null };
+        return { url: urlData.publicUrl, path: data.path, error: null };
+    }
+
+    static async uploadImage(file: File, title: string, price: number): Promise<{ url: string | undefined, path: string | undefined, error: any }> {
+        const supabase = supabaseBrowser();
+        const fileExt = file.name.split('.').pop();
+        // Sanitize title for filename
+        const safeTitle = title.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+        const fileName = `${safeTitle}_${price}_.${fileExt}`;
+
+        const { data, error } = await supabase.storage
+            .from('product-images')
+            .upload(fileName, file);
+
+        if (error || !data) {
+            return { url: undefined, path: undefined, error };
+        }
+
+        const { data: urlData } = supabase.storage
+            .from('product-images')
+            .getPublicUrl(data.path);
+
+        return { url: urlData.publicUrl, path: data.path, error: null };
+    }
+
+    // Delete a file from a bucket
+    static async deleteFile(bucket: string, path: string) {
+        const supabase = supabaseBrowser();
+        await supabase.storage.from(bucket).remove([path]);
     }
 }
 

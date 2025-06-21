@@ -12,10 +12,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ images }) => {
     
     return (
         <section>
-            <div className="w-full px-5 grid lg:grid-cols-2 lg:items-center gap-10">
-                <div className="flex flex-col space-y-8 sm:space-y-10 lg:items-center text-center lg:text-left max-w-2xl md:max-w-3xl mx-auto">
+            <div className="w-full grid lg:grid-cols-2 lg:items-center gap-10">
+                <div className="flex flex-col space-y-8 sm:space-y-14 md:space-y-18 text-center lg:text-left">
                     {/* Big title */}
-                    <h1 className=" font-semibold tracking-tight text-teal-950 dark:text-white text-4xl sm:text-5xl lg:text-6xl">
+                    <h1 className=" font-semibold tracking-tight text-teal-950 dark:text-white text-3xl sm:text-4xl md:text-5xl">
                         Descoperă <span className="text-transparent bg-clip-text bg-gradient-to-tr from-cyan-600 to-slate-800">produse medicale</span> pentru tine și afacerea ta!
                     </h1>
                     {/* Description */}

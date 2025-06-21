@@ -130,9 +130,7 @@ export async function isUserAdmin() {
     if (authError || !authData?.user) {
         return false; // User is not authenticated
     }
-    console.log(authData);
     
-
     const userEmail = authData.user.email;
 
     // Check if the user's email matches the admin email from the environment variable
