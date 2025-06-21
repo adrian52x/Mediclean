@@ -43,7 +43,7 @@ export default async function RootLayout({
                 >
                     <TanstackQueryProvider>
                         {children}
-                        <Toaster closeButton position="top-center"/>
+                        <Toaster closeButton richColors position="top-center"/>
                     </TanstackQueryProvider>
                 </ThemeProvider>
             </body>

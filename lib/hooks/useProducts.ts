@@ -4,23 +4,23 @@ import { InsertProduct } from "@/types";
 
 
 export const useGetProducts = () => {
-    const { data: products, isLoading, isError } = useQuery({
+    const { data: products, isPending, isError } = useQuery({
         queryKey: ["products"],
         queryFn: ProductsAPI.fetchProducts,
         retry: 2
     });
 
-    return { products, isLoading, isError };
+    return { products, isPending, isError };
 }
 
 export const useGetProductById = (id: string) => {
-    const { data: product, isLoading, isError } = useQuery({
+    const { data: product, isPending, isError } = useQuery({
         queryKey: ["product", id],
         queryFn: () => ProductsAPI.fetchProductById(id),
         retry: 2
     });
 
-    return { product, isLoading, isError };
+    return { product, isPending, isError };
 }
 
 export const useCreateProducts = () => {

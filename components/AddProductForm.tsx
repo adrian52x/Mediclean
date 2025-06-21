@@ -9,62 +9,82 @@ import { toast } from "sonner";
 
 export default function AddProductForm() {
     const { createProduct } = useCreateProducts();
+
+    const [uploading, setUploading] = useState(false);
     const [uploadError, setUploadError] = useState<string | null>(null);
-    const [uploadLoading, setUploadLoading] = useState<boolean>(false);
 
-    const handleSubmit = async (e: FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const formData = new FormData(e.target as HTMLFormElement);
-        
         setUploadError(null);
+        setUploading(true);
 
-        let doc_url: string | undefined = undefined;
-        let pdf = formData.get("pdf") as File | null;
+        const form = e.currentTarget;
+        const formData = new FormData(form as HTMLFormElement);
 
-        // 1. Upload PDF if provided
-        if (pdf?.size) {
-            setUploadLoading(true);
-            const { url, error } = await ProductsAPI.uploadPdf(pdf);
-            setUploadLoading(false);
-            if (error) {
-                setUploadError("Failed to upload PDF: " + error.message);
-                return;
+        const title = formData.get("title") as string;
+        const price = formData.get("price") as string;
+        const imageFile = formData.get("image") as File | null;
+        const pdfFile = formData.get("pdf") as File | null;
+
+        // Prepare upload promises
+        const uploadPromises = [
+            imageFile?.size ? ProductsAPI.uploadImage(imageFile, title, Number(price)) : Promise.resolve({ url: undefined, error: null, path: undefined }),
+            pdfFile?.size ? ProductsAPI.uploadPdf(pdfFile, title, Number(price)) : Promise.resolve({ url: undefined, error: null, path: undefined }),
+        ];
+
+        // Run uploads in parallel
+        const [imageResult, pdfResult] = await Promise.all(uploadPromises);
+
+        // Handle errors and rollback if needed
+        if (imageResult.error) {
+            //setUploadError("Failed to upload image: " + imageResult.error.message);
+            toast.error("Failed to upload Image: " + imageResult.error.message);
+            // Rollback PDF if uploaded
+            if (pdfResult.path) {
+                await ProductsAPI.deleteFile('product-pdfs', pdfResult.path);
             }
-            doc_url = url;
-            
+            setUploading(false);
+            return;
+        }
+        if (pdfResult.error) {
+            //setUploadError("Failed to upload PDF: " + pdfResult.error.message);
+            toast.error("Failed to upload PDF: " + pdfResult.error.message);
+            // Rollback image if uploaded
+            if (imageResult.path) {
+                await ProductsAPI.deleteFile('product-images', imageResult.path);
+            }
+            setUploading(false);
+            return;
         }
 
+        // All uploads succeeded
         const productData: InsertProduct = {
-			title: formData.get("title") as string,
-            price: Number(formData.get("price")),
-            image: "img-upload-placeholder",
-            doc_url: doc_url || undefined,
-		};
+            title,
+            price: Number(price),
+            image: imageResult.url ?? '',
+            doc_url: pdfResult.url,
+        };
 
-        //2. Add product to DB
         createProduct.mutate(productData, {
             onSuccess: () => {
-                toast("Product has been created.")
+                toast.success("Product added successfully!");
+            },
+            onError: (error: any) => {
+                toast.error("Failed to add product: " + (error?.message || "Unknown error"));
             }
         });
-
-        console.log("Product data to create:", createProduct);
-        
-
-
-
-        // Reset form
-        (e.target as HTMLFormElement).reset();
-    }
+        form.reset();
+        setUploading(false);
+    };
 
     return (
         <div className="relative">
-            {createProduct.isPending || uploadLoading && (
+            {(uploading || createProduct.isPending) && (
                 <div className="absolute inset-0 z-50 flex items-center justify-center bg-white/60 dark:bg-black/50">
                     <Loader />                
                 </div>
             )}
-            <form onSubmit={handleSubmit} className={createProduct.isPending || uploadLoading ? "pointer-events-none select-none" : ""}>
+            <form onSubmit={handleSubmit} className={(uploading || createProduct.isPending) ? "pointer-events-none select-none" : ""}>
             <input
                 name="title"
                 type="text"
@@ -79,6 +99,16 @@ export default function AddProductForm() {
                 required
                 className="border p-2 rounded w-full"
             />
+            <label className="">Upload Image | max 300KB</label>
+            <input
+                name="image"
+                type="file"
+                accept="image/*"
+                required
+                className="border p-2 rounded w-full"
+            />
+
+            <label className="">Upload PDF | max 5MB</label>
             <input
                 name="pdf"
                 type="file"
@@ -86,12 +116,12 @@ export default function AddProductForm() {
                 //onChange={e => setPdf(e.target.files?.[0] || null)}
                 className="border p-2 rounded w-full"
             />
-            <div>Max 5MB</div>
+
             {uploadError && <div className="text-red-500">{uploadError}</div>}
-            {uploadLoading && <div className="text-orange-500">Uploading file...</div>}
+
             <button
                 type="submit"
-                disabled={createProduct.isPending || uploadLoading}
+                disabled={uploading || createProduct.isPending}
                 className="bg-blue-600 text-white px-4 py-2 rounded"
             >
                 Add Product
