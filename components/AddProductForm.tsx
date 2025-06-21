@@ -1,7 +1,6 @@
 'use client';
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 import { useCreateProducts } from "@/lib/hooks/useProducts";
-import { supabaseBrowser } from "@/lib/supabase/browser";
 import { ProductsAPI } from "@/lib/api/ProductsAPI";
 import { InsertProduct } from "@/types";
 import { Loader } from "./ui/loader";
