@@ -21,7 +21,12 @@ export default function AddProductForm() {
         const formData = new FormData(form as HTMLFormElement);
 
         const title = formData.get("title") as string;
-        const price = formData.get("price") as string;
+        const price = formData.get("price") as string
+        const description = formData.get("description") as string;
+        const category = formData.get("category") as "disinfectants" | "equipment";
+        const stomatologie = formData.get("stomatologie") === "on";
+        const medicina_generala = formData.get("medicina_generala") === "on";
+
         const imageFile = formData.get("image") as File | null;
         const pdfFile = formData.get("pdf") as File | null;
 
@@ -59,9 +64,13 @@ export default function AddProductForm() {
         // All uploads succeeded
         const productData: InsertProduct = {
             title,
+            description,
             price: Number(price),
             image: imageResult.url ?? '',
             doc_url: pdfResult.url,
+            category,
+            stomatologie,
+            medicina_generala
         };
 
         createProduct.mutate(productData, {
@@ -83,22 +92,66 @@ export default function AddProductForm() {
                     <Loader />                
                 </div>
             )}
-            <form onSubmit={handleSubmit} className={(uploading || createProduct.isPending) ? "pointer-events-none select-none" : ""}>
+            <form onSubmit={handleSubmit} className={`space-y-6 ${uploading || createProduct.isPending ? "pointer-events-none select-none" : ""}`}>
+            <label className="mb-1 block">Titlu</label>
             <input
                 name="title"
                 type="text"
-                placeholder="Title"
+                placeholder="Produs"
                 required
                 className="border p-2 rounded w-full"
             />
+            <label className="mb-1 block">Pret</label>
             <input
                 name="price"
                 type="number"
-                placeholder="Price"
+                placeholder="0.00"
                 required
                 className="border p-2 rounded w-full"
             />
-            <label className="">Upload Image | max 300KB</label>
+
+            <label className="mb-1 block">Descriere (optional)</label>
+            <textarea
+                name="description"
+                placeholder="Descriere produs"
+                className="border p-2 rounded w-full"
+                rows={3}
+            />
+            
+            {/* Category select */}
+            <label className="mb-1 block">Category</label>
+            <select
+                name="category"
+                required
+                className="border p-2 rounded w-full bg-white dark:bg-neutral-950 text-black dark:text-white"
+                defaultValue="disinfectants"
+            >
+                <option value="disinfectants">Dezinfectanți</option>
+                <option value="equipment">Echipamente</option>
+            </select>
+
+            {/* Checkboxes */}
+            <div className="flex space-x-4">
+                <label className="flex items-center space-x-2">
+                    <input
+                        type="checkbox"
+                        name="stomatologie"
+                        className="accent-blue-600"
+                    />
+                    <span>Stomatologie</span>
+                </label>
+
+                <label className="flex items-center space-x-2">
+                    <input
+                        type="checkbox"
+                        name="medicina_generala"
+                        className="accent-blue-600"
+                    />
+                    <span>Medicină generală</span>
+                </label>
+            </div>
+
+            <label className="mb-1 block">Upload Image | max 300KB</label>
             <input
                 name="image"
                 type="file"
@@ -107,7 +160,7 @@ export default function AddProductForm() {
                 className="border p-2 rounded w-full"
             />
 
-            <label className="">Upload PDF | max 5MB</label>
+            <label className="mb-1 block">Upload PDF | max 5MB (optional)</label>
             <input
                 name="pdf"
                 type="file"
@@ -127,9 +180,6 @@ export default function AddProductForm() {
             </button>
             </form>
 
-            <button onClick={() => toast("This is a test toast!")} className="mt-4 bg-green-600 text-white px-4 py-2 rounded">
-                show toast
-            </button>
         </div>
     );
 }

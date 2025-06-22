@@ -67,24 +67,6 @@ export const ProductSkeletonGrid = () => {
 };
 
 export const Product = ({ product }: { product: ProductDetails }) => {
-  function Price() {
-    if (product?.discount > 0) {
-      const price = product?.price - product?.discount;
-      const percentage = (product?.discount / product?.price) * 100;
-      return (
-        <div className="flex items-center gap-2">
-          <Badge className="flex gap-4" variant="destructive">
-            <div className="line-through">${product?.price}</div>
-            <div>%{percentage.toFixed(2)}</div>
-          </Badge>
-          <h2 className="">${price.toFixed(2)}</h2>
-        </div>
-      );
-    }
-
-    return <h2>${product?.price}</h2>;
-  }
-
   return (
     <Link className="" href={`/products/${product.id}`}>
       <Card className="h-full transition-transform duration-300 ease-in-out hover:scale-105">
@@ -101,10 +83,27 @@ export const Product = ({ product }: { product: ProductDetails }) => {
           </div>
         </CardHeader>
         <CardContent className="grid gap-1 p-4">
-          <Badge variant="outline" className="w-min text-neutral-500">
-            {/* {product?.categories[0]?.title} */}
-            category
-          </Badge>
+            <div className="flex gap-2 flex-wrap">
+                <Badge variant="primary" className="w-fit">
+                    {product.category === 'equipment'
+                        ? 'Echipament'
+                        : product.category === 'disinfectants'
+                        ? 'Dezinfectanti'
+                        : product.category}
+                </Badge>
+        
+                {product.stomatologie && (
+                    <Badge variant="primary" className="w-fit">
+                        Stomatologie
+                    </Badge>
+                )}
+                {product.medicina_generala && (
+                    <Badge variant="primary" className="w-fit whitespace-nowrap">
+                        Medicină generală
+                    </Badge>
+                )}
+            </div>
+
 
           <h2 className="mt-2">{product.title}</h2>
           <p className="text-justify text-xs text-neutral-500">
@@ -112,7 +111,7 @@ export const Product = ({ product }: { product: ProductDetails }) => {
           </p>
         </CardContent>
         <CardFooter>
-          {true ? <Price /> : <Badge variant="secondary">Out of stock</Badge>}
+          {true ? <h2>${product.price}</h2> : <Badge variant="secondary">Out of stock</Badge>}
         </CardFooter>
       </Card>
     </Link>
