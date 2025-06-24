@@ -13,6 +13,7 @@ export interface ProductDetails {
   stomatologie: boolean;
   medicina_generala: boolean;
   created_at: Date;
+  updated_at: Date;
 }
 
 export interface InsertProduct {

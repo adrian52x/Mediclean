@@ -1,8 +1,8 @@
 import { supabaseBrowser } from '../supabase/browser';
-import { InsertProduct } from '@/types';
+import { InsertProduct, ProductDetails } from '@/types';
 
 export class ProductsAPI {
-    static async fetchProducts() {
+    static async fetchProducts(): Promise<ProductDetails[]> {
         const supabase = supabaseBrowser();
 
         const { data, error } = await supabase.from('products').select('*');
@@ -11,7 +11,7 @@ export class ProductsAPI {
         return data ?? [];
     }
 
-    static async fetchProductById(id: string) {
+    static async fetchProductById(id: string): Promise<ProductDetails> {
         const supabase = supabaseBrowser();
 
         const { data, error } = await supabase.from('products').select('*').eq('id', id).single();
@@ -21,7 +21,7 @@ export class ProductsAPI {
     }
 
     static async addProduct(product: InsertProduct) {
-        const supabase = await supabaseBrowser();
+        const supabase = supabaseBrowser();
 
         const { data, error } = await supabase.from('products').insert([product]);
         if (error) throw error;
