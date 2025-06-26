@@ -150,7 +150,7 @@ export default function ProductTable() {
                 <tr className="border-b">
                 <th className="p-3 text-left">Imagini</th>
                 <th className="p-3 text-left">Titlu</th>
-                <th className="p-3 text-left">Pret</th>                                
+                <th className="p-3 text-left">Pret MDL</th>                                
                 <th className="p-3 text-left">Category</th>
                 <th className="p-3 text-left">Sub-category</th>
                 <th className="p-3 text-left">Domeniu</th>
@@ -167,13 +167,8 @@ export default function ProductTable() {
                     onClick={() => setSelectedRow(product)}
                 >
                     <td className="p-3">
-                    {/* <img
-                        src={product.product_images[0]?.url || '/images/mediclean-logo.jpg'}
-                        alt={product.title}
-                        className="w-10 h-10 object-cover rounded"
-                    /> */}
                         <div className="flex gap-2 min-w-[120px]">
-                            {(product.product_images?.slice(0, 3) ?? []).map((img, idx) => (
+                            {(product.product_images ?? []).map((img, idx) => (
                                 <img
                                     key={idx}
                                     src={img.url || '/images/mediclean-logo.jpg'}
@@ -191,7 +186,24 @@ export default function ProductTable() {
                         </div>
                     </td>
                     <td className="p-3 font-medium">{product.title}</td>
-                    <td className="p-3">{product.price}</td>
+                    <td className="p-3 text-xs">
+                        {product.price !== null
+                            ? product.price
+                            : (product.product_volumes_price.length > 0)
+                                ? (
+                                        <div className="flex flex-wrap gap-2 w-[200px]">
+                                            {product.product_volumes_price.map((v, idx) => (
+                                                <span
+                                                    key={idx}
+                                                    className="w-fit border rounded px-1 py-0.5 bg-neutral-100 dark:bg-neutral-800"
+                                                >
+                                                    {v.volume}= {v.price}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    )
+                                : ""}
+                    </td>
                     <td className="p-3">
                         <Badge variant="default" className="w-fit">
                             {product.category === 'equipment'
@@ -206,7 +218,7 @@ export default function ProductTable() {
                             {product.product_type?.type_name}
                         </Badge>
                     </td>
-                    <td className="p-3 flex flex-col gap-1 w-fit">
+                    <td className="p-3 gap-1 w-fit">
                         {product.stomatologie && (
                             <Badge variant="primary">
                                 Stomatologie

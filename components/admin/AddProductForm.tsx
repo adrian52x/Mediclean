@@ -1,8 +1,8 @@
 'use client';
 import { useState } from "react";
-import { useAddProductImage, useCreateProducts } from "@/lib/hooks/useProducts";
+import { useAddProductImage, useAddProductVolumePrice, useCreateProducts } from "@/lib/hooks/useProducts";
 import { ProductsAPI } from "@/lib/api/ProductsAPI";
-import { CategoryEnum, InsertProduct, UploadFileResult } from "@/types";
+import { CategoryEnum, DisinfectantSubCategoryEnum, DisinfectantVolumeEnum, InsertProduct, UploadFileResult } from "@/types";
 import { toast } from "sonner";
 import { Loader } from "../ui/loader";
 import { Input } from "../ui/input";
@@ -26,9 +26,13 @@ import React from "react";
 export default function AddProductForm() {
     const { createProduct } = useCreateProducts();
     const { addProductImage } = useAddProductImage();
+    const { addProductVolumePrice } = useAddProductVolumePrice()
     const { productTypes } = useGetProductTypes();
 
     const [uploading, setUploading] = useState(false);
+    const [volumes, setVolumes] = useState([{ volume: '', price: '' }]);
+    const [isCategoryDisinfectants, setIsCategoryDisinfectants] = useState(false);
+    const [isSubCategoryDisinfectants, setIsSubCategoryDisinfectants] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -94,7 +98,7 @@ export default function AddProductForm() {
         const productData: InsertProduct = {
             title,
             description,
-            price: Number(price),
+            price: price ? Number(price) : null,
             doc_url: pdfResult.url,
             category,
             product_type: subCategory,
@@ -105,26 +109,36 @@ export default function AddProductForm() {
         await createProduct.mutateAsync(productData, {
             onSuccess: async (data) => {
                 // Insert images in product_images table
-                const imageInsertPromises = imageUrls.map((url) => {
-                    return addProductImage.mutateAsync({
+                const imageInsertPromises = imageUrls.map((url) =>
+                    addProductImage.mutateAsync({
                         product_id: data.id,
-                        url
-                    });
-                });
+                        url,
+                    })
+                );
+
+                // Insert volumes in product_volumes_price table
+                const volumeInsertPromises = volumes.filter(v => v.volume && v.price).map((v) =>
+                    addProductVolumePrice.mutateAsync({
+                        product_id: data.id,
+                        volume: v.volume,
+                        price: Number(v.price),
+                    })
+                );
 
                 try {
-                    await Promise.all(imageInsertPromises);
+                    await Promise.all([...imageInsertPromises, ...volumeInsertPromises]);
                     toast.success("Product added successfully!");
                 } catch (error: any) {
-                    toast.warning("Product added, but without images: " + (error?.message || "Unknown error"));
+                    toast.warning("Product added, but some data maybe is missing" + (error?.message || "Unknown error"));
                 }
             },
             onError: (error: any) => {
                 toast.error("Failed to add product: " + (error?.message || "Unknown error"));
-            }
+            },
         });
 
         form.reset();
+        setVolumes([{ volume: '', price: '' }]);
         setUploading(false);
     };
 
@@ -145,19 +159,10 @@ export default function AddProductForm() {
                     required
                 />
 
-                <Input
-                    type="number"
-                    name="price"
-                    placeholder="Pret - MDL"
-                    className="max-w-md"
-                    min={0}
-                    required
-                />
-
                 <Textarea className="max-w-md" name="description" placeholder="Descriere produs (optional)" />
                 
                 {/* Category select */}
-                <Select name="category" required>
+                <Select name="category" onValueChange={val => setIsCategoryDisinfectants(val === CategoryEnum.Disinfectants)} required>
                     <SelectTrigger className="w-full max-w-md">
                         <SelectValue placeholder="Select a category" />
                     </SelectTrigger>
@@ -170,7 +175,23 @@ export default function AddProductForm() {
                 </Select>
 
                 {/* Sub-Category select / Product Type */}
-                <Select name="sub-category" required>
+                <Select
+                    name="sub-category"
+                    onValueChange={val => {
+                        const selectedSubCategory = productTypes?.find(type => type.product_type_id === val);
+                        setIsSubCategoryDisinfectants(
+                            !!(
+                                selectedSubCategory &&
+                                (
+                                    selectedSubCategory.type_name === DisinfectantSubCategoryEnum.Maini ||
+                                    selectedSubCategory.type_name === DisinfectantSubCategoryEnum.Suprafete ||
+                                    selectedSubCategory.type_name === DisinfectantSubCategoryEnum.Instrumente
+                                )
+                            )
+                        );
+                    }}
+                    required
+                >
                     <SelectTrigger className="w-full max-w-md">
                         <SelectValue placeholder="Select a sub-category" />
                     </SelectTrigger>
@@ -202,6 +223,74 @@ export default function AddProductForm() {
                     </div>                
                 </div>
 
+                { !(isCategoryDisinfectants && isSubCategoryDisinfectants) && (
+                <Input
+                    type="number"
+                    name="price"
+                    placeholder="Pret - MDL"
+                    className="max-w-md"
+                    min={0}
+                    required
+                /> 
+                )}
+
+                {/* Volume si pret */}
+                {isCategoryDisinfectants && isSubCategoryDisinfectants && (
+                <div className="space-y-2">
+                    <Label>Volum și preț (doar pentru Dezinfectanți)</Label>
+                    {volumes.map((v, idx) => (
+                        <div key={idx} className="flex gap-2 items-center">
+                            <Select
+                            value={v.volume}
+                            onValueChange={val => {
+                                const newVolumes = [...volumes];
+                                newVolumes[idx].volume = val;
+                                setVolumes(newVolumes);
+                            }}
+                            required
+                            >
+                            <SelectTrigger className="max-w-[100px]">
+                                <SelectValue placeholder="Volum" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectGroup>
+                                {Object.values(DisinfectantVolumeEnum).map(vol => (
+                                    <SelectItem key={vol} value={vol}>{vol}</SelectItem>
+                                ))}
+                                </SelectGroup>
+                            </SelectContent>
+                            </Select>
+                        <Input
+                            type="number"
+                            placeholder="Preț"
+                            value={v.price}
+                            min={0}
+                            onChange={e => {
+                                const newVolumes = [...volumes];
+                                newVolumes[idx].price = e.target.value;
+                                setVolumes(newVolumes);
+                            }}
+                            className="max-w-[100px]"
+                            required
+                        />
+                        {volumes.length > 1 && (
+                            <Button type="button" variant="destructive" onClick={() => setVolumes(volumes.filter((_, i) => i !== idx))}>
+                            Șterge
+                            </Button>
+                        )}
+                        </div>
+                    ))}
+                    <Button
+                        type="button"
+                        variant="secondary"
+                        onClick={() => setVolumes([...volumes, { volume: '', price: '' }])}
+                    >
+                        Adaugă volum
+                    </Button>
+                </div>
+                )}
+
+                
                 {/* IMGs */}
                 <div className="grid w-full max-w-sm items-center gap-2">
                     <Label htmlFor="picture">Imagini | max 3 x 300KB</Label>

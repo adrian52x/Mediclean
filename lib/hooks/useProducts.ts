@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ProductsAPI } from "../api/ProductsAPI";
-import { InsertProduct, InsertProductImage } from "@/types";
+import { InsertProduct, InsertProductImage, InsertProductVolumePrice } from "@/types";
 
 
 export const useGetProducts = () => {
@@ -27,7 +27,7 @@ export const useCreateProducts = () => {
     const queryClient = useQueryClient();
 
     const createProduct = useMutation({
-        mutationFn: (product: InsertProduct) => ProductsAPI.addProduct(product),
+        mutationFn: (product: InsertProduct) => ProductsAPI.addProduct(product), // try to call another API
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["products"] });
         }
@@ -42,11 +42,25 @@ export const useAddProductImage = () => {
     const addProductImage = useMutation({
         mutationFn: (productImage: InsertProductImage) => ProductsAPI.addProductImage(productImage),
         onSuccess: () => {
-            //queryClient.invalidateQueries({ queryKey: ["products"] });
+            queryClient.invalidateQueries({ queryKey: ["products"] }); // invalidata just a specific product?
         }
     });
 
     return { addProductImage };
+}
+
+export const useAddProductVolumePrice = () => {
+    const queryClient = useQueryClient();
+
+    const addProductVolumePrice = useMutation({
+        mutationFn: (productVolumePrice: InsertProductVolumePrice) => 
+            ProductsAPI.addProductVolumePrice(productVolumePrice),
+        onSuccess: () => {
+            //queryClient.invalidateQueries({ queryKey: ["products"] });
+        }
+    });
+
+    return { addProductVolumePrice };
 }
 
 

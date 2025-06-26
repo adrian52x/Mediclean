@@ -23,7 +23,7 @@ export const ProductPageView: React.FC<ProductPageViewProps> = ({ productId }) =
     return (
         <div className="max-w-2xl mx-auto p-6">
         <h1 className="text-3xl font-bold mb-4">{product.title}</h1>
-        <p className="mb-2">Preț: {product.price} DKK</p>
+        <p className="mb-2">Preț: {product.price} MDL</p>
         {/* ...other product info... */}
 
         {product.doc_url ? (
