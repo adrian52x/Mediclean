@@ -1,8 +1,8 @@
 'use client';
 import { useState } from "react";
-import { useCreateProducts } from "@/lib/hooks/useProducts";
+import { useAddProductImage, useCreateProducts } from "@/lib/hooks/useProducts";
 import { ProductsAPI } from "@/lib/api/ProductsAPI";
-import { InsertProduct } from "@/types";
+import { CategoryEnum, InsertProduct, UploadFileResult } from "@/types";
 import { toast } from "sonner";
 import { Loader } from "../ui/loader";
 import { Input } from "../ui/input";
@@ -18,9 +18,15 @@ import {
 } from "@/components/ui/select"
 import { Checkbox } from "../ui/checkbox";
 import { Button } from "../ui/button";
+import { ImagesAPI } from "@/lib/api/ImagesAPI";
+import { useGetProductTypes } from "@/lib/hooks/useProducTypes";
+import { Separator } from "../ui/separator";
+import React from "react";
 
 export default function AddProductForm() {
     const { createProduct } = useCreateProducts();
+    const { addProductImage } = useAddProductImage();
+    const { productTypes } = useGetProductTypes();
 
     const [uploading, setUploading] = useState(false);
 
@@ -34,37 +40,51 @@ export default function AddProductForm() {
         const title = formData.get("title") as string;
         const price = formData.get("price") as string
         const description = formData.get("description") as string;
-        const category = formData.get("category") as "disinfectants" | "equipment";
+        const category = formData.get("category") as CategoryEnum;
+        const subCategory = formData.get("sub-category") as string;
         const stomatologie = formData.get("stomatologie") === "on";
         const medicina_generala = formData.get("medicina_generala") === "on";
 
-        const imageFile = formData.get("image") as File | null;
-        const pdfFile = formData.get("pdf") as File | null;
-
-        // Prepare upload promises
-        const uploadPromises = [
-            imageFile?.size ? ProductsAPI.uploadImage(imageFile, title, Number(price)) : Promise.resolve({ url: undefined, error: null, path: undefined }),
-            pdfFile?.size ? ProductsAPI.uploadPdf(pdfFile, title, Number(price)) : Promise.resolve({ url: undefined, error: null, path: undefined }),
-        ];
-
-        // Run uploads in parallel
-        const [imageResult, pdfResult] = await Promise.all(uploadPromises);
-
-        // Handle errors and rollback if needed
-        if (imageResult.error) {
-            toast.error("Failed to upload Image: " + imageResult.error.message);
-            // Rollback PDF if uploaded
-            if (pdfResult.path) {
-                await ProductsAPI.deleteFile('product-pdfs', pdfResult.path);
-            }
+        //const imageFiles = formData.get("image") as File[] | null;
+        let imageFiles = Array.from(formData.getAll("image") as File[]);
+        
+        if (imageFiles.length > 3) {
+            toast.error("You can upload a maximum of 3 images.");
             setUploading(false);
             return;
         }
+        const pdfFile = formData.get("pdf") as File | null;
+
+
+        // 1. Upload PDF if provided
+        let pdfResult: UploadFileResult = { url: undefined, path: undefined, error: null };
+        if (pdfFile?.size) {
+            pdfResult = await ProductsAPI.uploadPdf(pdfFile, title, Number(price));
+        }
+
         if (pdfResult.error) {
             toast.error("Failed to upload PDF: " + pdfResult.error.message);
-            // Rollback image if uploaded
-            if (imageResult.path) {
-                await ProductsAPI.deleteFile('product-images', imageResult.path);
+            setUploading(false);
+            return;
+        }
+
+        // 2. Upload images
+        const { urls: imageUrls, paths, errors } = await ImagesAPI.uploadMultipleImages(imageFiles, title, Number(price));
+        if (errors.length > 0) {
+            // Delete already uploaded images
+            for (const path of paths) {
+                if (path) {
+                    console.log(`Deleting image at path: ${path}`);
+                    
+                    await ProductsAPI.deleteFile('product-images', path);
+                }
+            }
+            errors.forEach((error, idx) => {
+                toast.error(`Failed to upload image ${idx + 1}: ${error.message}`);
+            });
+            // Rollback PDF if it was uploaded
+            if (pdfResult.path) {
+                await ProductsAPI.deleteFile('product-pdfs', pdfResult.path);
             }
             setUploading(false);
             return;
@@ -75,21 +95,35 @@ export default function AddProductForm() {
             title,
             description,
             price: Number(price),
-            image: imageResult.url ?? '',
             doc_url: pdfResult.url,
             category,
+            product_type: subCategory,
             stomatologie,
             medicina_generala
         };
 
-        createProduct.mutate(productData, {
-            onSuccess: () => {
-                toast.success("Product added successfully!");
+        await createProduct.mutateAsync(productData, {
+            onSuccess: async (data) => {
+                // Insert images in product_images table
+                const imageInsertPromises = imageUrls.map((url) => {
+                    return addProductImage.mutateAsync({
+                        product_id: data.id,
+                        url
+                    });
+                });
+
+                try {
+                    await Promise.all(imageInsertPromises);
+                    toast.success("Product added successfully!");
+                } catch (error: any) {
+                    toast.warning("Product added, but without images: " + (error?.message || "Unknown error"));
+                }
             },
             onError: (error: any) => {
                 toast.error("Failed to add product: " + (error?.message || "Unknown error"));
             }
         });
+
         form.reset();
         setUploading(false);
     };
@@ -101,13 +135,14 @@ export default function AddProductForm() {
                     <Loader />                
                 </div>
             )}
-            <form onSubmit={handleSubmit} className={`space-y-8 ${uploading || createProduct.isPending ? "pointer-events-none select-none" : ""}`}>
+            <form name="addProduct" onSubmit={handleSubmit} className={`space-y-8 ${uploading || createProduct.isPending ? "pointer-events-none select-none" : ""}`}>
                 <Input
                     type="text"
                     id="title"
                     name="title"
                     placeholder="Nume produs..."
                     className="max-w-md"
+                    required
                 />
 
                 <Input
@@ -116,6 +151,7 @@ export default function AddProductForm() {
                     placeholder="Pret - MDL"
                     className="max-w-md"
                     min={0}
+                    required
                 />
 
                 <Textarea className="max-w-md" name="description" placeholder="Descriere produs (optional)" />
@@ -129,6 +165,27 @@ export default function AddProductForm() {
                         <SelectGroup >
                         <SelectItem value="disinfectants">Dezinfectanți</SelectItem>
                         <SelectItem value="equipment">Echipamente</SelectItem>
+                        </SelectGroup>
+                    </SelectContent>
+                </Select>
+
+                {/* Sub-Category select / Product Type */}
+                <Select name="sub-category" required>
+                    <SelectTrigger className="w-full max-w-md">
+                        <SelectValue placeholder="Select a sub-category" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectGroup >
+                            {(productTypes ?? []).map((type, idx) => (
+                                <React.Fragment key={type.product_type_id}>
+                                    <SelectItem key={type.product_type_id} value={type.product_type_id}>
+                                        {type.type_name}
+                                    </SelectItem>
+                                    {idx === 3 && (
+                                        <Separator key={`separator-addForm`} className="my-2" />   
+                                    )}
+                                </React.Fragment>
+                            ))}
                         </SelectGroup>
                     </SelectContent>
                 </Select>
@@ -147,8 +204,8 @@ export default function AddProductForm() {
 
                 {/* IMGs */}
                 <div className="grid w-full max-w-sm items-center gap-2">
-                    <Label htmlFor="picture">Imagini | max 300KB</Label>
-                    <Input name="image" id="picture" type="file" accept="image/*" required />
+                    <Label htmlFor="picture">Imagini | max 3 x 300KB</Label>
+                    <Input name="image" id="picture" type="file" accept="image/*" multiple required />
                 </div>
 
                 {/* PDF */}

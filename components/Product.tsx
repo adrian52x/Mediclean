@@ -14,9 +14,12 @@ import { Button } from './ui/button';
 import { WrapText } from 'lucide-react';
 import { useGetProducts } from '@/lib/hooks/useProducts';
 import { ProductDetails } from '@/types';
+import { getPrimaryImage } from '@/lib/utils';
 
 export const ProductGrid: React.FC = () => {
     const { products, isPending, isError } = useGetProducts();
+    console.log('Products:', products);
+    
 
     if (isPending) {
         return (
@@ -74,7 +77,7 @@ export const Product = ({ product }: { product: ProductDetails }) => {
           <div className="relative h-60 w-full">
             <Image
               className="rounded-t-lg"
-              src={product?.image || '/images/mediclean-logo.jpg'} 
+              src={getPrimaryImage(product)} 
               alt={product?.title || 'Placeholder image'}
               fill
               sizes="(min-width: 1000px) 30vw, 50vw"
@@ -102,11 +105,14 @@ export const Product = ({ product }: { product: ProductDetails }) => {
                         Medicină generală
                     </Badge>
                 )}
+                <Badge variant="primary" className="w-fit">
+                    {product.product_type?.type_name}
+                </Badge>
             </div>
 
 
           <h2 className="mt-2">{product.title}</h2>
-          <p className="text-justify text-xs text-neutral-500">
+          <p className="text-justify text-xs text-neutral-500 line-clamp-2">
             {product.description}
           </p>
         </CardContent>

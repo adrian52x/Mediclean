@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ProductsAPI } from "../api/ProductsAPI";
-import { InsertProduct } from "@/types";
+import { InsertProduct, InsertProductImage } from "@/types";
 
 
 export const useGetProducts = () => {
@@ -34,6 +34,19 @@ export const useCreateProducts = () => {
     });
 
     return { createProduct };
+}
+
+export const useAddProductImage = () => {
+    const queryClient = useQueryClient();
+
+    const addProductImage = useMutation({
+        mutationFn: (productImage: InsertProductImage) => ProductsAPI.addProductImage(productImage),
+        onSuccess: () => {
+            //queryClient.invalidateQueries({ queryKey: ["products"] });
+        }
+    });
+
+    return { addProductImage };
 }
 
 

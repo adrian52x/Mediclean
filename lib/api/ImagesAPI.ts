@@ -57,4 +57,38 @@ export class ImagesAPI {
     
       return images;
     }
+
+    static async uploadMultipleImages(files: File[], title: string, price: number): Promise<{ urls: string[]; paths: string[]; errors: any[] }> {
+        const results = await Promise.all(
+            files.map(async (file, idx) => {
+              
+                const fileExt = file.name.split('.').pop();
+                const safeTitle = title.replace(/[^a-z0-9]/gi, '_').toLowerCase()
+
+                const fileName = `${safeTitle}_${price}_${idx+1}.${fileExt}`;
+
+                const { data, error } = await supabaseBrowser()
+                    .storage
+                    .from('product-images')
+                    .upload(fileName, file);
+
+                if (error || !data) {
+                    return { url: undefined, path: undefined, error };
+                }
+
+                const { data: urlData } = supabaseBrowser()
+                    .storage
+                    .from('product-images')
+                    .getPublicUrl(data.path);
+
+                return { url: urlData?.publicUrl, path: data.path, error: null };
+            })
+        );
+
+        return {
+            urls: results.map(r => r.url).filter(Boolean) as string[],
+            paths: results.map(r => r.path).filter(Boolean) as string[],
+            errors: results.map(r => r.error).filter(Boolean),
+        };
+    }
 }

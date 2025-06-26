@@ -1,11 +1,18 @@
 import { supabaseBrowser } from '../supabase/browser';
-import { InsertProduct, ProductDetails } from '@/types';
+import { InsertProduct, InsertProductImage, ProductDetails, UploadFileResult } from '@/types';
 
 export class ProductsAPI {
     static async fetchProducts(): Promise<ProductDetails[]> {
         const supabase = supabaseBrowser();
 
-        const { data, error } = await supabase.from('products').select('*');
+        const { data, error } = await supabase
+        .from('products')
+        .select(`*,
+            product_type(type_name),
+            product_images(url)
+        `)
+        .order('updated_at', { ascending: false });
+        
         if (error) throw error;
 
         return data ?? [];
@@ -23,13 +30,22 @@ export class ProductsAPI {
     static async addProduct(product: InsertProduct) {
         const supabase = supabaseBrowser();
 
-        const { data, error } = await supabase.from('products').insert([product]);
+        const { data, error } = await supabase.from('products').insert([product]).select('id').single();
         if (error) throw error;
 
         return data ?? [];
     }
 
-    static async uploadPdf(file: File, title: string, price: number): Promise<{ url: string | undefined, path: string | undefined, error: any }> {
+    static async addProductImage(productImage: InsertProductImage) {
+        const supabase = supabaseBrowser();
+
+        const { data, error } = await supabase.from('product_images').insert([productImage]);
+        if (error) throw error;
+
+        return data ?? [];
+    }
+
+    static async uploadPdf(file: File, title: string, price: number): Promise<UploadFileResult> {
         const supabase = supabaseBrowser();
         const fileExt = file.name.split('.').pop();
         // Sanitize title for filename
@@ -55,7 +71,7 @@ export class ProductsAPI {
         return { url: urlData.publicUrl, path: data.path, error: null };
     }
 
-    static async uploadImage(file: File, title: string, price: number): Promise<{ url: string | undefined, path: string | undefined, error: any }> {
+    static async uploadImage(file: File, title: string, price: number): Promise<UploadFileResult> {
         const supabase = supabaseBrowser();
         const fileExt = file.name.split('.').pop();
         // Sanitize title for filename
