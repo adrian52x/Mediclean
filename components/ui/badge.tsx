@@ -15,6 +15,8 @@ const badgeVariants = cva(
         primary:
           'border-transparent bg-cyan-500/40 text-destructive-foreground shadow hover:bg-cyan-500/50',
         outline: 'text-foreground',
+        tertiary:
+          'border rounded px-1 py-0.5 bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300',
       },
     },
     defaultVariants: {

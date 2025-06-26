@@ -4,10 +4,10 @@ import ThemeToggle from "@/components/theme-toggle"
  
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <SidebarProvider open={false}>
+    <SidebarProvider defaultOpen={false}>
       <AdminSidebar />
       <main className="py-4 px-6 w-full max-w-[1920px]">
-        <SidebarTrigger />
+        <SidebarTrigger/>
         {children}
       </main>
       <ThemeToggle />

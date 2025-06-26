@@ -188,17 +188,24 @@ export default function ProductTable() {
                     <td className="p-3 font-medium">{product.title}</td>
                     <td className="p-3 text-xs">
                         {product.price !== null
-                            ? product.price
+                            ? (
+                                <Badge variant="tertiary">
+                                    {product.price}
+                                </Badge>
+                            )
                             : (product.product_volumes_price.length > 0)
                                 ? (
                                         <div className="flex flex-wrap gap-2 w-[200px]">
                                             {product.product_volumes_price.map((v, idx) => (
-                                                <span
-                                                    key={idx}
-                                                    className="w-fit border rounded px-1 py-0.5 bg-neutral-100 dark:bg-neutral-800"
-                                                >
-                                                    {v.volume}= {v.price}
-                                                </span>
+                                                // <span
+                                                //     key={idx}
+                                                //     className="w-fit border rounded px-1 py-0.5 bg-neutral-100 dark:bg-neutral-800"
+                                                // >
+                                                //     {v.volume}= {v.price}
+                                                // </span>
+                                                <Badge variant="tertiary" key={idx}>
+                                                    {v.volume} = {v.price}
+                                                </Badge>
                                             ))}
                                         </div>
                                     )
@@ -214,7 +221,7 @@ export default function ProductTable() {
                         </Badge>
                     </td>
                     <td className="p-3">
-                        <Badge variant="outline" className="w-fit">
+                        <Badge variant="outline" className="max-w-[120px]">
                             {product.product_type?.type_name}
                         </Badge>
                     </td>
@@ -225,7 +232,7 @@ export default function ProductTable() {
                             </Badge>
                         )}
                         {product.medicina_generala && (
-                            <Badge variant="primary">
+                            <Badge variant="secondary">
                                 M. generală
                             </Badge>
                         )}

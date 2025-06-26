@@ -282,10 +282,12 @@ export default function AddProductForm() {
                     ))}
                     <Button
                         type="button"
-                        variant="secondary"
+                        variant="outline"
                         onClick={() => setVolumes([...volumes, { volume: '', price: '' }])}
+                        className="text-xl"
+                        disabled={volumes.length >= 6}
                     >
-                        Adaugă volum
+                        +
                     </Button>
                 </div>
                 )}
