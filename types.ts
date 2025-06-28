@@ -10,12 +10,18 @@ export enum DisinfectantSubCategoryEnum {
 }
 
 export enum DisinfectantVolumeEnum {
+  V100ml = "100ml",
   V500ml = "500ml",
   V750ml = "750ml",
   V1L = "1L",
   V1_5L = "1.5L",
   V2L = "2L",
   V5L = "5L",
+}
+
+export enum PriceTypeEnum {
+  Fixed = 'fixed',
+  Volume = 'volume',
 }
 
 export interface UserDetails {

@@ -1,6 +1,10 @@
 import { ProductPageView } from "@/components/ProductPageView";
 
-export default async function ProductPage({params}: {params: Promise<{ id: string }>}) {
+interface ProductPageProps {
+    id: string;
+}
+
+export default async function ProductPage({params}: {params: Promise<ProductPageProps>}) {
     
     const { id } = await params;
   

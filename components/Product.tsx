@@ -87,14 +87,6 @@ export const Product = ({ product }: { product: ProductDetails }) => {
         </CardHeader>
         <CardContent className="grid gap-1 p-4">
             <div className="flex gap-2 flex-wrap">
-                <Badge variant="primary" className="w-fit">
-                    {product.category === 'equipment'
-                        ? 'Echipament'
-                        : product.category === 'disinfectants'
-                        ? 'Dezinfectanti'
-                        : product.category}
-                </Badge>
-        
                 {product.stomatologie && (
                     <Badge variant="primary" className="w-fit">
                         Stomatologie
@@ -105,6 +97,17 @@ export const Product = ({ product }: { product: ProductDetails }) => {
                         Medicină generală
                     </Badge>
                 )}
+
+                {/* Category badge*/}
+                <Badge variant="primary" className="w-fit">
+                    {product.category === 'equipment'
+                        ? 'Echipament'
+                        : product.category === 'disinfectants'
+                        ? 'Dezinfectanti'
+                        : product.category}
+                </Badge>
+
+                {/* Subcategory/type badge */}
                 <Badge variant="primary" className="w-fit">
                     {product.product_type?.type_name}
                 </Badge>

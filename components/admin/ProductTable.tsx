@@ -225,14 +225,14 @@ export default function ProductTable() {
                             {product.product_type?.type_name}
                         </Badge>
                     </td>
-                    <td className="p-3 gap-1 w-fit">
+                    <td className="p-3 flex flex-wrap gap-1">
                         {product.stomatologie && (
                             <Badge variant="primary">
                                 Stomatologie
                             </Badge>
                         )}
                         {product.medicina_generala && (
-                            <Badge variant="secondary">
+                            <Badge variant="primary">
                                 M. generală
                             </Badge>
                         )}
