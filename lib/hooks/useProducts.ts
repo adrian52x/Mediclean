@@ -13,6 +13,16 @@ export const useGetProducts = () => {
     return { products, isPending, isError };
 }
 
+export const useGetFeaturedProducts = () => {
+    const { data: products, isPending, isError } = useQuery({
+        queryKey: ["featured-products"],
+        queryFn: ProductsAPI.fetchFeaturedProducts,
+        retry: 2
+    });
+
+    return { products, isPending, isError };
+}
+
 export const useGetProductById = (id: string) => {
     const { data: product, isPending, isError } = useQuery({
         queryKey: ["product", id],

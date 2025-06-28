@@ -19,6 +19,25 @@ export class ProductsAPI {
         return data ?? [];
     }
 
+        // Fetch only highlighted products for homepage (limit 6)
+    static async fetchFeaturedProducts(): Promise<ProductDetails[]> {
+        const supabase = supabaseBrowser();
+
+        const { data, error } = await supabase
+            .from('products')
+            .select(`*,
+                product_type(type_name),
+                product_images(url),
+                product_volumes_price(volume, price)
+            `)
+            .eq('featured', true)
+            .order('updated_at', { ascending: false })
+            .limit(6);
+        
+        if (error) throw error;
+        return data ?? [];
+    }
+
     static async fetchProductById(id: string): Promise<ProductDetails> {
         const supabase = supabaseBrowser();
 
