@@ -1,6 +1,7 @@
 import Footer from '@/components/Footer';
 import Navbar from '@/components/navbar/navbar';
 import ThemeToggle from '@/components/theme-toggle';
+import { CartProvider } from '@/lib/context/CartContext';
 import { supabaseServer } from '@/lib/supabase/server';
 
 export default async function DashboardLayout({
@@ -14,13 +15,15 @@ export default async function DashboardLayout({
   //console.log('session', session);
     return (
         <div className="min-h-screen flex flex-col">
-            <Navbar session={session} />
-            
-            <div className="flex-1 container mx-auto px-8">{children}</div>
+            <CartProvider>
+                <Navbar session={session} />
+                
+                <div className="flex-1 container mx-auto px-8">{children}</div>
 
-            <ThemeToggle />
-            
-            <Footer />
+                <ThemeToggle />
+                
+                <Footer />
+            </CartProvider>
         </div>
     );
 }
