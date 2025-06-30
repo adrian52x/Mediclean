@@ -43,7 +43,7 @@ export function CartNav() {
                     </Button>
                 </DrawerTrigger>
                 <DrawerContent>
-                    <div className="mx-auto w-full max-w-sm">
+                    <div className="mx-auto w-full max-w-md">
                         <DrawerHeader>
                             <DrawerTitle>Cart Items ({cartCount})</DrawerTitle>
                             <DrawerDescription>Total MDL: {totalPrice.toFixed(2)}</DrawerDescription>
@@ -53,54 +53,54 @@ export function CartNav() {
                             <p className="text-center text-gray-500">Your cart is empty</p>
                         ) : (
                             <div className="space-y-4">
-                            {cartItems.map((item) => (
-                                <div key={item.id} className="flex items-center gap-3 border-b pb-3">
-                                    <Image
-                                        src={item.image}
-                                        alt={item.title}
-                                        width={50}
-                                        height={50}
-                                        className="rounded object-cover w-[50px] h-[50px]"
-                                        style={{ objectFit: 'cover' }}
-                                    />
-                                    <div className="flex-1">
-                                        <h4 className="font-medium text-sm">{item.title}</h4>
-                                        {item.volume && (
-                                        <p className="text-xs text-gray-500">{item.volume}</p>
-                                        )}
-                                        <p className="text-sm font-bold">MDL {item.price}</p>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                        <Button
-                                            size="sm"
-                                            variant="outline"
-                                            onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                                        >
-                                            <Minus className="h-3 w-3" />
-                                        </Button>
-
-                                        <span className="text-sm">{item.quantity}</span>
-
-                                        <Button
-                                            size="sm"
-                                            variant="outline"
-                                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                        >
-                                            <Plus className="h-3 w-3" />
-                                        </Button>
-
-                                        <Button
-                                            size="sm"
-                                            variant="destructive"
-                                            onClick={() => removeItem(item.id)}
+                                {cartItems.map((item) => (
+                                    <div key={item.id} className="flex items-center gap-3 border-b pb-3">
+                                        <Image
+                                            src={item.image}
+                                            alt={item.title}
+                                            width={50}
+                                            height={50}
+                                            className="rounded object-cover w-[50px] h-[50px]"
+                                            style={{ objectFit: 'cover' }}
+                                        />
+                                        <div className="flex-1">
+                                            <h4 className="font-medium text-sm">{item.title}</h4>
+                                            {item.volume && (
+                                            <p className="text-xs text-gray-500">{item.volume}</p>
+                                            )}
+                                            <p className="text-sm font-bold">MDL {item.price}</p>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            <Button
+                                                size="sm"
+                                                variant="outline"
+                                                onClick={() => updateQuantity(item.id, item.quantity - 1)}
                                             >
-                                            <X className="h-3 w-3" />
-                                        </Button>
+                                                <Minus className="h-3 w-3" />
+                                            </Button>
+
+                                            <span className="text-sm">{item.quantity}</span>
+
+                                            <Button
+                                                size="sm"
+                                                variant="outline"
+                                                onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                                            >
+                                                <Plus className="h-3 w-3" />
+                                            </Button>
+
+                                            <Button
+                                                size="sm"
+                                                variant="destructive"
+                                                onClick={() => removeItem(item.id)}
+                                                >
+                                                <X className="h-3 w-3" />
+                                            </Button>
+                                        </div>
                                     </div>
+                                ))}
                                 </div>
-                            ))}
-                            </div>
-                        )}
+                            )}
                         </div>
                         <DrawerFooter>
                             {cartItems.length > 0 && (
