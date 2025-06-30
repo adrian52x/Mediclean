@@ -46,7 +46,7 @@ export function CartNav() {
                     <div className="mx-auto w-full max-w-sm">
                         <DrawerHeader>
                             <DrawerTitle>Cart Items ({cartCount})</DrawerTitle>
-                            <DrawerDescription>Total: ${totalPrice.toFixed(2)}</DrawerDescription>
+                            <DrawerDescription>Total MDL: {totalPrice.toFixed(2)}</DrawerDescription>
                         </DrawerHeader>
                         <div className="p-4 pb-0 max-h-96 overflow-y-auto">
                         {cartItems.length === 0 ? (
@@ -68,7 +68,7 @@ export function CartNav() {
                                         {item.volume && (
                                         <p className="text-xs text-gray-500">{item.volume}</p>
                                         )}
-                                        <p className="text-sm font-bold">${item.price}</p>
+                                        <p className="text-sm font-bold">MDL {item.price}</p>
                                     </div>
                                     <div className="flex items-center gap-2">
                                         <Button
@@ -105,7 +105,7 @@ export function CartNav() {
                         <DrawerFooter>
                             {cartItems.length > 0 && (
                                 <Button className="w-full">
-                                    Checkout - ${totalPrice.toFixed(2)}
+                                    Checkout - {totalPrice.toFixed(2)}
                                 </Button>
                             )}
                             <DrawerClose asChild>

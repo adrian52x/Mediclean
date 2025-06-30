@@ -156,7 +156,7 @@ export const Product = ({ product }: { product: ProductDetails }) => {
 
                 {/* Clickable Title */}
                 <Link href={`/products/${product.id}`}>
-                    <h2 className="mt-2 cursor-pointer transition-transform duration-300 hover:scale-103 hover:underline ease-in-out">
+                    <h2 className="mt-2 cursor-pointer hover:underline">
                         {product.title}
                     </h2>
                 </Link>
