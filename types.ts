@@ -79,3 +79,20 @@ export interface ProductType {
   product_type_id: string;
   type_name: string;
 }
+
+
+export interface CartItem {
+  id: string;
+  productId: string;
+  title: string;
+  price: number | null; // Nullable field for price
+  quantity: number;
+  volume?: string; // For disinfectants with different volumes
+  image: string;
+}
+
+export interface Cart {
+  items: CartItem[];
+  totalItems: number;
+  totalPrice: number;
+}

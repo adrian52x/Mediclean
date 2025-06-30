@@ -33,6 +33,7 @@ import { cn } from '@/lib/utils';
 import LogoWithText from '../logo-with-text';
 import { usePathname } from 'next/navigation';
 import { UserNav } from './user-nav';
+import { CartNav } from '../CartNav';
 
 export default function Navbar({ session }: { session: any }) {
   const [isOpen, setIsOpen] = useState(false); // Check this later where it is used
@@ -208,16 +209,6 @@ function LoginDialog() {
       <Button className="flex gap-2 font-medium">
         <LogInIcon className="h-4" />
         <p>Login</p>
-      </Button>
-    </Link>
-  );
-}
-
-export function CartNav() {
-  return (
-    <Link href="/cart">
-      <Button size="icon" variant="outline" className="h-9">
-        <ShoppingBasketIcon className="h-4" />
       </Button>
     </Link>
   );

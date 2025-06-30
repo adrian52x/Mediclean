@@ -7,7 +7,6 @@ import {
   CardFooter,
   CardHeader,
 } from '@/components/ui/card';
-//import { ProductWithIncludes } from '@/types/prisma'
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from './ui/button';
@@ -15,6 +14,9 @@ import { WrapText } from 'lucide-react';
 import { useGetProducts } from '@/lib/hooks/useProducts';
 import { ProductDetails } from '@/types';
 import { getPrimaryImage } from '@/lib/utils';
+import { useState } from 'react';
+import { useCartContext } from '@/lib/context/CartContext';
+import { toast } from 'sonner';
 
 export const ProductGrid: React.FC = () => {
     const { products, isPending, isError } = useGetProducts();
@@ -70,61 +72,159 @@ export const ProductSkeletonGrid = () => {
 };
 
 export const Product = ({ product }: { product: ProductDetails }) => {
-  return (
-    <Link className="" href={`/products/${product.id}`}>
-      <Card className="h-full transition-transform duration-300 ease-in-out hover:scale-105">
-        <CardHeader className="p-0">
-          <div className="relative h-60 w-full">
-            <Image
-              className="rounded-t-lg"
-              src={getPrimaryImage(product)} 
-              alt={product?.title || 'Placeholder image'}
-              fill
-              sizes="(min-width: 1000px) 30vw, 50vw"
-              style={{ objectFit: 'cover' }}
-            />
-          </div>
-        </CardHeader>
-        <CardContent className="grid gap-1 p-4">
-            <div className="flex gap-2 flex-wrap">
-                {product.stomatologie && (
+    const { addItem } = useCartContext();
+    const [quantity, setQuantity] = useState(1);
+    
+    // Determine product type and pricing
+    const hasPrice = product.price !== null;
+    const hasVolumes = product.product_volumes_price && product.product_volumes_price.length > 0;
+    
+    // For volume-based products, track selected volume
+    const [selectedVolumeIndex, setSelectedVolumeIndex] = useState(0);
+    
+    // Get current price based on product Price OR selected volume price
+    const getCurrentPrice = () => {
+        if (hasPrice) {
+            return product.price;
+        } else if (hasVolumes) {
+            return product.product_volumes_price[selectedVolumeIndex]?.price || 0;
+        }
+        return 0;
+    };
+
+    // Get current volume (if applicable)
+    const getCurrentVolume = () => {
+        if (hasVolumes) {
+            return product.product_volumes_price[selectedVolumeIndex]?.volume;
+        }
+        return undefined;
+    };
+    
+    const handleAddToCart = (e: React.MouseEvent) => {
+        e.preventDefault(); // Prevent any unwanted navigation
+        addItem(product, quantity, getCurrentVolume()); // Pass volume if exists
+        toast.success(`Added ${quantity}x ${product.title}${getCurrentVolume() ? ` (${getCurrentVolume()})` : ''} to cart!`);
+    };
+
+    const currentPrice = getCurrentPrice();
+
+    return (
+        <Card className="h-full flex flex-col">
+            {/* Clickable Image */}
+            <CardHeader className="p-0">
+                <Link href={`/products/${product.id}`}>
+                    <div className="relative h-60 w-full cursor-pointer">
+                        <Image
+                            className="rounded-t-lg transition-transform duration-300 ease-in-out hover:scale-105"
+                            src={getPrimaryImage(product)} 
+                            alt={product?.title || 'Placeholder image'}
+                            fill
+                            sizes="(min-width: 1000px) 30vw, 50vw"
+                            style={{ objectFit: 'cover' }}
+                        />
+                    </div>
+                </Link>
+            </CardHeader>
+
+            <CardContent className="grid gap-1 p-4"> 
+                <div className="flex gap-2 flex-wrap">
+                    {product.stomatologie && (
+                        <Badge variant="primary" className="w-fit">
+                            Stomatologie
+                        </Badge>
+                    )}
+                    {product.medicina_generala && (
+                        <Badge variant="primary" className="w-fit whitespace-nowrap">
+                            Medicină generală
+                        </Badge>
+                    )}
+
+                    {/* Category badge*/}
                     <Badge variant="primary" className="w-fit">
-                        Stomatologie
+                        {product.category === 'equipment'
+                            ? 'Echipament'
+                            : product.category === 'disinfectants'
+                            ? 'Dezinfectanti'
+                            : product.category}
                     </Badge>
-                )}
-                {product.medicina_generala && (
-                    <Badge variant="primary" className="w-fit whitespace-nowrap">
-                        Medicină generală
+
+                    {/* Subcategory/type badge */}
+                    <Badge variant="primary" className="w-fit">
+                        {product.product_type?.type_name}
                     </Badge>
+                </div>
+
+                {/* Clickable Title */}
+                <Link href={`/products/${product.id}`}>
+                    <h2 className="mt-2 cursor-pointer transition-transform duration-300 hover:scale-103 hover:underline ease-in-out">
+                        {product.title}
+                    </h2>
+                </Link>
+
+                <p className="text-xs text-neutral-500 line-clamp-3">
+                    {product.description}
+                </p>
+            </CardContent>
+
+            {/* Footer that sticks to bottom */}
+            <CardFooter className="flex flex-col gap-2 px-4 mt-auto"> 
+                <div className="flex items-center justify-between w-full">
+                    <h2 className="font-semibold">{currentPrice} MDL</h2>
+                </div>
+                
+                {/* Volume Selection for liquid products */}
+                {hasVolumes && (
+                    <div className="w-full">
+                        <p className="text-xs mb-2">Volume:</p>
+                        <div className="flex gap-1 flex-wrap">
+                            {product.product_volumes_price.map((volumePrice, index) => (
+                                <Button
+                                    key={index}
+                                    size="sm"
+                                    variant={selectedVolumeIndex === index ? "default" : "outline"}
+                                    className="text-xs px-2 py-1 cursor-pointer"
+                                    onClick={() => setSelectedVolumeIndex(index)}
+                                >
+                                    {volumePrice.volume}
+                                </Button>
+                            ))}
+                        </div>
+                    </div>
                 )}
-
-                {/* Category badge*/}
-                <Badge variant="primary" className="w-fit">
-                    {product.category === 'equipment'
-                        ? 'Echipament'
-                        : product.category === 'disinfectants'
-                        ? 'Dezinfectanti'
-                        : product.category}
-                </Badge>
-
-                {/* Subcategory/type badge */}
-                <Badge variant="primary" className="w-fit">
-                    {product.product_type?.type_name}
-                </Badge>
-            </div>
-
-
-          <h2 className="mt-2">{product.title}</h2>
-          <p className="text-justify text-xs text-neutral-500 line-clamp-2">
-            {product.description}
-          </p>
-        </CardContent>
-        <CardFooter>
-          {true ? <h2>${product.price}</h2> : <Badge variant="secondary">Out of stock</Badge>}
-        </CardFooter>
-      </Card>
-    </Link>
-  );
+                
+                {/* Quantity and Add to Cart - Show for both types */}
+                <div className="flex flex-wrap items-center gap-2 w-full">
+                    <div className="flex items-center border rounded">
+                        <Button
+                            className="cursor-pointer"
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                        >
+                            -
+                        </Button>
+                        <span className="px-3 py-1 text-sm">{quantity}</span>
+                        <Button
+                            className="cursor-pointer"
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => setQuantity(quantity + 1)}
+                        >
+                            +
+                        </Button>
+                    </div>
+                    <Button 
+                        size="sm" 
+                        className="flex-1 min-w-[120px] cursor-pointer"
+                        onClick={handleAddToCart}
+                        disabled={currentPrice === 0} // Disable if no price available
+                    >
+                        Add to Cart
+                    </Button>
+                </div>
+            </CardFooter>
+        </Card>
+    );
 };
 
 export function ProductSkeleton() {

@@ -26,6 +26,13 @@ export const ProductPageView: React.FC<ProductPageViewProps> = ({ productId }) =
         <p className="mb-2">Preț: {product.price} MDL</p>
         {/* ...other product info... */}
 
+        {product.description && (
+            <div className="mb-4">
+                <h2 className="text-xl font-semibold mb-1">Descriere</h2>
+                <p>{product.description}</p>
+            </div>
+        )}
+
         {product.doc_url ? (
             <div className="mt-6">
             <h2 className="font-semibold mb-2">Document PDF</h2>
