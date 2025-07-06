@@ -10,7 +10,7 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from './ui/button';
-import { WrapText } from 'lucide-react';
+import { ShoppingCart, WrapText } from 'lucide-react';
 import { useGetProducts } from '@/lib/hooks/useProducts';
 import { ProductDetails } from '@/types';
 import { getPrimaryImage } from '@/lib/utils';
@@ -161,7 +161,7 @@ export const Product = ({ product }: { product: ProductDetails }) => {
                     </h2>
                 </Link>
 
-                <p className="text-xs text-neutral-500 line-clamp-3">
+                <p className="text-xs text-neutral-500 line-clamp-2">
                     {product.description}
                 </p>
             </CardContent>
@@ -219,7 +219,7 @@ export const Product = ({ product }: { product: ProductDetails }) => {
                         onClick={handleAddToCart}
                         disabled={currentPrice === 0} // Disable if no price available
                     >
-                        Add to Cart
+                        Adaugă în coş<ShoppingCart />
                     </Button>
                 </div>
             </CardFooter>
