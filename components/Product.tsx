@@ -15,7 +15,7 @@ import { useGetProducts } from '@/lib/hooks/useProducts';
 import { ProductDetails } from '@/types';
 import { getPrimaryImage } from '@/lib/utils';
 import { useState } from 'react';
-import { useCartContext } from '@/lib/context/CartContext';
+import { useCartStore } from '@/lib/stores/cartStore';
 import { toast } from 'sonner';
 
 export const ProductGrid: React.FC = () => {
@@ -72,7 +72,7 @@ export const ProductSkeletonGrid = () => {
 };
 
 export const Product = ({ product }: { product: ProductDetails }) => {
-    const { addItem } = useCartContext();
+    const addItem = useCartStore((state) => state.addItem);
     const [quantity, setQuantity] = useState(1);
     
     // Determine product type and pricing

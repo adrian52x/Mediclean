@@ -1,9 +1,9 @@
 'use client'
 import {
     Minus,
-  Plus,
-  ShoppingBasketIcon,
-  X,
+    Plus,
+    ShoppingBasketIcon,
+    X,
 } from 'lucide-react';
 import { Button } from './ui/button';
 import Image from 'next/image';
@@ -18,10 +18,14 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer"
-import { useCartContext } from '@/lib/context/CartContext';
+import { useCartStore } from '@/lib/stores/cartStore';
 
 export function CartNav() {
-    const { cartItems, cartCount, totalPrice, removeItem, updateQuantity } = useCartContext();
+    const cartItems = useCartStore((state) => state.cartItems);
+    const cartCount = useCartStore((state) => state.cartCount);
+    const totalPrice = useCartStore((state) => state.totalPrice);
+    const removeItem = useCartStore((state) => state.removeItem);
+    const updateQuantity = useCartStore((state) => state.updateQuantity);
 
     console.log('🔄 CartNav render, count:', cartCount, 'items:', cartItems);
 
@@ -43,16 +47,16 @@ export function CartNav() {
                     </Button>
                 </DrawerTrigger>
                 <DrawerContent>
-                    <div className="mx-auto w-full max-w-md">
+                    <div className="mx-auto md:w-full max-w-md">
                         <DrawerHeader>
                             <DrawerTitle>Cart Items ({cartCount})</DrawerTitle>
                             <DrawerDescription>Total MDL: {totalPrice.toFixed(2)}</DrawerDescription>
                         </DrawerHeader>
-                        <div className="p-4 pb-0 max-h-96 overflow-y-auto">
+                        <div className="p-4 pb-0 max-h-96 overflow-y-auto md:max-w-2xl md:mx-auto">
                         {cartItems.length === 0 ? (
                             <p className="text-center text-gray-500">Your cart is empty</p>
                         ) : (
-                            <div className="space-y-4">
+                            <div className="space-y-4"> {/* md:grid md:grid-cols-2 gap-4 */}
                                 {cartItems.map((item) => (
                                     <div key={item.id} className="flex items-center gap-3 border-b pb-3">
                                         <Image
