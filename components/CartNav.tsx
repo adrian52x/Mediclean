@@ -19,6 +19,7 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer"
 import { useCartStore } from '@/lib/stores/cartStore';
+import { Card } from './ui/card';
 
 export function CartNav() {
     const cartItems = useCartStore((state) => state.cartItems);
@@ -58,7 +59,7 @@ export function CartNav() {
                         ) : (
                             <div className="space-y-4"> {/* md:grid md:grid-cols-2 gap-4 */}
                                 {cartItems.map((item) => (
-                                    <div key={item.id} className="flex items-center gap-3 border-b pb-3">
+                                    <Card key={item.id} className="flex items-center gap-3 p-2">
                                         <Image
                                             src={item.image}
                                             alt={item.title}
@@ -101,7 +102,7 @@ export function CartNav() {
                                                 <X className="h-3 w-3" />
                                             </Button>
                                         </div>
-                                    </div>
+                                    </Card>
                                 ))}
                                 </div>
                             )}

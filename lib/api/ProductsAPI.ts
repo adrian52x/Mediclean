@@ -32,7 +32,7 @@ export class ProductsAPI {
             `)
             .eq('featured', true)
             .order('updated_at', { ascending: false })
-            .limit(6);
+            .limit(8);
         
         if (error) throw error;
         return data ?? [];

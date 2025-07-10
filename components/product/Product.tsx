@@ -9,90 +9,38 @@ import {
 } from '@/components/ui/card';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Button } from './ui/button';
-import { ShoppingCart, WrapText } from 'lucide-react';
-import { useGetProducts } from '@/lib/hooks/useProducts';
+import { Button } from '../ui/button';
+import { ShoppingCart } from 'lucide-react';
 import { ProductDetails } from '@/types';
 import { getPrimaryImage } from '@/lib/utils';
-import { useState } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { useCartStore } from '@/lib/stores/cartStore';
 import { toast } from 'sonner';
-
-export const ProductGrid: React.FC = () => {
-    const { products, isPending, isError } = useGetProducts();
-    console.log('Products:', products);
-    
-
-    if (isPending) {
-        return (
-            <ProductSkeletonGrid />
-        )
-    }
-
-    if (isError) {
-        return (
-            <div className="flex justify-center items-center h-40 text-red-500">
-                Eroare la încărcarea produselor.
-            </div>
-        );
-    }
-    
-    return (
-        <>
-            <div
-                className="mb-10 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4"
-                id="products"
-            >
-                {products && products.map((product) => (
-                    <Product product={product} key={product.id} />
-                ))}
-                
-            </div> 
-
-            <div className="flex justify-center">
-                <Link href={'#products'} className="flex justify-center">
-                    <Button className="font-bold" variant={'outline'}>
-                        <WrapText />
-                        <p>Vezi toate produsele</p>
-                    </Button>
-                </Link>
-            </div>
-        </>
-    );
-};
-
-export const ProductSkeletonGrid = () => {
-  return (
-    <div className="mb-4 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
-      {[...Array(12)].map(() => (
-        <ProductSkeleton key={Math.random()} />
-      ))}
-    </div>
-  );
-};
 
 export const Product = ({ product }: { product: ProductDetails }) => {
     const addItem = useCartStore((state) => state.addItem);
     const [quantity, setQuantity] = useState(1);
     
-    // Determine product type and pricing
-    const hasPrice = product.price !== null;
-    const hasVolumes = product.product_volumes_price && product.product_volumes_price.length > 0;
+    // Memoize product type and pricing calculations (these run on every render)
+    const { hasPrice, hasVolumes } = useMemo(() => ({
+        hasPrice: product.price !== null,
+        hasVolumes: product.product_volumes_price && product.product_volumes_price.length > 0
+    }), [product.price, product.product_volumes_price]);
     
     // For volume-based products, track selected volume
     const [selectedVolumeIndex, setSelectedVolumeIndex] = useState(0);
     
-    // Get current price based on product Price OR selected volume price
-    const getCurrentPrice = () => {
+    // Memoize current price calculation (expensive on every render)
+    const currentPrice = useMemo(() => {
         if (hasPrice) {
             return product.price;
         } else if (hasVolumes) {
             return product.product_volumes_price[selectedVolumeIndex]?.price || 0;
         }
         return 0;
-    };
-
-    // Get current volume (if applicable)
+    }, [hasPrice, hasVolumes, product.price, product.product_volumes_price, selectedVolumeIndex]);
+    
+    // Get current volume (if applicable) - keeping as function since it's simple
     const getCurrentVolume = () => {
         if (hasVolumes) {
             return product.product_volumes_price[selectedVolumeIndex]?.volume;
@@ -100,22 +48,21 @@ export const Product = ({ product }: { product: ProductDetails }) => {
         return undefined;
     };
     
-    const handleAddToCart = (e: React.MouseEvent) => {
-        e.preventDefault(); // Prevent any unwanted navigation
-        addItem(product, quantity, getCurrentVolume()); // Pass volume if exists
+    // Memoize the add to cart handler to prevent recreation on every render
+    const handleAddToCart = useCallback((e: React.MouseEvent) => {
+        e.preventDefault();
+        addItem(product, quantity, getCurrentVolume());
         toast.success(`Added ${quantity}x ${product.title}${getCurrentVolume() ? ` (${getCurrentVolume()})` : ''} to cart!`);
-    };
-
-    const currentPrice = getCurrentPrice();
+    }, [addItem, product, quantity, selectedVolumeIndex]); // selectedVolumeIndex affects getCurrentVolume
 
     return (
         <Card className="h-full flex flex-col">
             {/* Clickable Image */}
-            <CardHeader className="p-0">
+            <CardHeader className="p-2">
                 <Link href={`/products/${product.id}`}>
                     <div className="relative h-60 w-full cursor-pointer">
                         <Image
-                            className="rounded-t-lg transition-transform duration-300 ease-in-out hover:scale-105"
+                            className="rounded-t-lg transition-transform duration-300 ease-in-out hover:scale-104"
                             src={getPrimaryImage(product)} 
                             alt={product?.title || 'Placeholder image'}
                             fill

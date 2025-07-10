@@ -16,7 +16,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ images }) => {
                 <div className="flex flex-col space-y-8 sm:space-y-14 md:space-y-18 text-center lg:text-left">
                     {/* Big title */}
                     <h1 className=" font-semibold tracking-tight text-teal-950 dark:text-white text-3xl sm:text-4xl md:text-5xl">
-                        Descoperă <span className="text-transparent bg-clip-text bg-gradient-to-tr from-cyan-600 to-slate-800">produse medicale</span> pentru tine și afacerea ta!
+                        Descoperă <span className="text-transparent bg-clip-text bg-gradient-to-tr from-cyan-600 to-slate-800">dezinfectanți profesionali</span> și echipamente medicale!
                     </h1>
                     {/* Description */}
                     {/* <p className=" flex text-gray-700 dark:text-gray-300 tracking-tight md:font-normal max-w-xl mx-auto lg:max-w-none">
@@ -63,7 +63,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ images }) => {
                 </div> */}
                 <div className="relative hidden lg:block pt-5 flex h-[32rem] sm:w-full">
                     <div className="sm:absolute left-[30px] h-[50%] w-[50%] rounded-3xl drop-shadow-[0_4px_10px_rgba(10,50,100,0.7)] dark:drop-shadow-[0_4px_18px_rgba(56,189,248,0.21)] overflow-clip border-8 border-gray-200 dark:border-gray-950 z-30">
-                    <Image src={images[2].url} alt="buildind plan image" width={1300} height={1300} className="w-full h-full object-cover z-30" />
+                    <Image src={images[4].url} alt="buildind plan image" width={1300} height={1300} className="w-full h-full object-cover z-30" />
                     </div>
                     <div className="sm:absolute right-0 bottom-[130px] h-[50%] w-[50%] rounded-3xl drop-shadow-[0_4px_10px_rgba(10,50,100,0.7)] dark:drop-shadow-[0_4px_18px_rgba(56,189,248,0.2)] overflow-clip border-8 border-gray-200 dark:border-gray-950 z-20">
                     <Image src={images[0].url} alt="working-on-housing-project" height={1300} width={1300} className="z-10 w-full h-full object-cover" />

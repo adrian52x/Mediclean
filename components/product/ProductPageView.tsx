@@ -1,7 +1,7 @@
 'use client';
 
 import { useGetProductById } from "@/lib/hooks/useProducts";
-import { Loader } from "./ui/loader";
+import { Loader } from "../ui/loader";
 
 interface ProductPageViewProps {
     productId: string;

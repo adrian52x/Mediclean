@@ -1,13 +1,13 @@
 import React from 'react';
 import { isVariableValid } from '@/lib/utils';
-import { ProductGrid, ProductSkeletonGrid } from '@/components/Product';
-import Carousel from '@/components/Carousel';
+import { ProductsGrid } from '@/components/product/ProductsGrid';
 import { Separator } from '@/components/ui/separator';
 import { SectionHeading } from '@/components/ui/section-heading';
 import { ServiceGrid, ServiceSkeletonGrid } from '@/components/ServiceCard';
 import Maps from '@/components/Maps';
 import { ImagesAPI } from '@/lib/api/ImagesAPI';
 import { HeroSection } from '@/components/HeroSection';
+import { ProductsGridHeader } from '@/components/product/ProductsGridHeader';
 
 export default async function Home() {
 
@@ -43,12 +43,12 @@ export default async function Home() {
 
       <Separator className="my-8" />
 
-      <SectionHeading
-        title="Produse"
-        description="Below is a list of products we have available for you."
-      />
+      {/* <SectionHeading
+        title="Produse noi"
+      /> */}
+	  <ProductsGridHeader />
 
-      <ProductGrid />
+      <ProductsGrid />
 
 
       <Separator className="my-8" />

@@ -1,5 +1,4 @@
-import { ProductPageView } from "@/components/ProductPageView";
-
+import { ProductPageView } from "@/components/product/ProductPageView";
 interface ProductPageProps {
     id: string;
 }
