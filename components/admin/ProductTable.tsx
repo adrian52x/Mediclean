@@ -144,7 +144,7 @@ export default function ProductTable() {
         </div>
 
         {/* Table */}
-        <div className="overflow-x-auto rounded border bg-white dark:bg-neutral-950">
+        <div className="overflow-x-auto rounded border bg-neutral-100 dark:bg-neutral-950">
             <table className="min-w-full text-sm">
             <thead>
                 <tr className="border-b">

@@ -41,7 +41,15 @@ export class ProductsAPI {
     static async fetchProductById(id: string): Promise<ProductDetails> {
         const supabase = supabaseBrowser();
 
-        const { data, error } = await supabase.from('products').select('*').eq('id', id).single();
+        const { data, error } = await supabase.from('products')
+            .select(`*,
+                product_type(type_name),
+                product_images(url),
+                product_volumes_price(volume, price)
+            `)
+            .eq('id', id)
+            .single();
+
         if (error) throw error;
 
         return data ?? null;

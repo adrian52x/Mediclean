@@ -129,7 +129,7 @@ export const Product = ({ product }: { product: ProductDetails }) => {
                                     key={index}
                                     size="sm"
                                     variant={selectedVolumeIndex === index ? "default" : "outline"}
-                                    className="text-xs px-2 py-1 cursor-pointer"
+                                    className="text-xs px-2 py-1 cursor-pointer border-2"
                                     onClick={() => setSelectedVolumeIndex(index)}
                                 >
                                     {volumePrice.volume}

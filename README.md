@@ -114,3 +114,8 @@ vezi toate produsele - click - pagina noua, display 3 main categorii (clickable)
 !!! NEXT_PUBLIC_ exposes this value to the browser. Verify it is safe to share publicly. - CHECK this later
 
 npx shadcn@latest add sonner
+
+TO DO :
+Images --> Supabase storage
+1. In admin show orphan images - option to delete all
+2. if image uploaded with same name - replace (currently not allowed)
