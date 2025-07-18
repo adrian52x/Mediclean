@@ -1,6 +1,6 @@
 'use client';
 import { useGetFeaturedProducts, useGetProducts } from '@/lib/hooks/useProducts';
-import { Product, ProductSkeleton } from './Product';
+import { ProductCard, ProductSkeleton } from './ProductCard';
 import { Button } from '../ui/button';
 import { WrapText } from 'lucide-react';
 import Link from 'next/link';
@@ -32,9 +32,8 @@ export const ProductsGrid: React.FC = () => {
                 id="products"
             >
                 {products && products.map((product) => (
-                    <Product product={product} key={product.id} />
-                ))}
-                
+                    <ProductCard product={product} key={product.id} />
+                ))} 
             </div> 
 
             <div className="flex justify-center">

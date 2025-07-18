@@ -17,7 +17,7 @@ import { useState, useMemo, useCallback } from 'react';
 import { useCartStore } from '@/lib/stores/cartStore';
 import { toast } from 'sonner';
 
-export const Product = ({ product }: { product: ProductDetails }) => {
+export const ProductCard = ({ product }: { product: ProductDetails }) => {
     const addItem = useCartStore((state) => state.addItem);
     const [quantity, setQuantity] = useState(1);
     

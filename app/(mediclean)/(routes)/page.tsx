@@ -43,11 +43,7 @@ export default async function Home() {
 
       <Separator className="my-8" />
 
-      {/* <SectionHeading
-        title="Produse noi"
-      /> */}
-	  <ProductsGridHeader />
-
+	    <ProductsGridHeader />
       <ProductsGrid />
 
 
