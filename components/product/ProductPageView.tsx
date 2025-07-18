@@ -9,6 +9,7 @@ import { ShoppingCart } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { useCartStore } from "@/lib/stores/cartStore";
+import { Badge } from "../ui/badge";
 
 interface ProductPageViewProps {
     productId: string;
@@ -119,8 +120,33 @@ export const ProductPageView: React.FC<ProductPageViewProps> = ({ productId }) =
                 {/* Details section */}
                 <div className="w-full border rounded-xl p-5 bg-white dark:bg-neutral-900">
                     {product.description && (
-                        <div className="mb-4">
-                            <h2 className="text-xl font-semibold mb-2">Descriere</h2>
+                        <div className="flex flex-col gap-2">
+                            <div className="flex gap-2 flex-wrap">
+                                {product.stomatologie && (
+                                    <Badge variant="primary" className="w-fit">
+                                        Stomatologie
+                                    </Badge>
+                                )}
+                                {product.medicina_generala && (
+                                    <Badge variant="primary" className="w-fit whitespace-nowrap">
+                                        Medicină generală
+                                    </Badge>
+                                )}
+
+                                {/* Category badge*/}
+                                <Badge variant="primary" className="w-fit">
+                                    {product.category === 'equipment'
+                                        ? 'Echipament'
+                                        : product.category === 'disinfectants'
+                                        ? 'Dezinfectanti'
+                                        : product.category}
+                                </Badge>
+
+                                {/* Subcategory/type badge */}
+                                <Badge variant="primary" className="w-fit">
+                                    {product.product_type?.type_name}
+                                </Badge>
+                            </div>
                             <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{product.description}</p>
                         </div>
                     )}
@@ -130,10 +156,10 @@ export const ProductPageView: React.FC<ProductPageViewProps> = ({ productId }) =
 
                 {/* Price / Volume / Quantity & add to cart */}
                 <div className="flex flex-col h-[200px] justify-between w-full border rounded-xl p-5 bg-white dark:bg-neutral-900">
-                    {/* Volume Selection for liquid products */}
 
+                    {/* Volume Selection for liquid products */}
                     {hasVolumes && (
-                        <div className="flex flex-row gap-4 justify-between items-center mb-4">
+                        <div className="flex gap-4 justify-between items-center mb-4">
                             <div className="flex-col">
                                 <p className="text-xs mb-1">Volume disponibile:</p>
                                 <div className="flex gap-1 flex-wrap">
@@ -159,6 +185,18 @@ export const ProductPageView: React.FC<ProductPageViewProps> = ({ productId }) =
                             </div>
                         </div>
                     )}
+
+                    {/* Base Price if no volumes*/}
+                    {hasPrice && !hasVolumes && (
+                        <div className="flex flex-row justify-between items-center mb-4">
+                            <p className=" mb-1">Preț / unitate:</p>
+                            <h2 className="font-bold text-2xl flex items-baseline gap-1">
+                                <span>{product.price}</span>
+                                <span className="text-base font-normal">MDL</span>
+                            </h2>
+                        </div>
+                    )}
+
                     {/* Quantity and Add to Cart */}
                     <div className="flex flex-row gap-2">
                         <div className="border rounded">

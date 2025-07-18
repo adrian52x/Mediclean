@@ -115,8 +115,12 @@ export const Product = ({ product }: { product: ProductDetails }) => {
 
             {/* Footer that sticks to bottom */}
             <CardFooter className="flex flex-col gap-2 px-4 mt-auto"> 
-                <div className="flex items-center justify-between w-full">
-                    <h2 className="font-semibold">{currentPrice} MDL</h2>
+                {/* Price */}
+                <div className="w-full">
+                    <h2 className="font-bold text-2xl flex items-baseline gap-1">
+                        <span>{currentPrice}</span>
+                        <span className="text-base font-normal">MDL</span>
+                    </h2>
                 </div>
                 
                 {/* Volume Selection for liquid products */}
