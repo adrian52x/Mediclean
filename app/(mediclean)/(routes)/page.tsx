@@ -50,7 +50,7 @@ export default async function Home() {
       <Separator className="my-8" />
 
       <SectionHeading
-        title="Servicii"
+        title="Servicii / TO DO: delete later- change to 1 single service"
         description="Below is a list of services we have available for you."
       />
       {isVariableValid(services) ? (

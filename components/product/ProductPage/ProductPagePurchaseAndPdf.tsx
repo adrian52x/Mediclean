@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useMemo, useCallback } from 'react';
-import { Button } from '../ui/button';
 import { FileText, ShoppingCart } from 'lucide-react';
 import { toast } from 'sonner';
 import { useCartStore } from '@/lib/stores/cartStore';
@@ -14,6 +13,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Button } from '@/components/ui/button';
 
 interface ProductPagePurchaseAndPdfProps {
     product: ProductDetails;

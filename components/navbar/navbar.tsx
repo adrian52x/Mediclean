@@ -77,29 +77,22 @@ export default function Navbar({ session }: { session: any }) {
             <NavigationMenuList>
               {/* Categories Dropdown */}
               <NavigationMenuItem>
-                <NavigationMenuTrigger>Produse</NavigationMenuTrigger>
+                <NavigationMenuTrigger>Produse & Servicii</NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <ul className="grid w-[250px] gap-3 p-4">
                     <li className="row-span-3">
                       <NavigationMenuLink asChild>
                         <a
                           className="flex h-full w-full select-none flex-col  rounded-md bg-gradient-to-b from-muted/50 to-muted no-underline outline-none focus:shadow-md"
-                          href="/"
+                          href="/products"
                         >
                           <div className="my-2 text-lg font-medium text-center">Toate produsele</div>
                         </a>
                       </NavigationMenuLink>
                     </li>
-                    <ListItem href="#products" title="1.1 Dezinfectanți">
-                      Medicina generală
-                    </ListItem>
-                    <ListItem href="#products" title="1.2 Dezinfectanți">
-                      Stomatologie
-                    </ListItem>
-                    <ListItem href="#products" title="2. Echipament">
-                      Text.. ?
-                    </ListItem>
-                    <ListItem href="#products" title="3. Consultanță">
+                    <ListItem href="/products?category=disinfectants" title="1. Dezinfectanți"></ListItem>
+                    <ListItem href="/products?category=equipment" title="2. Echipament"></ListItem>
+                    <ListItem href="#services" title="3. Consultanță">
                       Text.. ?
                     </ListItem>
                   </ul>
@@ -109,7 +102,7 @@ export default function Navbar({ session }: { session: any }) {
           </NavigationMenu>
 
           {/* Search Bar V2*/}
-          <div className="hidden sm:block">
+          {/* <div className="hidden sm:block">
             <Button
               variant="outline"
               className="text-muted-foreground relative w-full justify-start text-sm font-light sm:pr-12 md:w-40 lg:w-64"
@@ -117,7 +110,7 @@ export default function Navbar({ session }: { session: any }) {
               <Search className="text-muted-foreground absolute top-2.5 left-2.5 h-4 w-4" />
               <span className="inline-flex pl-6">Search...</span>
             </Button>
-          </div>
+          </div> */}
 
           {/* Cart Icon */}
           <CartNav />

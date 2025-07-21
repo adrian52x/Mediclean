@@ -22,14 +22,14 @@ export const ProductsGridHeader: React.FC = () => {
                 </Button>
             </Link>
 
-            <Link href={'/products'} className="flex">
+            <Link href={'/products?category=disinfectants'} className="flex">
                 <Button className="font-bold cursor-pointer" variant={'outline'}>
                     <Droplets />
                     <p>Dezinfectanți</p>
                 </Button>
             </Link>
 
-            <Link href={'/products'} className="flex">
+            <Link href={'/products?category=equipment'} className="flex">
                 <Button className="font-bold cursor-pointer" variant={'outline'}>
                     <Stethoscope />
                     <p>Echipamente</p>

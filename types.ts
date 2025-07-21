@@ -96,3 +96,10 @@ export interface Cart {
   totalItems: number;
   totalPrice: number;
 }
+
+// Product filtering utilities
+export interface ProductFilters {
+    categories: string[];
+    productTypes: string[];
+    medicalFields: string[];
+}

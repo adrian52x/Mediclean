@@ -1,4 +1,4 @@
-import { ProductDetails } from '@/types';
+import { ProductDetails, ProductFilters } from '@/types';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -16,6 +16,70 @@ export function validateBoolean(variable: any, value: any) {
     }
 
     return false;
+}
+
+export function filterProducts(
+    products: ProductDetails[],
+    filters: ProductFilters,
+    searchQuery: string = ''
+): ProductDetails[] {
+    if (!products) return [];
+
+    return products.filter((product: ProductDetails) => {
+        // Search query filter
+        if (searchQuery.trim()) {
+            const searchLower = searchQuery.toLowerCase();
+            const matchesSearch = (
+                product.title.toLowerCase().includes(searchLower) ||
+                product.description?.toLowerCase().includes(searchLower) ||
+                product.product_type?.type_name.toLowerCase().includes(searchLower)
+            );
+            
+            if (!matchesSearch) return false;
+        }
+
+        // Category filter
+        if (filters.categories.length > 0) {
+            const productCategory = product.category?.toLowerCase();
+            const matchesCategory = filters.categories.some(cat => 
+                cat.toLowerCase() === productCategory
+            );
+            
+            if (!matchesCategory) return false;
+        }
+
+        // Product type filter
+        if (filters.productTypes.length > 0) {
+            const productTypeName = product.product_type?.type_name;
+            const matchesProductType = filters.productTypes.some(type => 
+                type === productTypeName
+            );
+            
+            if (!matchesProductType) return false;
+        }
+
+        // Medical field filter
+        if (filters.medicalFields.length > 0) {
+            const matchesMedicalField = filters.medicalFields.some(field => {
+                if (field === 'stomatologie') return product.stomatologie;
+                if (field === 'medicina_generala') return product.medicina_generala;
+                return false;
+            });
+            
+            if (!matchesMedicalField) return false;
+        }
+
+        return true;
+    });
+}
+
+export function getFilteredProductsCount(
+    products: ProductDetails[] | undefined,
+    filters: ProductFilters,
+    searchQuery: string = ''
+): number {
+    if (!products) return 0;
+    return filterProducts(products, filters, searchQuery).length;
 }
 
 export function isUserAdminClientSide(session: any): boolean {
