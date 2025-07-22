@@ -81,7 +81,7 @@ export const NavBarButtons: React.FC = () => {
                         <div className='flex items-center gap-2'>
                             <Info /> Consultanță
                         </div>
-                        <span className='font-normal text-muted-foreground ml-6'>Oferim consultanta in "....blabalbalbal"</span>
+                        <span className='font-normal text-muted-foreground ml-6'>Oferim consultanta in ....blabalbalbal</span>
                     </MenubarItem>
                 </Link>
             </MenubarContent>
