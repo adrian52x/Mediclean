@@ -25,12 +25,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ images }) => {
                         reiciendis saepe nostrum
                     </p> */}
                     {/* Buttons */}
-                    <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 w-full">
+                    {/* <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 w-full">
                         <Button className="px-6" variant="default" >Despre noi</Button>
                         <Button className="px-6" variant="secondary" >Contact</Button>
-                    </div>
+                    </div> */}
                     {/* Clients logos */}
-                    <div className="mt-5 flex items-center justify-center flex-wrap gap-4 lg:justify-start w-full">
+                    {/* <div className="mt-5 flex items-center justify-center flex-wrap gap-4 lg:justify-start w-full">
                         <a href="#" target="_blank" rel='noreferer'>
                             <span className="sr-only">org name</span>
                             <Image width={600} height={120} src="/partners/deel-1.svg" alt="client name" className="h-7 w-auto dark:invert" />
@@ -51,7 +51,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ images }) => {
                             <span className="sr-only">org name</span>
                             <Image width={600} height={120} src="/partners/mercury.svg" alt="client name" className="h-7 w-auto dark:invert" />
                         </a>
-                    </div>
+                    </div> */}
                 </div>
                 {/* <div className="flex aspect-square mx-auto h-[32rem] lg:aspect-auto relative w-full">
                     <div className="w-3/5 h-[80%] rounded-3xl overflow-clip border-8 border-gray-200 dark:border-gray-950 z-30">

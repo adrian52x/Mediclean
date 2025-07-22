@@ -37,7 +37,7 @@ export const ProductsGrid: React.FC = () => {
             </div> 
 
             <div className="flex justify-center">
-                <Link href={'#products'} className="flex justify-center">
+                <Link href={'/products'} className="flex justify-center">
                     <Button className="font-bold cursor-pointer" variant={'outline'}>
                         <WrapText />
                         <p>Vezi toate produsele</p>
