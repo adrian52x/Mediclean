@@ -37,35 +37,37 @@ export default async function Home() {
 
   return (
     <main className="py-6">
-      {/* <Carousel images={bannerImages} /> */}
+        {/* <Carousel images={bannerImages} /> */}
 
-      <HeroSection images={servicesImages}/>
+        <HeroSection images={servicesImages}/>
 
-      <Separator className="my-8" />
+        <Separator className="my-8" />
 
-	    <ProductsGridHeader />
-      <ProductsGrid />
+        <SectionHeading
+            title="Produse noi"
+        />
+        <ProductsGrid />
 
 
-      <Separator className="my-8" />
+        <Separator className="my-8" />
 
-      <SectionHeading
-        title="Servicii / TO DO: delete later- change to 1 single service"
-        description="Below is a list of services we have available for you."
-      />
-      {isVariableValid(services) ? (
-        <ServiceGrid services={services} />
-      ) : (
-        <ServiceSkeletonGrid />
-      )}
+        <SectionHeading
+            title="Servicii / TO DO: delete later- change to 1 single service"
+            description="Below is a list of services we have available for you."
+        />
+        {isVariableValid(services) ? (
+            <ServiceGrid services={services} />
+        ) : (
+            <ServiceSkeletonGrid />
+        )}
 
-      <Separator className="my-8" />
+        <Separator className="my-8" />
 
-      <SectionHeading
-        title="Locatie"
-        description="Str. Mihail Kogălniceanu 1, Chișinău, Moldova"
-      />
-      <Maps />
+        <SectionHeading
+            title="Locatie"
+            description="Str. Mihail Kogălniceanu 1, Chișinău, Moldova"
+        />
+        <Maps />
     </main>
   );
 }
