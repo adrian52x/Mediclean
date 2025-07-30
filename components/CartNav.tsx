@@ -7,6 +7,8 @@ import {
 } from 'lucide-react';
 import { Button } from './ui/button';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 import {
   Drawer,
@@ -22,6 +24,8 @@ import { useCartStore } from '@/lib/stores/cartStore';
 import { Card } from './ui/card';
 
 export function CartNav() {
+    const router = useRouter();
+    const [isOpen, setIsOpen] = useState(false);
     const cartItems = useCartStore((state) => state.cartItems);
     const cartCount = useCartStore((state) => state.cartCount);
     const totalPrice = useCartStore((state) => state.totalPrice);
@@ -30,9 +34,14 @@ export function CartNav() {
 
     console.log('🔄 CartNav render, count:', cartCount, 'items:', cartItems);
 
+    const handleCheckout = () => {
+        setIsOpen(false); // Close the drawer
+        router.push('/checkout');
+    };
+
     return (
         <>
-            <Drawer>
+            <Drawer open={isOpen} onOpenChange={setIsOpen}>
                 <DrawerTrigger asChild>
                     <Button size="icon" variant="outline" className="h-9 w-fit min-w-9 relative"
                         onFocus={(e) => {
@@ -109,8 +118,11 @@ export function CartNav() {
                         </div>
                         <DrawerFooter>
                             {cartItems.length > 0 && (
-                                <Button className="w-full">
-                                    Checkout - {totalPrice.toFixed(2)}
+                                <Button 
+                                    className="w-full" 
+                                    onClick={handleCheckout}
+                                >
+                                    Checkout - {totalPrice.toFixed(2)} MDL
                                 </Button>
                             )}
                             <DrawerClose asChild>
