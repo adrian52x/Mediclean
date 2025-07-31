@@ -1,45 +1,21 @@
 import React from 'react';
-import { isVariableValid } from '@/lib/utils';
 import { ProductsGrid } from '@/components/product/ProductsGrid';
 import { Separator } from '@/components/ui/separator';
 import { SectionHeading } from '@/components/ui/section-heading';
-import { ServiceGrid, ServiceSkeletonGrid } from '@/components/ServiceCard';
-import Maps from '@/components/Maps';
+import { ConsultationCard } from '@/components/ConsultationCard';
 import { ImagesAPI } from '@/lib/api/ImagesAPI';
 import { HeroSection } from '@/components/HeroSection';
-import { ProductsGridHeader } from '@/components/product/ProductsGridHeader';
+import MapsClient from '@/components/MapsClient';
 
 export default async function Home() {
 
-  //const bannerImages = await ImagesAPI.getProductsImages();
-  const servicesImages = await ImagesAPI.getServicesImages();
+  const heroSectionImages = await ImagesAPI.getServicesImages();
 
-  const services = [
-    {
-      id: 1,
-      title: 'Testing & Diagnostics',
-      description: 'Descriere',
-      image: servicesImages[0]?.url || '/images/no-img.png',
-    },
-    {
-      id: 2,
-      title: 'Consulting / Advisory Services',
-      description: 'Descriere',
-      image: servicesImages[1]?.url || '/images/no-img.png',
-    },
-    {
-      id: 3,
-      title: 'Equipment Maintenance & Setup',
-      description: 'Descriere',
-      image: servicesImages[2]?.url || '/images/no-img.png',
-    },
-  ];
 
   return (
     <main className="py-6">
-        {/* <Carousel images={bannerImages} /> */}
 
-        <HeroSection images={servicesImages}/>
+        <HeroSection images={heroSectionImages}/>
 
         <Separator className="my-8" />
 
@@ -52,22 +28,19 @@ export default async function Home() {
         <Separator className="my-8" />
 
         <SectionHeading
-            title="Servicii / TO DO: delete later- change to 1 single service"
-            description="Below is a list of services we have available for you."
+            id="services"
+            title="Consultanță"
         />
-        {isVariableValid(services) ? (
-            <ServiceGrid services={services} />
-        ) : (
-            <ServiceSkeletonGrid />
-        )}
+        <ConsultationCard />
 
         <Separator className="my-8" />
 
         <SectionHeading
+            id="location"
             title="Locatie"
             description="Str. Mihail Kogălniceanu 1, Chișinău, Moldova"
         />
-        <Maps />
+        <MapsClient />
     </main>
   );
 }

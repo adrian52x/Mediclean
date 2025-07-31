@@ -5,7 +5,7 @@ import {
     ShoppingBasketIcon,
     X,
 } from 'lucide-react';
-import { Button } from './ui/button';
+import { Button } from '../ui/button';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -21,7 +21,7 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer"
 import { useCartStore } from '@/lib/stores/cartStore';
-import { Card } from './ui/card';
+import { Card } from '../ui/card';
 
 export function CartNav() {
     const router = useRouter();
@@ -59,12 +59,12 @@ export function CartNav() {
                 <DrawerContent>
                     <div className="mx-auto md:w-full max-w-md">
                         <DrawerHeader>
-                            <DrawerTitle>Cart Items ({cartCount})</DrawerTitle>
+                            <DrawerTitle>Produse în cos  ({cartCount})</DrawerTitle>
                             <DrawerDescription>Total MDL: {totalPrice.toFixed(2)}</DrawerDescription>
                         </DrawerHeader>
                         <div className="p-4 pb-0 max-h-96 overflow-y-auto md:max-w-2xl md:mx-auto">
                         {cartItems.length === 0 ? (
-                            <p className="text-center text-gray-500">Your cart is empty</p>
+                            <p className="text-center text-gray-500">Coșul tău este gol</p>
                         ) : (
                             <div className="space-y-4"> {/* md:grid md:grid-cols-2 gap-4 */}
                                 {cartItems.map((item) => (
@@ -126,7 +126,7 @@ export function CartNav() {
                                 </Button>
                             )}
                             <DrawerClose asChild>
-                                <Button variant="outline">Close</Button>
+                                <Button variant="outline">Închide</Button>
                             </DrawerClose>
                         </DrawerFooter>
                     </div>

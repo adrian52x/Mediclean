@@ -119,3 +119,8 @@ TO DO :
 Images --> Supabase storage
 1. In admin show orphan images - option to delete all
 2. if image uploaded with same name - replace (currently not allowed)
+
+3. Save orders in db for admin (orderNumber, customerInfo, products??, dateTime)
+4. Update/Delete products (admin)
+
+5. Service- consultanta section (icon + text + numar telefon)

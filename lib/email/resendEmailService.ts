@@ -1,34 +1,6 @@
+import { OrderDetails } from '@/types';
 import { Resend } from 'resend';
 
-interface OrderDetails {
-  orderId: string;
-  timestamp: string;
-  customer: {
-    name: string;
-    phone: string;
-    email: string;
-  };
-  delivery: {
-    method: string;
-    address: any;
-    notes: string;
-  };
-  items: Array<{
-    productId: string;
-    title: string;
-    volume?: string;
-    price: number;
-    quantity: number;
-    total: number;
-  }>;
-  summary: {
-    totalItems: number;
-    totalPrice: number;
-    deliveryFee: number;
-    finalTotal: number;
-    currency: string;
-  };
-}
 
 // Initialize Resend
 const resend = new Resend(process.env.RESEND_API_KEY_ORDERS);
@@ -82,7 +54,6 @@ const ordersEmailTemplate = (orderDetails: OrderDetails) => {
             <h3>📋 Detalii comandă</h3>
             <p><strong>Data comenzii:</strong> ${formatDate(orderDetails.timestamp)}</p>
             <p><strong>Număr comandă:</strong> ${orderDetails.orderId}</p>
-            <p><strong>Status:</strong> <span class="badge">Confirmată</span></p>
           </div>
 
           <div class="order-info">
@@ -90,23 +61,27 @@ const ordersEmailTemplate = (orderDetails: OrderDetails) => {
             <p><strong>Nume:</strong> ${orderDetails.customer.name}</p>
             <p><strong>Telefon:</strong> ${orderDetails.customer.phone}</p>
             <p><strong>Email:</strong> ${orderDetails.customer.email}</p>
+            <p><strong>Rechizite bancare:</strong> ${orderDetails.customer.bankDetails}</p>
           </div>
 
           <div class="order-info">
             <h3>🚚 Detalii livrare</h3>
-            <p><strong>Metodă:</strong> ${orderDetails.delivery.method === 'delivery' ? '🚛 Livrare la domiciliu' : '🏪 Colectare de la magazin'}</p>
-            ${orderDetails.delivery.method === 'delivery' && typeof orderDetails.delivery.address === 'object' ? `
-              <p><strong>Adresa:</strong> ${orderDetails.delivery.address.street}</p>
-              <p><strong>Oraș:</strong> ${orderDetails.delivery.address.city}</p>
-              ${orderDetails.delivery.address.postalCode ? `<p><strong>Cod poștal:</strong> ${orderDetails.delivery.address.postalCode}</p>` : ''}
-            ` : orderDetails.delivery.method === 'pickup' ? `
-              <div class="contact-info">
-                <strong>📍 Adresa magazinului:</strong><br>
-                str. Medicina 15, Chișinău, MD-2004<br>
-                <strong>📞 Telefon:</strong> +373 22 123 456<br>
-                <strong>🕒 Program:</strong> Luni-Vineri 9:00-18:00
-              </div>
-            ` : ''}
+            <p><strong>Metodă:</strong> 
+              ${
+                orderDetails.delivery.method === 'delivery'
+                  ? '🚛 Livrare la domiciliu'
+                  : '📦 Livrare prin poștă'
+              }
+            </p>
+            ${
+              orderDetails.delivery.address && typeof orderDetails.delivery.address === 'object'
+                ? `
+                  <p><strong>Adresa:</strong> ${orderDetails.delivery.address.street}</p>
+                  <p><strong>Oraș:</strong> ${orderDetails.delivery.address.city}</p>
+                  ${orderDetails.delivery.address.postalCode ? `<p><strong>Cod poștal:</strong> ${orderDetails.delivery.address.postalCode}</p>` : ''}
+                `
+                : ''
+            }
             ${orderDetails.delivery.notes ? `<p><strong>Observații:</strong> ${orderDetails.delivery.notes}</p>` : ''}
           </div>
 
@@ -135,18 +110,11 @@ const ordersEmailTemplate = (orderDetails: OrderDetails) => {
           </table>
 
           <div class="total-section">
-            <div class="total-row">
-              <span>Subtotal produse:</span>
+            <div class="total-row total-final">
+              <span>TOTAL DE PLATĂ: </span>
               <span>${orderDetails.summary.totalPrice.toFixed(2)} ${orderDetails.summary.currency}</span>
             </div>
-            <div class="total-row">
-              <span>Taxa de livrare:</span>
-              <span>${orderDetails.summary.deliveryFee > 0 ? `${orderDetails.summary.deliveryFee.toFixed(2)} ${orderDetails.summary.currency}` : 'Gratuit'}</span>
-            </div>
-            <div class="total-row total-final">
-              <span>TOTAL DE PLATĂ:</span>
-              <span>${orderDetails.summary.finalTotal.toFixed(2)} ${orderDetails.summary.currency}</span>
-            </div>
+            <p>Veți fi contactat în mai puțin de 24 de ore</p>
           </div>
 
           <div class="contact-info">

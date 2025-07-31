@@ -1,5 +1,5 @@
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
-import { AdminSidebar } from "@/components/admin-sidebar"
+import { AdminSidebar } from "@/components/admin/admin-sidebar"
 import ThemeToggle from "@/components/theme-toggle"
  
 export default function Layout({ children }: { children: React.ReactNode }) {

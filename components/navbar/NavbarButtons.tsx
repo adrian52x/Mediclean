@@ -76,12 +76,12 @@ export const NavBarButtons: React.FC = () => {
                 Servicii
             </MenubarTrigger>
             <MenubarContent>
-                <Link href="#services">
+                <Link href="/#services">
                     <MenubarItem className='flex flex-col items-start'>
                         <div className='flex items-center gap-2'>
                             <Info /> Consultanță
                         </div>
-                        <span className='font-normal text-muted-foreground ml-6'>Oferim consultanta in ....blabalbalbal</span>
+                        <span className='font-normal text-muted-foreground ml-6'>Solicită consultanță</span>
                     </MenubarItem>
                 </Link>
             </MenubarContent>
@@ -93,7 +93,7 @@ export const NavBarButtons: React.FC = () => {
                 Locație / Contact
             </MenubarTrigger>
             <MenubarContent>
-                <Link href="#location">
+                <Link href="/#location">
                     <MenubarItem>
                             <MapPin /> Str. Pacii 64.
                     </MenubarItem>

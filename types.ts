@@ -103,3 +103,49 @@ export interface ProductFilters {
     productTypes: string[];
     medicalFields: string[];
 }
+
+export type DeliveryMethod = 'delivery' | 'postalDelivery';
+export interface OrderFormData {
+    // Customer Info
+    name: string;
+    phone: string;
+    email: string;
+    bankDetails: string;
+    // Delivery
+    deliveryMethod: DeliveryMethod;
+    address: string;
+    city: string;
+    postalCode: string;
+    notes: string;
+}
+
+export interface OrderDetails {
+  orderId: string;
+  timestamp: string;
+  customer: {
+    name: string;
+    phone: string;
+    email: string;
+    bankDetails: string;
+  };
+  delivery: {
+    method: string;
+    address: any;
+    notes: string;
+  };
+  items: Array<{
+    productId: string;
+    title: string;
+    volume?: string;
+    price: number;
+    quantity: number;
+    total: number;
+  }>;
+  summary: {
+    totalItems: number;
+    totalPrice: number;
+    deliveryFee: number;
+    finalTotal: number;
+    currency: string;
+  };
+}

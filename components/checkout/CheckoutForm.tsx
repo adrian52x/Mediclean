@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Separator } from '@/components/ui/separator';
-import { ArrowLeft, Package, Truck, MapPin, User } from 'lucide-react';
+import { ArrowLeft, Package, Truck, User } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -20,23 +20,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
-
-type DeliveryMethod = 'delivery' | 'pickup';
-
-interface OrderFormData {
-    // Customer Info
-    name: string;
-    phone: string;
-    email: string;
-    // Delivery
-    deliveryMethod: DeliveryMethod;
-    address: string;
-    city: string;
-    postalCode: string;
-    notes: string;
-}
-
-const pretLivrare = 100; // Delivery fee
+import { OrderFormData } from '@/types';
 
 export function CheckoutForm() {
     const router = useRouter();
@@ -46,6 +30,7 @@ export function CheckoutForm() {
         name: '',
         phone: '',
         email: '',
+        bankDetails: '',
         deliveryMethod: 'delivery',
         address: '',
         city: '',
@@ -65,7 +50,7 @@ export function CheckoutForm() {
                 Coșul tău este gol
             </h1>
             <p className="text-gray-600 dark:text-gray-300 mb-6">
-                Adaugă produse în coș pentru a continua cu comanda.
+                Adaugă produse în coș pentru a continua comanda.
             </p>
             <Link href="/products">
                 <Button>
@@ -97,15 +82,16 @@ export function CheckoutForm() {
                 customer: {
                     name: formData.name,
                     phone: formData.phone,
-                    email: formData.email
+                    email: formData.email,
+                    bankDetails: formData.bankDetails
                 },
                 delivery: {
                     method: formData.deliveryMethod,
-                    address: formData.deliveryMethod === 'delivery' ? {
+                    address: {
                         street: formData.address,
                         city: formData.city,
                         postalCode: formData.postalCode
-                    } : 'Colectare de la magazin',
+                    },
                     notes: formData.notes
                 },
                 items: cartItems.map(item => ({
@@ -119,8 +105,6 @@ export function CheckoutForm() {
                 summary: {
                     totalItems: cartCount,
                     totalPrice: totalPrice,
-                    deliveryFee: formData.deliveryMethod === 'delivery' ? 50 : 0,
-                    finalTotal: totalPrice + (formData.deliveryMethod === 'delivery' ? 50 : 0),
                     currency: 'MDL'
                 }
             };
@@ -165,9 +149,6 @@ export function CheckoutForm() {
             alert('A apărut o eroare la procesarea comenzii. Te rugăm să încerci din nou.');
         }
     }
-
-    const deliveryFee = formData.deliveryMethod === 'delivery' ? 50 : 0;
-    const finalTotal = totalPrice + deliveryFee;
 
     return (
         <div className="container mx-auto px-4 py-8 max-w-6xl">
@@ -238,6 +219,15 @@ export function CheckoutForm() {
                                         placeholder="exemplu@email.com"
                                     />
                                 </div>
+                                <div>
+                                    <Label className="mb-1" htmlFor="bankDetails">Rechizite bancare (opțional)</Label>
+                                    <Textarea
+                                        id="bankDetails"
+                                        value={formData.bankDetails}
+                                        onChange={(e) => handleInputChange('bankDetails', e.target.value)}
+                                        placeholder="IBAN, TVA, cod fiscal, etc."
+                                    />
+                                </div>
                             </CardContent>
                         </Card>
 
@@ -262,7 +252,7 @@ export function CheckoutForm() {
                                             <div>
                                                 <h3 className="font-medium">Livrare</h3>
                                                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                                                +{pretLivrare} MDL
+                                                Gratuit în Chișinău
                                                 </p>
                                             </div>
                                         </div>
@@ -270,27 +260,23 @@ export function CheckoutForm() {
 
                                     <button
                                         type="button"
-                                        onClick={() => handleInputChange('deliveryMethod', 'pickup')}
+                                        onClick={() => handleInputChange('deliveryMethod', 'postalDelivery')}
                                         className={`p-4 border rounded-lg text-left transition-all ${
-                                        formData.deliveryMethod === 'pickup'
+                                        formData.deliveryMethod === 'postalDelivery'
                                             ? 'border-cyan-500 bg-cyan-50 dark:bg-cyan-900/20'
                                             : 'border-gray-200 dark:border-gray-700'
                                         }`}
                                     >
                                         <div className="flex items-center gap-3">
-                                            <MapPin className="w-5 h-5 text-emerald-600" />
+                                            <Package className="w-5 h-5 text-emerald-600" />
                                             <div>
-                                                <h3 className="font-medium">Colectare</h3>
-                                                <p className="text-sm text-gray-600 dark:text-gray-400">
-                                                Gratuit
-                                                </p>
+                                                <h3 className="font-medium">Livrare prin poștă</h3>
                                             </div>
                                         </div>
                                     </button>
                                 </div>
 
-                                {/* Address Fields for Delivery */}
-                                {formData.deliveryMethod === 'delivery' && (
+                                {/* Address Fields - Required for both delivery methods */}
                                 <div className="space-y-4 pt-4">
                                     <div>
                                         <Label className="mb-1" htmlFor="address">Adresa *</Label>
@@ -299,8 +285,8 @@ export function CheckoutForm() {
                                             type="text"
                                             value={formData.address}
                                             onChange={(e) => handleInputChange('address', e.target.value)}
-                                            required={formData.deliveryMethod === 'delivery'}
-                                            placeholder="Strada Alexandru cel Bun 123, ap. 4"
+                                            required
+                                            placeholder="Adresa completa pentru livrare"
                                         />
                                     </div>
                                     <div className="grid grid-cols-2 gap-4">
@@ -311,7 +297,7 @@ export function CheckoutForm() {
                                                 type="text"
                                                 value={formData.city}
                                                 onChange={(e) => handleInputChange('city', e.target.value)}
-                                                required={formData.deliveryMethod === 'delivery'}
+                                                required
                                                 placeholder="Chișinău"
                                             />
                                         </div>
@@ -327,17 +313,6 @@ export function CheckoutForm() {
                                         </div>
                                     </div>
                                 </div>
-                                )}
-
-                                {/* Pickup Address Info */}
-                                {formData.deliveryMethod === 'pickup' && (
-                                <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                                    <h4 className="font-medium mb-2">Adresa magazinului:</h4>
-                                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                                    str. Medicina 15, Chișinău, MD-2004<br />
-                                    </p>
-                                </div>
-                                )}
 
                                 {/* Notes */}
                                 <div>
@@ -398,7 +373,7 @@ export function CheckoutForm() {
 
                             {/* Price Breakdown */}
                             <div className="space-y-2">
-                                <div className="flex justify-between text-sm">
+                                {/* <div className="flex justify-between text-sm">
                                     <span>Subtotal produse:</span>
                                     <span>{totalPrice.toFixed(2)} MDL</span>
                                 </div>
@@ -406,10 +381,10 @@ export function CheckoutForm() {
                                     <span>Livrare:</span>
                                     <span>{deliveryFee > 0 ? `${deliveryFee.toFixed(2)} MDL` : 'Gratuit'}</span>
                                 </div>
-                                <Separator />
+                                <Separator /> */}
                                 <div className="flex justify-between font-bold text-lg">
                                     <span>Total:</span>
-                                    <span className="text-cyan-600">{finalTotal.toFixed(2)} MDL</span>
+                                    <span className="text-cyan-600">{totalPrice.toFixed(2)} MDL</span>
                                 </div>
                             </div>
 
@@ -418,15 +393,15 @@ export function CheckoutForm() {
                                 type="submit"
                                 onClick={handleSubmit}
                                 disabled={isSubmitting || !formData.name || !formData.phone || !formData.email || 
-                                (formData.deliveryMethod === 'delivery' && (!formData.address || !formData.city))}
+                                !formData.address || !formData.city}
                                 className="w-full"
                                 size="lg"
                             >
-                                {isSubmitting ? 'Se procesează...' : `Finalizare comandă - ${finalTotal.toFixed(2)} MDL`}
+                                {isSubmitting ? 'Se procesează...' : `Finalizare comandă - ${totalPrice.toFixed(2)} MDL`}
                             </Button>
 
-                            <p className="text-xs text-gray-500 text-center">
-                                Prin plasarea comenzii ești de acord cu termenii și condițiile noastre.
+                            <p className="text-sm text-gray-300">
+                                * Dupa plasarea comenzii, veți fi contactat în mai puțin de 24 de ore.
                             </p>
                         </CardContent>
                     </Card>

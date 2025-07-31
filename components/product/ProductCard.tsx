@@ -52,7 +52,7 @@ export const ProductCard = ({ product }: { product: ProductDetails }) => {
     const handleAddToCart = useCallback((e: React.MouseEvent) => {
         e.preventDefault();
         addItem(product, quantity, getCurrentVolume());
-        toast.success(`Added ${quantity}x ${product.title}${getCurrentVolume() ? ` (${getCurrentVolume()})` : ''} to cart!`);
+        toast.success(`[${quantity}] ${product.title}${getCurrentVolume() ? ` (${getCurrentVolume()})` : ''} - adaugat în coș!`);
     }, [addItem, product, quantity, selectedVolumeIndex]); // selectedVolumeIndex affects getCurrentVolume
 
     return (

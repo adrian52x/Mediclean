@@ -21,10 +21,10 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
-import LogoWithText from '../logo-with-text';
+import LogoWithText from './logo-with-text';
 import { usePathname } from 'next/navigation';
-import { CartNav } from '../CartNav';
-import { ProductsButton, ServicesButton, NavBarButtons, UserNavButton } from './NavbarButtons';
+import { CartNav } from './CartNav';
+import { NavBarButtons, UserNavButton } from './NavbarButtons';
 
 export default function Navbar({ session }: { session: any }) {
   const [isOpen, setIsOpen] = useState(false); // Check this later where it is used

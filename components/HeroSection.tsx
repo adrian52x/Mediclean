@@ -53,19 +53,19 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ images }) => {
 
                             {/* Echipamente Medicina Generală */}
                             <Link href="/products?category=equipment" className="group">
-                                <div className="flex items-center space-x-3 p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-emerald-300 dark:hover:border-emerald-500 transition-all duration-300 hover:shadow-lg hover:scale-105">
-                                    <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-r from-emerald-500 to-green-500 rounded-lg flex items-center justify-center">
+                                <div className="flex items-center space-x-3 p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-cyan-300 dark:hover:border-cyan-500 transition-all duration-300 hover:shadow-lg hover:scale-105">
+                                    <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-r from-cyan-500 to-slate-500 rounded-lg flex items-center justify-center">
                                         <Stethoscope className="w-6 h-6 text-white" />
                                     </div>
                                     <div className="flex-1">
-                                        <h3 className="font-semibold text-gray-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                                        <h3 className="font-semibold text-gray-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
                                             Echipamente
                                         </h3>
                                         <p className="text-sm text-gray-500 dark:text-gray-400">
                                             Medicale
                                         </p>
                                     </div>
-                                    <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-emerald-500 transition-colors" />
+                                    <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-cyan-500 transition-colors" />
                                 </div>
                             </Link>
 
@@ -82,21 +82,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ images }) => {
                         </div>
                     </div>
 
-                    {/* Trust Indicators */}
-                    <div className="flex flex-wrap items-center justify-center lg:justify-start gap-6 text-sm text-gray-500 dark:text-gray-400">
-                        <div className="flex items-center space-x-2">
-                            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                            <span>Livrare rapidă</span>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                            <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                            <span>Calitate garantată</span>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                            <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                            <span>Preturi competitive</span>
-                        </div>
-                    </div>
                     {/* Clients logos */}
                     {/* <div className="mt-5 flex items-center justify-center flex-wrap gap-4 lg:justify-start w-full">
                         <a href="#" target="_blank" rel='noreferer'>
