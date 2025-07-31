@@ -35,7 +35,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ images }) => {
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                             {/* Dezinfectanți */}
                             <Link href="/products?category=disinfectants" className="group">
-                                <div className="flex items-center space-x-3 p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-cyan-300 dark:hover:border-cyan-500 transition-all duration-300 hover:shadow-lg hover:scale-105">
+                                <div className="flex items-center space-x-3 p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700  transition-all duration-300 hover:shadow-lg hover:scale-103">
                                     <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-lg flex items-center justify-center">
                                         <Droplets className="w-6 h-6 text-white" />
                                     </div>
@@ -53,7 +53,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ images }) => {
 
                             {/* Echipamente Medicina Generală */}
                             <Link href="/products?category=equipment" className="group">
-                                <div className="flex items-center space-x-3 p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-cyan-300 dark:hover:border-cyan-500 transition-all duration-300 hover:shadow-lg hover:scale-105">
+                                <div className="flex items-center space-x-3 p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700  transition-all duration-300 hover:shadow-lg hover:scale-103">
                                     <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-r from-cyan-500 to-slate-500 rounded-lg flex items-center justify-center">
                                         <Stethoscope className="w-6 h-6 text-white" />
                                     </div>
@@ -71,7 +71,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ images }) => {
 
                             {/* Toate Produsele - Main CTA */}
                             <Link href="/products" className="group sm:col-span-2 lg:col-span-1">
-                                <div className="lg:h-[82px] flex items-center justify-center space-x-3 p-4 bg-gradient-to-r from-cyan-600 to-slate-400 hover:from-cyan-700 hover:to-slate-500 rounded-xl transition-all duration-300 hover:shadow-lg hover:scale-105">
+                                <div className="lg:h-[82px] flex items-center justify-center space-x-3 p-4 bg-gradient-to-r from-cyan-600 to-slate-400 hover:from-cyan-700 hover:to-slate-500 rounded-xl transition-all duration-300 hover:shadow-lg hover:scale-103">
                                     <ShoppingCart className="w-6 h-6 text-white" />
                                     <span className="font-semibold text-white">
                                         Toate produsele
