@@ -37,8 +37,8 @@ export default async function Home() {
 
         <SectionHeading
             id="location"
-            title="Locatie"
-            description="Str. Mihail Kogălniceanu 1, Chișinău, Moldova"
+            title="Locație"
+            description="Str. Nicolae Zelinski 36/6, Chișinău, Moldova"
         />
         <MapsClient />
     </main>

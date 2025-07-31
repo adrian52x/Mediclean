@@ -43,7 +43,7 @@ export const useCartStore = create<CartStore>()(
             addItem: (product: ProductDetails, quantity = 1, volume?: string) => {
                 console.log('🛒 Zustand addItem called:', { productId: product.id, quantity, volume });
                 
-                const itemKey = `${product.id}-${volume || 'default'}`;
+                const itemKey = `${product.id}_${volume || 'default'}`;
                 
                 set((state: CartStore) => {
                     const existingItemIndex = state.cartItems.findIndex((item: CartItem) => item.id === itemKey);

@@ -69,7 +69,7 @@ const ordersEmailTemplate = (orderDetails: OrderDetails) => {
             <p><strong>Metodă:</strong> 
               ${
                 orderDetails.delivery.method === 'delivery'
-                  ? '🚛 Livrare la domiciliu'
+                  ? '🚛 Livrare la adresă'
                   : '📦 Livrare prin poștă'
               }
             </p>
@@ -110,6 +110,14 @@ const ordersEmailTemplate = (orderDetails: OrderDetails) => {
           </table>
 
           <div class="total-section">
+            ${
+                orderDetails.delivery.method === 'postalDelivery' ? 
+                `<div class="total-row">
+                  <span><strong>+ Taxă de livrare</strong></span>
+                </div>`
+                : ''
+            }
+
             <div class="total-row total-final">
               <span>TOTAL DE PLATĂ: </span>
               <span>${orderDetails.summary.totalPrice.toFixed(2)} ${orderDetails.summary.currency}</span>
@@ -122,7 +130,6 @@ const ordersEmailTemplate = (orderDetails: OrderDetails) => {
             <p>Nu ezita să ne contactezi pentru orice informații suplimentare:</p>
             <p><strong>Email:</strong> comenzi@mediclean.md</p>
             <p><strong>Telefon:</strong> +373 22 123 456</p>
-            <p><strong>WhatsApp:</strong> +373 69 123 456</p>
           </div>
         </div>
 

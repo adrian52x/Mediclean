@@ -123,4 +123,6 @@ Images --> Supabase storage
 3. Save orders in db for admin (orderNumber, customerInfo, products??, dateTime)
 4. Update/Delete products (admin)
 
-5. Service- consultanta section (icon + text + numar telefon)
+6. Product description format
+
+7. make Mobile Navbar responsive

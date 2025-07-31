@@ -250,7 +250,7 @@ export function CheckoutForm() {
                                         <div className="flex items-center gap-3">
                                             <Truck className="w-5 h-5 text-cyan-600" />
                                             <div>
-                                                <h3 className="font-medium">Livrare</h3>
+                                                <h3 className="font-medium">Livrare la adresă</h3>
                                                 <p className="text-sm text-gray-600 dark:text-gray-400">
                                                 Gratuit în Chișinău
                                                 </p>
@@ -271,6 +271,9 @@ export function CheckoutForm() {
                                             <Package className="w-5 h-5 text-emerald-600" />
                                             <div>
                                                 <h3 className="font-medium">Livrare prin poștă</h3>
+                                                <p className="text-sm text-gray-600 dark:text-gray-400">
+                                                +taxă de livrare
+                                                </p>
                                             </div>
                                         </div>
                                     </button>
@@ -343,29 +346,37 @@ export function CheckoutForm() {
                             {/* Cart Items */}
                             <div className="space-y-3 max-h-100 overflow-y-auto">
                                 {cartItems.map((item) => (
-                                <div key={item.id} className="flex items-center gap-3 p-3 border border-gray-200 dark:border-gray-700 rounded-lg">
-                                    <Image
-                                        src={item.image}
-                                        alt={item.title}
-                                        width={50}
-                                        height={50}
-                                        className="rounded object-cover w-[50px] h-[50px]"
-                                    />
-                                    <div className="flex-1">
-                                        <h4 className="font-medium text-sm">{item.title}</h4>
-                                        {item.volume && (
-                                            <p className="text-xs text-gray-500">{item.volume}</p>
-                                        )}
-                                        <p className="text-sm">
-                                            {item.quantity} × {item.price} MDL
-                                        </p>
+                                <Link
+                                    key={item.id}
+                                    href={`/products/${item.id.split('_')[0]}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="block"
+                                >
+                                    <div className="flex items-center gap-3 p-3 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-neutral-800 transition-colors cursor-pointer">
+                                        <Image
+                                            src={item.image}
+                                            alt={item.title}
+                                            width={50}
+                                            height={50}
+                                            className="rounded object-cover w-[50px] h-[50px]"
+                                        />
+                                        <div className="flex-1">
+                                            <h4 className="font-medium text-sm">{item.title}</h4>
+                                            {item.volume && (
+                                                <p className="text-xs text-gray-500">{item.volume}</p>
+                                            )}
+                                            <p className="text-sm">
+                                                {item.quantity} × {item.price} MDL
+                                            </p>
+                                        </div>
+                                        <div className="text-right">
+                                            <p className="font-bold text-sm">
+                                                {(item.price * item.quantity).toFixed(2)} MDL
+                                            </p>
+                                        </div>
                                     </div>
-                                    <div className="text-right">
-                                        <p className="font-bold text-sm">
-                                            {(item.price * item.quantity).toFixed(2)} MDL
-                                        </p>
-                                    </div>
-                                </div>
+                                </Link>
                                 ))}
                             </div>
 

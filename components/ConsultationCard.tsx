@@ -1,3 +1,4 @@
+'use client';
 import {
   Card,
   CardContent
@@ -6,42 +7,45 @@ import { Button } from '@/components/ui/button';
 import { Phone, MessageCircle, Users } from 'lucide-react';
 import Link from 'next/link';
 
+// For copying to clipboard
+import { useState } from 'react';
+
 
 export function ConsultationCard() {
+    const [copied, setCopied] = useState(false);
+    const phoneNumber = '079410042';
+
+    const handleCopy = async () => {
+        try {
+            await navigator.clipboard.writeText(phoneNumber);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 1500);
+        } catch (err) {
+            alert('Copy failed');
+        }
+    };
+
     return (
         <Card className="w-full">
             <CardContent className="p-8">
                 <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-center">
                     {/* Icon and Contact - 40% */}
                     <div className="lg:col-span-2 text-center">
-                        <div className="flex flex-col lg:flex-row items-center lg:items-start gap-4">
+                        <div className="flex flex-col lg:flex-row items-center gap-4">
                             <div className="p-3 bg-neutral-950 dark:bg-white rounded-full">
                                 <Users className="w-10 h-10 text-white dark:text-neutral-950" />
                             </div>
-                            
-                            <div className="flex-1 space-y-3 w-full">
+                            <div className="w-full">
                                 <Button
-                                    variant={'default'} 
-                                    asChild
-                                    size="default" 
-                                    className="w-full"
+                                    variant={'default'}
+                                    size="default"
+                                    className="w-full h-14 text-lg"
+                                    onClick={handleCopy}
                                 >
-                                    <Link href="tel:+37322123456" className="flex items-center justify-center gap-2">
-                                    <Phone className="w-4 h-4" />
-                                    +373 22 123 456
-                                    </Link>
-                                </Button>
-                                
-                                <Button 
-                                    asChild
-                                    variant="outline" 
-                                    size="default" 
-                                    className=" w-full"
-                                >
-                                    <Link href="https://wa.me/37369123456" target="_blank" className="flex items-center justify-center gap-2">
-                                    <MessageCircle className="w-4 h-4" />
-                                    WhatsApp
-                                    </Link>
+                                    <span className="flex items-center justify-center gap-3 w-full h-full">
+                                        <Phone className="w-5 h-5" />
+                                        {copied ? 'Copiat!' : phoneNumber}
+                                    </span>
                                 </Button>
                             </div>
                         </div>

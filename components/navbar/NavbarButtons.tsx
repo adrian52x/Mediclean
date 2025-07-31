@@ -95,7 +95,7 @@ export const NavBarButtons: React.FC = () => {
             <MenubarContent>
                 <Link href="/#location">
                     <MenubarItem>
-                            <MapPin /> Str. Pacii 64.
+                            <MapPin /> Str. Nicolae Zelinski 36/6.
                     </MenubarItem>
                     <MenubarItem disabled className='cursor-default'>
                             <Phone /> +373 123 456 789
@@ -148,123 +148,123 @@ export const UserNavButton: React.FC<{ session: any }> = ({ session }) => {
     );
 }
 
-export const ProductsButton: React.FC = () => {
-    return (
-        <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-                <Button size="default" variant="outline" className="h-9 bg-gray-200 border-gray-400">
-                    <ChevronsDown /> Produse
-                </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-55 p-3 font-bold" align="start" forceMount>
-                <Link href="/products"> 
-                    <DropdownMenuItem className="h-15 text-lg">
-                        <ListChecks /> Toate produsele
-                    </DropdownMenuItem>
-                </Link>
-                <DropdownMenuSeparator />
-                <Link href="/products?category=disinfectants">    
-                    <DropdownMenuItem className="h-15 text-lg">
-                        <Droplets/>
-                        <div className='flex flex-col'>
-                            Dezinfectanți
-                            <span className='font-normal text-xs text-muted-foreground'>Stomatologie</span>
-                            <span className='font-normal text-xs text-muted-foreground'>Medicina Generala</span>
-                        </div>
+// export const ProductsButton: React.FC = () => {
+//     return (
+//         <DropdownMenu>
+//             <DropdownMenuTrigger asChild>
+//                 <Button size="default" variant="outline" className="h-9 bg-gray-200 border-gray-400">
+//                     <ChevronsDown /> Produse
+//                 </Button>
+//             </DropdownMenuTrigger>
+//             <DropdownMenuContent className="w-55 p-3 font-bold" align="start" forceMount>
+//                 <Link href="/products"> 
+//                     <DropdownMenuItem className="h-15 text-lg">
+//                         <ListChecks /> Toate produsele
+//                     </DropdownMenuItem>
+//                 </Link>
+//                 <DropdownMenuSeparator />
+//                 <Link href="/products?category=disinfectants">    
+//                     <DropdownMenuItem className="h-15 text-lg">
+//                         <Droplets/>
+//                         <div className='flex flex-col'>
+//                             Dezinfectanți
+//                             <span className='font-normal text-xs text-muted-foreground'>Stomatologie</span>
+//                             <span className='font-normal text-xs text-muted-foreground'>Medicina Generala</span>
+//                         </div>
                         
-                    </DropdownMenuItem>
-                </Link>
-                <DropdownMenuSeparator />
-                <Link href="/products?category=equipment">    
-                    <DropdownMenuItem className="h-15 text-lg">
-                        <Stethoscope/> Echipament
-                    </DropdownMenuItem>
-                </Link>
-            </DropdownMenuContent>
-        </DropdownMenu>
-    );
-};
+//                     </DropdownMenuItem>
+//                 </Link>
+//                 <DropdownMenuSeparator />
+//                 <Link href="/products?category=equipment">    
+//                     <DropdownMenuItem className="h-15 text-lg">
+//                         <Stethoscope/> Echipament
+//                     </DropdownMenuItem>
+//                 </Link>
+//             </DropdownMenuContent>
+//         </DropdownMenu>
+//     );
+// };
 
 
-export const ServicesButton: React.FC = () => {
-    return (
-        <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-                <Button size="default" variant="outline" className="h-9 bg-gray-200 border-gray-400">
-                    <ChevronsDown /> Servicii
-                </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-55 p-3 font-bold" align="end" forceMount>
-                <Link href="#services"> 
-                    <DropdownMenuItem className="h-15 text-lg">
-                        <ListChecks /> Consultanță
-                    </DropdownMenuItem>
-                </Link>
-                <DropdownMenuSeparator />
+// export const ServicesButton: React.FC = () => {
+//     return (
+//         <DropdownMenu>
+//             <DropdownMenuTrigger asChild>
+//                 <Button size="default" variant="outline" className="h-9 bg-gray-200 border-gray-400">
+//                     <ChevronsDown /> Servicii
+//                 </Button>
+//             </DropdownMenuTrigger>
+//             <DropdownMenuContent className="w-55 p-3 font-bold" align="end" forceMount>
+//                 <Link href="#services"> 
+//                     <DropdownMenuItem className="h-15 text-lg">
+//                         <ListChecks /> Consultanță
+//                     </DropdownMenuItem>
+//                 </Link>
+//                 <DropdownMenuSeparator />
 
-            </DropdownMenuContent>
-        </DropdownMenu>
-    );
-};
+//             </DropdownMenuContent>
+//         </DropdownMenu>
+//     );
+// };
 
-export const oldNavigation: React.FC = () => {
-    return (
-        <NavigationMenu className="hidden md:flex">
-            <NavigationMenuList>
-              {/* Categories Dropdown */}
-              <NavigationMenuItem>
-                <NavigationMenuTrigger>Produse & Servicii</NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <ul className="grid w-[250px] gap-3 p-4">
-                    <li className="row-span-3">
-                      <NavigationMenuLink asChild>
-                        <a
-                          className="flex h-full w-full select-none flex-col  rounded-md bg-gradient-to-b from-muted/50 to-muted no-underline outline-none focus:shadow-md"
-                          href="/products"
-                        >
-                          <div className="my-2 text-lg font-medium text-center">Toate produsele</div>
-                        </a>
-                      </NavigationMenuLink>
-                    </li>
-                    <ListItem href="/products?category=disinfectants" title="1. Dezinfectanți"></ListItem>
-                    <ListItem href="/products?category=equipment" title="2. Echipament"></ListItem>
-                    <ListItem href="#services" title="3. Consultanță">
-                      Text.. ?
-                    </ListItem>
-                  </ul>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-            </NavigationMenuList>
-        </NavigationMenu>
-    );
-}
+// export const oldNavigation: React.FC = () => {
+//     return (
+//         <NavigationMenu className="hidden md:flex">
+//             <NavigationMenuList>
+//               {/* Categories Dropdown */}
+//               <NavigationMenuItem>
+//                 <NavigationMenuTrigger>Produse & Servicii</NavigationMenuTrigger>
+//                 <NavigationMenuContent>
+//                   <ul className="grid w-[250px] gap-3 p-4">
+//                     <li className="row-span-3">
+//                       <NavigationMenuLink asChild>
+//                         <a
+//                           className="flex h-full w-full select-none flex-col  rounded-md bg-gradient-to-b from-muted/50 to-muted no-underline outline-none focus:shadow-md"
+//                           href="/products"
+//                         >
+//                           <div className="my-2 text-lg font-medium text-center">Toate produsele</div>
+//                         </a>
+//                       </NavigationMenuLink>
+//                     </li>
+//                     <ListItem href="/products?category=disinfectants" title="1. Dezinfectanți"></ListItem>
+//                     <ListItem href="/products?category=equipment" title="2. Echipament"></ListItem>
+//                     <ListItem href="#services" title="3. Consultanță">
+//                       Text.. ?
+//                     </ListItem>
+//                   </ul>
+//                 </NavigationMenuContent>
+//               </NavigationMenuItem>
+//             </NavigationMenuList>
+//         </NavigationMenu>
+//     );
+// }
 
 // Helper component for navigation menu items
-const ListItem = React.forwardRef<
-  //React.ElementRef<'a'>,
-  React.ComponentRef<'a'>,
-  React.ComponentPropsWithoutRef<'a'> & {
-    title: string;
-  }
->(({ className, title, children, ...props }, ref) => {
-  return (
-    <li>
-      <NavigationMenuLink asChild>
-        <a
-          ref={ref}
-          className={cn(
-            'hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground block space-y-1 rounded-md p-3 leading-none no-underline transition-colors outline-none select-none',
-            className,
-          )}
-          {...props}
-        >
-          <div className="text-sm leading-none font-medium">{title}</div>
-          <p className="text-muted-foreground line-clamp-2 text-sm leading-snug">
-            {children}
-          </p>
-        </a>
-      </NavigationMenuLink>
-    </li>
-  );
-});
-ListItem.displayName = 'ListItem';
+// const ListItem = React.forwardRef<
+//   //React.ElementRef<'a'>,
+//   React.ComponentRef<'a'>,
+//   React.ComponentPropsWithoutRef<'a'> & {
+//     title: string;
+//   }
+// >(({ className, title, children, ...props }, ref) => {
+//   return (
+//     <li>
+//       <NavigationMenuLink asChild>
+//         <a
+//           ref={ref}
+//           className={cn(
+//             'hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground block space-y-1 rounded-md p-3 leading-none no-underline transition-colors outline-none select-none',
+//             className,
+//           )}
+//           {...props}
+//         >
+//           <div className="text-sm leading-none font-medium">{title}</div>
+//           <p className="text-muted-foreground line-clamp-2 text-sm leading-snug">
+//             {children}
+//           </p>
+//         </a>
+//       </NavigationMenuLink>
+//     </li>
+//   );
+// });
+// ListItem.displayName = 'ListItem';

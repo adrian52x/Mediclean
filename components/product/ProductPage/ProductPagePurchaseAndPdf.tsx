@@ -100,6 +100,9 @@ export const ProductPagePurchaseAndPdf: React.FC<ProductPagePurchaseAndPdfProps>
                     </div>
                 )}
 
+                {/* Availability notice */}
+                <p className="text-xs text-gray-500 mb-2">Disponibil în limita stocului.</p>
+
                 {/* Quantity and Add to Cart */}
                 <div className="flex gap-2">
                     <div className="border rounded">
