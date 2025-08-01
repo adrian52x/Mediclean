@@ -1,8 +1,7 @@
 'use client';
 import { useState } from "react";
 import { useAddProductImage, useAddProductVolumePrice, useCreateProducts } from "@/lib/hooks/useProducts";
-import { ProductsAPI } from "@/lib/api/ProductsAPI";
-import { CategoryEnum, DisinfectantSubCategoryEnum, DisinfectantVolumeEnum, InsertProduct, PriceTypeEnum, UploadFileResult } from "@/types";
+import { CategoryEnum, InsertProduct, PriceTypeEnum, UploadFileResult } from "@/types";
 import { toast } from "sonner";
 import { Loader } from "../ui/loader";
 import { Input } from "../ui/input";
@@ -24,6 +23,7 @@ import { useGetProductTypes } from "@/lib/hooks/useProducTypes";
 import { Separator } from "../ui/separator";
 import React from "react";
 import { VolumePriceFields } from "./VolumePriceFields";
+import { ImageUploadWithPreview } from "./ImageUploadWithPreview";
 
 export default function AddProductForm() {
     const { createProduct } = useCreateProducts();
@@ -34,6 +34,7 @@ export default function AddProductForm() {
     const [uploading, setUploading] = useState(false);
     const [volumes, setVolumes] = useState([{ volume: '', price: '' }]);
     const [priceType, setPriceType] = useState(PriceTypeEnum.Fixed);
+    const [imageFiles, setImageFiles] = useState<File[]>([]);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -50,8 +51,12 @@ export default function AddProductForm() {
         const stomatologie = formData.get("stomatologie") === "on";
         const medicina_generala = formData.get("medicina_generala") === "on";
 
-        //const imageFiles = formData.get("image") as File[] | null;
-        let imageFiles = Array.from(formData.getAll("image") as File[]);
+        // Use the ordered image files from state instead of form data
+        if (imageFiles.length === 0) {
+            toast.error("Please select at least one image.");
+            setUploading(false);
+            return;
+        }
         
         if (imageFiles.length > 3) {
             toast.error("You can upload a maximum of 3 images.");
@@ -64,7 +69,7 @@ export default function AddProductForm() {
         // 1. Upload PDF if provided
         let pdfResult: UploadFileResult = { url: undefined, path: undefined, error: null };
         if (pdfFile?.size) {
-            pdfResult = await ProductsAPI.uploadPdf(pdfFile, title, Number(price));
+            pdfResult = await ImagesAPI.uploadPdf(pdfFile, title, Number(price));
         }
 
         if (pdfResult.error) {
@@ -80,8 +85,8 @@ export default function AddProductForm() {
             for (const path of paths) {
                 if (path) {
                     console.log(`Deleting image at path: ${path}`);
-                    
-                    await ProductsAPI.deleteFile('product-images', path);
+
+                    await ImagesAPI.deleteFile('product-images', path);
                 }
             }
             errors.forEach((error, idx) => {
@@ -89,7 +94,7 @@ export default function AddProductForm() {
             });
             // Rollback PDF if it was uploaded
             if (pdfResult.path) {
-                await ProductsAPI.deleteFile('product-pdfs', pdfResult.path);
+                await ImagesAPI.deleteFile('product-pdfs', pdfResult.path);
             }
             setUploading(false);
             return;
@@ -143,6 +148,7 @@ export default function AddProductForm() {
 
         form.reset();
         setVolumes([{ volume: '', price: '' }]);
+        setImageFiles([]); // Reset image files state
         setUploading(false);
     };
 
@@ -242,10 +248,11 @@ export default function AddProductForm() {
                 </Tabs>
                 
                 {/* IMGs */}
-                <div className="grid w-full max-w-sm items-center gap-2">
-                    <Label htmlFor="picture">Imagini | max 3 x 300KB</Label>
-                    <Input name="image" id="picture" type="file" accept="image/*" multiple required />
-                </div>
+                <ImageUploadWithPreview 
+                    onImagesChange={setImageFiles}
+                    maxImages={3}
+                    resetTrigger={imageFiles}
+                />
 
                 {/* PDF */}
                 <div className="grid w-full max-w-sm items-center gap-2">

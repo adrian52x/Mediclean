@@ -3,12 +3,6 @@ export enum CategoryEnum {
   Equipment = 'equipment',
 }
 
-export enum DisinfectantSubCategoryEnum {
-  Maini = "Dezinfectanți de mâini",
-  Suprafete = "Dezinfectanți pt suprafețe",
-  Instrumente = "Dezinfectanți instrumente",
-}
-
 export enum DisinfectantVolumeEnum {
   V100ml = "100ml",
   V500ml = "500ml",
