@@ -19,8 +19,8 @@ export class ProductsAPI {
         return data ?? [];
     }
 
-        // Fetch only highlighted products for homepage (limit 6)
-    static async fetchFeaturedProducts(): Promise<ProductDetails[]> {
+        // Fetch last 8 newest products by created_at for homepage
+    static async fetchNewProducts(): Promise<ProductDetails[]> {
         const supabase = supabaseBrowser();
 
         const { data, error } = await supabase
@@ -30,8 +30,7 @@ export class ProductsAPI {
                 product_images(url),
                 product_volumes_price(volume, price)
             `)
-            .eq('featured', true)
-            .order('updated_at', { ascending: false })
+            .order('created_at', { ascending: false })
             .limit(8);
         
         if (error) throw error;

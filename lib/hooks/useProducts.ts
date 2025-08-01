@@ -13,10 +13,10 @@ export const useGetProducts = () => {
     return { products, isPending, isError };
 }
 
-export const useGetFeaturedProducts = () => {
+export const useGetNewProducts = () => {
     const { data: products, isPending, isError } = useQuery({
-        queryKey: ["featured-products"],
-        queryFn: ProductsAPI.fetchFeaturedProducts,
+        queryKey: ["newest-products"],
+        queryFn: ProductsAPI.fetchNewProducts,
         retry: 2
     });
 

@@ -1,6 +1,7 @@
 'use client';
 import { Badge } from '@/components/ui/badge';
 import { ProductDetails } from '@/types';
+import { formatText } from '@/lib/utils/textFormatter';
 
 interface ProductPageInfoProps {
     product: ProductDetails;
@@ -37,7 +38,9 @@ export const ProductPageInfo: React.FC<ProductPageInfoProps> = ({ product }) => 
                             {product.product_type?.type_name}
                         </Badge>
                     </div>
-                    <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{product.description}</p>
+                    <div className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                        {formatText(product.description)}
+                    </div>
                 </div>
             )}
         </div>

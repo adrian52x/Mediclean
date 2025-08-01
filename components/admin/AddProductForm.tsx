@@ -163,7 +163,12 @@ export default function AddProductForm() {
                     required
                 />
 
-                <Textarea className="max-w-md" name="description" placeholder="Descriere produs (optional)" />
+                <Textarea 
+                    className="max-w-md" 
+                    name="description" 
+                    placeholder={`Descriere produs (optional)\n\nFormatare disponibilă:\n- Listă cu puncte\n**Text îngroșat**\n*Text italic*`}
+                    rows={6}
+                />
                 
                 {/* Category select */}
                 <Select name="category" required>

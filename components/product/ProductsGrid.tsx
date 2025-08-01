@@ -1,5 +1,5 @@
 'use client';
-import { useGetFeaturedProducts, useGetProducts } from '@/lib/hooks/useProducts';
+import { useGetNewProducts, useGetProducts } from '@/lib/hooks/useProducts';
 import { ProductCard, ProductSkeleton } from './ProductCard';
 import { Button } from '../ui/button';
 import { WrapText } from 'lucide-react';
@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 export const ProductsGrid: React.FC = () => {
     //const { products, isPending, isError } = useGetProducts();
-    const { products, isPending, isError } = useGetFeaturedProducts();
+    const { products, isPending, isError } = useGetNewProducts();
     console.log('Products:', products);
     
 
