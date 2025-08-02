@@ -81,20 +81,17 @@ export default function AddProductForm() {
         // 2. Upload images
         const { urls: imageUrls, paths, errors } = await ImagesAPI.uploadMultipleImages(imageFiles, title, Number(price));
         if (errors.length > 0) {
-            // Delete already uploaded images
-            for (const path of paths) {
-                if (path) {
-                    console.log(`Deleting image at path: ${path}`);
-
-                    await ImagesAPI.deleteFile('product-images', path);
-                }
+            // Delete already uploaded images (all at once)
+            const validPaths = paths.filter(Boolean); // Remove any null/undefined paths
+            if (validPaths.length > 0) {
+                await ImagesAPI.deleteFiles('product-images', validPaths);
             }
             errors.forEach((error, idx) => {
                 toast.error(`Failed to upload image ${idx + 1}: ${error.message}`);
             });
             // Rollback PDF if it was uploaded
             if (pdfResult.path) {
-                await ImagesAPI.deleteFile('product-pdfs', pdfResult.path);
+                await ImagesAPI.deleteFiles('product-pdfs', pdfResult.path);
             }
             setUploading(false);
             return;

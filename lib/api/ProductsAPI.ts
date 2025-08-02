@@ -1,5 +1,6 @@
 import { supabaseBrowser } from '../supabase/browser';
 import { InsertProduct, InsertProductImage, InsertProductVolumePrice, ProductDetails } from '@/types';
+import { ImagesAPI } from './ImagesAPI';
 
 export class ProductsAPI {
     static async fetchProducts(): Promise<ProductDetails[]> {
@@ -63,10 +64,19 @@ export class ProductsAPI {
         return data ?? [];
     }
 
-    static async deleteProduct(id: string) {
+    static async deleteProduct(id: string): Promise<void> {
         const supabase = supabaseBrowser();
 
-        // 1. Fetch image URLs for the product
+        // 1. Fetch product data including doc_url and image URLs
+        const { data: product, error: productError } = await supabase
+            .from('products')
+            .select('doc_url')
+            .eq('id', id)
+            .single();
+
+        if (productError) throw productError;
+
+        // 2. Fetch image URLs for the product
         const { data: images, error: imagesError } = await supabase
             .from('product_images')
             .select('url')
@@ -74,26 +84,42 @@ export class ProductsAPI {
 
         if (imagesError) throw imagesError;
 
-        // 2. Extract storage paths from URLs
-        const paths = (images ?? [])
+        // 3. Extract storage paths from image URLs
+        const imagePaths = (images ?? [])
             .map(img => {
-                // Example: https://xyz.supabase.co/storage/v1/object/public/product-images/filename.png
-                // Extract 'product-images/filename.png'
-                const match = img.url.match(/\/storage\/v1\/object\/public\/(.+)$/);
-                return match ? match[1] : null;
+                // Extract just the filename from the URL
+                // Example: https://xyz.supabase.co/storage/v1/object/public/product-images/aaaa_500_1.png
+                // Extract just 'aaaa_500_1.png'
+                const match = img.url.match(/\/product-images\/(.+)$/);
+                const filename = match ? match[1] : null;
+                console.log("Image URL:", img.url, "Extracted filename:", filename);
+                return filename;
             })
             .filter(Boolean);
 
-        // 3. Delete files from storage
-        if (paths.length > 0) {
-            await supabase.storage.from('product-images').remove(paths);
+        // 4. Extract PDF path from doc_url if it exists
+        let pdfPath = null;
+        if (product?.doc_url) {
+            // Extract just the filename from the URL
+            // Example: https://xyz.supabase.co/storage/v1/object/public/product-pdfs/aaaaa_11111_.pdf
+            // Extract just 'aaaaa_11111_.pdf'
+            const match = product.doc_url.match(/\/product-pdfs\/(.+)$/);
+            pdfPath = match ? match[1] : null;
         }
 
-        // 4. Delete the product 
-        const { data, error } = await supabase.from('products').delete().eq('id', id);
-        if (error) throw error;
+        // 5. Delete files from storage
+        if (imagePaths.length > 0) {
+            await ImagesAPI.deleteFiles('product-images', imagePaths);
 
-        return data ?? [];
+        }
+
+        if (pdfPath) {
+            await ImagesAPI.deleteFiles('product-pdfs', pdfPath);
+        }
+
+        // 6. Delete the product 
+        const { error } = await supabase.from('products').delete().eq('id', id);
+        if (error) throw error;
     }
 
     static async addProductImage(productImage: InsertProductImage) {

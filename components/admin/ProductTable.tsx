@@ -1,11 +1,9 @@
 'use client';
 
 import { useState, useMemo } from "react";
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { CategoryEnum, ProductDetails } from "@/types";
+import { ProductDetails } from "@/types";
 import { useGetProducts } from "@/lib/hooks/useProducts";
 import { Loader } from "../ui/loader";
 import {
@@ -22,6 +20,7 @@ import { useGetProductTypes } from "@/lib/hooks/useProducTypes";
 import { Separator } from "../ui/separator";
 import React from "react";
 import { CircleCheck, Minus } from "lucide-react";
+import { ProductUpdateSheet } from "./ProductUpdateSheet";
 
 
 export default function ProductTable() {
@@ -32,7 +31,6 @@ export default function ProductTable() {
     const [stomatologie, setStomatologie] = useState(false);
     const [medicinaGenerala, setMedicinaGenerala] = useState(false);
 
-    const categories = ["disinfectants", "equipment"];
     const { products, isPending, isError } = useGetProducts();
     const { productTypes } = useGetProductTypes();
 
@@ -264,50 +262,12 @@ export default function ProductTable() {
             </table>
         </div>
 
-        {/* Side Panel */}
-        <Sheet open={!!selectedRow} onOpenChange={open => !open && setSelectedRow(null)}>
-            <SheetContent side="left" className="max-w-md w-full" aria-describedby={undefined}>
-            <SheetHeader>
-                <SheetTitle>Edit Product</SheetTitle>
-            </SheetHeader>
-            {selectedRow && (
-                <form className="space-y-4 px-4">
-                <div>
-                    <label className="block mb-1 font-medium">Name</label>
-                    <Input defaultValue={selectedRow.title} />
-                </div>
-                <div>
-                    <label className="block mb-1 font-medium">Price</label>
-                    <Input type="number" defaultValue={selectedRow.price} />
-                </div>
-                <div>
-                    <label className="block mb-1 font-medium">Category</label>
-                    <select defaultValue={selectedRow.category} className="border rounded p-2 w-full bg-white dark:bg-neutral-950 text-black dark:text-white">
-                    {categories.map(cat => (
-                        <option key={cat} value={cat}>{cat[0].toUpperCase() + cat.slice(1)}</option>
-                    ))}
-                    </select>
-                </div>
-                <div>
-                    <label className="block mb-1 font-medium">Description</label>
-                    <textarea defaultValue={selectedRow.description ?? ""} className="border rounded p-2 w-full" rows={3} />
-                </div>
-                <div className="flex gap-4">
-                    <label className="flex items-center gap-2">
-                    <input type="checkbox" defaultChecked={selectedRow.stomatologie} />
-                    Stomatologie
-                    </label>
-                    <label className="flex items-center gap-2">
-                    <input type="checkbox" defaultChecked={selectedRow.medicina_generala} />
-                    Medicină generală
-                    </label>
-                </div>
-                {/* You can add image/pdf upload/edit here */}
-                <Button disabled={true} type="submit" className="w-full">Save Changes</Button>
-                </form>
-            )}
-            </SheetContent>
-        </Sheet>
+        {/* Product Update Sheet */}
+        <ProductUpdateSheet
+          selectedProduct={selectedRow}
+          isOpen={!!selectedRow}
+          onClose={() => setSelectedRow(null)}
+        />
         </div>
     );
 }

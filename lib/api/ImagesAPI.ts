@@ -141,9 +141,11 @@ export class ImagesAPI {
         return { url: urlData.publicUrl, path: data.path, error: null };
     }
 
-    // Delete a file from a bucket
-    static async deleteFile(bucket: string, path: string) {
+    // Delete files from a bucket (can handle single file or multiple files)
+    // Path is just the filename, not the full URL
+    static async deleteFiles(bucket: string, paths: string | string[]) {
         const supabase = supabaseBrowser();
-        await supabase.storage.from(bucket).remove([path]);
+        const pathsArray = Array.isArray(paths) ? paths : [paths];
+        return await supabase.storage.from(bucket).remove(pathsArray);
     }    
 }

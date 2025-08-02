@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ProductsAPI } from "../api/ProductsAPI";
 import { InsertProduct, InsertProductImage, InsertProductVolumePrice } from "@/types";
+import { ImagesAPI } from "../api/ImagesAPI";
 
 
 export const useGetProducts = () => {
@@ -73,6 +74,19 @@ export const useAddProductVolumePrice = () => {
     return { addProductVolumePrice };
 }
 
+export const useDeleteProduct = () => {
+    const queryClient = useQueryClient();
+
+    const deleteProduct = useMutation({
+        mutationFn: (productId: string) => ProductsAPI.deleteProduct(productId),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["products"] });
+            queryClient.invalidateQueries({ queryKey: ["newest-products"] });
+        }
+    });
+
+    return { deleteProduct };
+}
 
 
 
