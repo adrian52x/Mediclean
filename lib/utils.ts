@@ -91,8 +91,16 @@ export function isUserAdminClientSide(session: any): boolean {
 // Each product has max 3 images, named like:
 // name_price_1.jpg, name_price_2.jpg, name_price_3.jpg
 // This function returns the primary image (the one with _1 in the name) 
-export function getPrimaryImage(product: ProductDetails): string {
+export function getPrimaryImageOLD(product: ProductDetails): string {
     if (!product?.product_images?.length) return '/images/mediclean-logo.jpg';
     const main = product.product_images.find(img => /_1\.[a-zA-Z0-9]+$/.test(img.url));
     return main?.url || product.product_images[0]?.url || '/images/mediclean-logo.jpg';
+}
+
+// Each product has max 3 images. The primary image is the first one in the product_images array
+// (determined by the order they were inserted/arranged by the user)
+export function getPrimaryImage(product: ProductDetails): string {
+    if (!product?.product_images?.length) return '/images/mediclean-logo.jpg';
+    // The first image in the array is the primary image
+    return product.product_images[0]?.url || '/images/mediclean-logo.jpg';
 }

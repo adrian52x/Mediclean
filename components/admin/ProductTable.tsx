@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { ProductDetails } from "@/types";
+import { CategoryEnum, ProductDetails } from "@/types";
 import { useGetProducts } from "@/lib/hooks/useProducts";
 import { Loader } from "../ui/loader";
 import {
@@ -83,8 +83,8 @@ export default function ProductTable() {
                 <SelectContent>
                     <SelectGroup>
                         <SelectItem value="all">All categories</SelectItem>
-                        <SelectItem value="disinfectants">Dezinfectanți</SelectItem>
-                        <SelectItem value="equipment">Echipamente</SelectItem>
+                        <SelectItem value={CategoryEnum.Disinfectants}>Dezinfectanți</SelectItem>
+                        <SelectItem value={CategoryEnum.Equipment}>Echipamente</SelectItem>
                     </SelectGroup>
                 </SelectContent>
             </Select>

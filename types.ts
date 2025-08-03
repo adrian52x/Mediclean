@@ -29,7 +29,7 @@ export interface ProductDetails {
   description: string | null; // Nullable field in supabase
   price: number;
   image: string;
-  doc_url?: string; 
+  doc_url?: string | null; 
   category: CategoryEnum;
   stomatologie: boolean;
   medicina_generala: boolean;
@@ -44,7 +44,7 @@ export interface InsertProduct {
   title: string;
   description?: string;
   price: number | null; // Nullable field for price
-  doc_url?: string; // Optional field for PDF upload
+  doc_url?: string | null; // Nullable field for document URL
   category: CategoryEnum;
   product_type: string; // UUID of the product type
   stomatologie: boolean;

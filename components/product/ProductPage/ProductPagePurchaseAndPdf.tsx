@@ -148,7 +148,7 @@ export const ProductPagePurchaseAndPdf: React.FC<ProductPagePurchaseAndPdfProps>
                             <DialogTitle>PDF</DialogTitle>
                             <DialogDescription>
                                 <iframe
-                                    src={product.doc_url}
+                                    src={`${product.doc_url}?v=${new Date(product.updated_at).getTime()}`}
                                     width="100%"
                                     height="700px"
                                     className="border rounded"

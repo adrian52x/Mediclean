@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useId } from 'react';
 import { Button } from '../ui/button';
 import { Label } from '../ui/label';
 import { X, GripVertical, Upload } from 'lucide-react';
@@ -13,16 +13,19 @@ interface ImageFile extends File {
 interface ImageUploadWithPreviewProps {
   onImagesChange: (files: File[]) => void;
   maxImages?: number;
-  resetTrigger?: File[]; // Add prop to trigger reset
+  resetTrigger?: File[]; // Add prop to trigger reset,
+  isUpdatingProduct?: boolean; // Optional prop to indicate if this is for product update
 }
 
 export const ImageUploadWithPreview: React.FC<ImageUploadWithPreviewProps> = ({
   onImagesChange,
   maxImages = 3,
-  resetTrigger
+  resetTrigger,
+  isUpdatingProduct
 }) => {
   const [images, setImages] = useState<ImageFile[]>([]);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+  const inputId = useId(); // Generate unique ID for this component instance
 
   // Reset images when resetTrigger changes (parent resets the files)
   useEffect(() => {
@@ -93,7 +96,7 @@ export const ImageUploadWithPreview: React.FC<ImageUploadWithPreviewProps> = ({
 
   return (
     <div className="space-y-2">
-      <Label htmlFor="images">
+      <Label htmlFor={inputId}>
         Images | max {maxImages}
         {images.length > 0 && (
           <span className="text-sm text-muted-foreground ml-2">
@@ -105,7 +108,7 @@ export const ImageUploadWithPreview: React.FC<ImageUploadWithPreviewProps> = ({
       {/* File Input */}
       <div className="relative">
         <input
-          id="images"
+          id={inputId}
           type="file"
           accept="image/*"
           multiple
@@ -116,7 +119,7 @@ export const ImageUploadWithPreview: React.FC<ImageUploadWithPreviewProps> = ({
         <Button
           type="button"
           variant="outline"
-          onClick={() => document.getElementById('images')?.click()}
+          onClick={() => document.getElementById(inputId)?.click()}
           disabled={images.length >= maxImages}
           className="w-full"
         >
@@ -139,7 +142,7 @@ export const ImageUploadWithPreview: React.FC<ImageUploadWithPreviewProps> = ({
               onDragOver={(e) => handleDragOver(e, index)}
               onDragEnd={handleDragEnd}
             >
-              {index === 0 && (
+              {index === 0 && !isUpdatingProduct && (
                 <div className="absolute top-1 left-1 bg-blue-500 text-white text-xs px-2 py-1 rounded z-10">
                   PRIMARY
                 </div>

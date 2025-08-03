@@ -1,7 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ProductsAPI } from "../api/ProductsAPI";
 import { InsertProduct, InsertProductImage, InsertProductVolumePrice } from "@/types";
-import { ImagesAPI } from "../api/ImagesAPI";
 
 
 export const useGetProducts = () => {
@@ -52,8 +51,11 @@ export const useAddProductImage = () => {
 
     const addProductImage = useMutation({
         mutationFn: (productImage: InsertProductImage) => ProductsAPI.addProductImage(productImage),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["products"] }); // invalidata just a specific product?
+        onSuccess: (data, variables) => {
+            // Invalidate the specific product and lists
+            queryClient.invalidateQueries({ queryKey: ["product", variables.product_id] });
+            queryClient.invalidateQueries({ queryKey: ["products"] });
+            queryClient.invalidateQueries({ queryKey: ["newest-products"] });
         }
     });
 
@@ -67,7 +69,7 @@ export const useAddProductVolumePrice = () => {
         mutationFn: (productVolumePrice: InsertProductVolumePrice) => 
             ProductsAPI.addProductVolumePrice(productVolumePrice),
         onSuccess: () => {
-            //queryClient.invalidateQueries({ queryKey: ["products"] });
+            queryClient.invalidateQueries({ queryKey: ["products"] });
         }
     });
 
@@ -87,6 +89,64 @@ export const useDeleteProduct = () => {
 
     return { deleteProduct };
 }
+
+export const useUpdateProduct = () => {
+    const queryClient = useQueryClient();
+
+    const updateProduct = useMutation({
+        mutationFn: ({ id, updates }: { id: string; updates: Partial<InsertProduct> }) => 
+            ProductsAPI.updateProduct(id, updates),
+        onSuccess: (data, variables) => {
+            console.log("HOOK CALLED: Product updated successfully:", data);
+            
+            // Invalidate the specific product and lists
+            queryClient.invalidateQueries({ queryKey: ["product", variables.id] });
+            queryClient.invalidateQueries({ queryKey: ["products"] });
+            queryClient.invalidateQueries({ queryKey: ["newest-products"] });
+        }
+    });
+
+    return { updateProduct };
+}
+
+export const useDeleteProductVolumePrices = () => {
+
+    const deleteVolumePrices = useMutation({
+        mutationFn: (productId: string) => ProductsAPI.deleteProductVolumePrices(productId)
+    });
+
+    return { deleteVolumePrices };
+}
+
+export const useDeleteProductImages = () => {
+    const queryClient = useQueryClient();
+
+    const deleteProductImages = useMutation({
+        mutationFn: (productId: string) => ProductsAPI.deleteProductImages(productId),
+        onSuccess: (data, productId) => {
+            // Invalidate the specific product and lists
+            queryClient.invalidateQueries({ queryKey: ["product", productId] });
+            queryClient.invalidateQueries({ queryKey: ["products"] });
+            queryClient.invalidateQueries({ queryKey: ["newest-products"] });
+        }
+    });
+
+    return { deleteProductImages };
+}
+
+// export const useUpdateProductPdf = () => {
+//     const queryClient = useQueryClient();
+
+//     const updateProductPdf = useMutation({
+//         mutationFn: ({ id, docUrl }: { id: string; docUrl: string | null }) => 
+//             ProductsAPI.updateProductPdf(id, docUrl),
+//         onSuccess: () => {
+//             queryClient.invalidateQueries({ queryKey: ["products"] });
+//         }
+//     });
+
+//     return { updateProductPdf };
+// }
 
 
 

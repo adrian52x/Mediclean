@@ -60,13 +60,16 @@ export class ImagesAPI {
     }
 
     static async uploadMultipleImages(files: File[], title: string, price: number): Promise<{ urls: string[]; paths: string[]; errors: any[] }> {
+        const timestamp = Date.now();
         const results = await Promise.all(
             files.map(async (file, idx) => {
               
                 const fileExt = file.name.split('.').pop();
                 const safeTitle = title.replace(/[^a-z0-9]/gi, '_').toLowerCase()
 
-                const fileName = `${safeTitle}_${price}_${idx+1}.${fileExt}`;
+                // Use timestamp + index to ensure uniqueness
+                // First image will have timestamp_0, second timestamp_1, etc.
+                const fileName = `${safeTitle}_${price}_${timestamp}_${idx+1}.${fileExt}`;
 
                 const { data, error } = await supabaseBrowser()
                     .storage

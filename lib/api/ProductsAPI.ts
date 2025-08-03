@@ -122,6 +122,24 @@ export class ProductsAPI {
         if (error) throw error;
     }
 
+    static async updateProduct(id: string, updates: Partial<InsertProduct>): Promise<ProductDetails> {
+        const supabase = supabaseBrowser();
+
+        const { data, error } = await supabase
+            .from('products')
+            .update(updates)
+            .eq('id', id)
+            .select(`*,
+                product_type(type_name),
+                product_images(url),
+                product_volumes_price(volume, price)
+            `)
+            .single();
+
+        if (error) throw error;
+        return data;
+    }
+
     static async addProductImage(productImage: InsertProductImage) {
         const supabase = supabaseBrowser();
 
@@ -139,6 +157,42 @@ export class ProductsAPI {
 
         return data ?? [];
     }
+
+    // Delete all volume prices for a product
+    static async deleteProductVolumePrices(productId: string): Promise<void> {
+        const supabase = supabaseBrowser();
+
+        const { error } = await supabase
+            .from('product_volumes_price')
+            .delete()
+            .eq('product_id', productId);
+
+        if (error) throw error;
+    }
+
+    // Delete all images for a product
+    static async deleteProductImages(productId: string): Promise<void> {
+        const supabase = supabaseBrowser();
+
+        const { error } = await supabase
+            .from('product_images')
+            .delete()
+            .eq('product_id', productId);
+
+        if (error) throw error;
+    }
+
+    // Update product PDF (remove old one)
+    // static async updateProductPdf(id: string, docUrl: string | null): Promise<void> {
+    //     const supabase = supabaseBrowser();
+
+    //     const { error } = await supabase
+    //         .from('products')
+    //         .update({ doc_url: docUrl })
+    //         .eq('id', id);
+
+    //     if (error) throw error;
+    // }
 }
 
 

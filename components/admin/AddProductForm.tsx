@@ -246,9 +246,9 @@ export default function AddProductForm() {
                 
                 {/* IMGs */}
                 <ImageUploadWithPreview 
+                    key={uploading ? 'uploading' : 'ready'} // Force remount after submit
                     onImagesChange={setImageFiles}
                     maxImages={3}
-                    resetTrigger={imageFiles}
                 />
 
                 {/* PDF */}
