@@ -270,14 +270,13 @@ export const ProductUpdateSheet: React.FC<ProductUpdateSheetProps> = ({
                 
                 // Add new volume prices if switching to volume pricing
                 if (isNowVolumePrice && newValidVolumes.length > 0) {
-                    const volumePromises = newValidVolumes.map(v =>
-                        addProductVolumePrice.mutateAsync({
-                            product_id: selectedProduct.id,
-                            volume: v.volume,
-                            price: Number(v.price),
-                        })
-                    );
-                    await Promise.all(volumePromises);
+                    const volumeData = newValidVolumes.map(v => ({
+                        product_id: selectedProduct.id,
+                        volume: v.volume,
+                        price: Number(v.price),
+                    }));
+                    
+                    await addProductVolumePrice.mutateAsync(volumeData);
                 }
             } else {
                 console.log('Skipping volume update - no changes detected');
@@ -303,13 +302,12 @@ export const ProductUpdateSheet: React.FC<ProductUpdateSheetProps> = ({
                 
                 // Re-insert all images that should remain (existing + new)
                 if (allFinalImageUrls.length > 0) {
-                    const imagePromises = allFinalImageUrls.map(url =>
-                        addProductImage.mutateAsync({
-                            product_id: selectedProduct.id,
-                            url,
-                        })
-                    );
-                    await Promise.all(imagePromises);
+                    const imageData = allFinalImageUrls.map(url => ({
+                        product_id: selectedProduct.id,
+                        url,
+                    }));
+                    
+                    await addProductImage.mutateAsync(imageData);
                 }
                 
                 console.log('Images updated successfully. Final count:', allFinalImageUrls.length);

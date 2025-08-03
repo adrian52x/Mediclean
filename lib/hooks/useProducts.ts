@@ -50,10 +50,9 @@ export const useAddProductImage = () => {
     const queryClient = useQueryClient();
 
     const addProductImage = useMutation({
-        mutationFn: (productImage: InsertProductImage) => ProductsAPI.addProductImage(productImage),
-        onSuccess: (data, variables) => {
-            // Invalidate the specific product and lists
-            queryClient.invalidateQueries({ queryKey: ["product", variables.product_id] });
+        mutationFn: (productImage: InsertProductImage | InsertProductImage[]) => 
+            ProductsAPI.addProductImage(productImage),
+        onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["products"] });
             queryClient.invalidateQueries({ queryKey: ["newest-products"] });
         }
@@ -66,7 +65,7 @@ export const useAddProductVolumePrice = () => {
     const queryClient = useQueryClient();
 
     const addProductVolumePrice = useMutation({
-        mutationFn: (productVolumePrice: InsertProductVolumePrice) => 
+        mutationFn: (productVolumePrice: InsertProductVolumePrice | InsertProductVolumePrice[]) => 
             ProductsAPI.addProductVolumePrice(productVolumePrice),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["products"] });

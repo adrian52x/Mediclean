@@ -111,28 +111,38 @@ export default function AddProductForm() {
 
         await createProduct.mutateAsync(productData, {
             onSuccess: async (data) => {
-                // Insert images in product_images table
-                const imageInsertPromises = imageUrls.map((url) =>
-                    addProductImage.mutateAsync({
-                        product_id: data.id,
-                        url,
-                    })
-                );
+                // Prepare batch data for images
+                const imageData = imageUrls.map((url) => ({
+                    product_id: data.id,
+                    url,
+                }));
 
-                // Insert volumes in product_volumes_price table (only if priceType is Volume)
-                let volumeInsertPromises: Promise<any>[] = [];
-                if (priceType === PriceTypeEnum.Volume) {
-                    volumeInsertPromises = volumes.filter(v => v.volume && v.price).map((v) =>
-                        addProductVolumePrice.mutateAsync({
+                // Prepare batch data for volumes (only if priceType is Volume)
+                const volumeData = priceType === PriceTypeEnum.Volume 
+                    ? volumes
+                        .filter(v => v.volume && v.price)
+                        .map((v) => ({
                             product_id: data.id,
                             volume: v.volume,
                             price: Number(v.price),
-                        })
-                    );
-                }
+                        }))
+                    : [];
 
                 try {
-                    await Promise.all([...imageInsertPromises, ...volumeInsertPromises]);
+                    // Execute batch operations in parallel
+                    const promises = [];
+                    
+                    // Add images batch operation
+                    if (imageData.length > 0) {
+                        promises.push(addProductImage.mutateAsync(imageData));
+                    }
+                    
+                    // Add volumes batch operation
+                    if (volumeData.length > 0) {
+                        promises.push(addProductVolumePrice.mutateAsync(volumeData));
+                    }
+
+                    await Promise.all(promises);
                     toast.success("Product added successfully!");
                 } catch (error: any) {
                     toast.warning("Product added, but some data maybe is missing" + (error?.message || "Unknown error"));

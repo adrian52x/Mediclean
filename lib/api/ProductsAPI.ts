@@ -140,19 +140,25 @@ export class ProductsAPI {
         return data;
     }
 
-    static async addProductImage(productImage: InsertProductImage) {
+    static async addProductImage(productImage: InsertProductImage | InsertProductImage[]) {
         const supabase = supabaseBrowser();
 
-        const { data, error } = await supabase.from('product_images').insert([productImage]);
+        // Ensure it's always an array for the insert operation
+        const images = Array.isArray(productImage) ? productImage : [productImage];
+        
+        const { data, error } = await supabase.from('product_images').insert(images);
         if (error) throw error;
 
         return data ?? [];
     }
 
-    static async addProductVolumePrice(productVolumePrice: InsertProductVolumePrice) {
+    static async addProductVolumePrice(productVolumePrice: InsertProductVolumePrice | InsertProductVolumePrice[]) {
         const supabase = supabaseBrowser();
 
-        const { data, error } = await supabase.from('product_volumes_price').insert([productVolumePrice]);
+        // Ensure it's always an array for the insert operation
+        const volumePrices = Array.isArray(productVolumePrice) ? productVolumePrice : [productVolumePrice];
+        
+        const { data, error } = await supabase.from('product_volumes_price').insert(volumePrices);
         if (error) throw error;
 
         return data ?? [];
