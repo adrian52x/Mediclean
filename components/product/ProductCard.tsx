@@ -16,7 +16,7 @@ import { getPrimaryImage } from '@/lib/utils';
 import { useState, useMemo, useCallback } from 'react';
 import { useCartStore } from '@/lib/stores/cartStore';
 import { toast } from 'sonner';
-import { formatText } from '@/lib/utils/textFormatter';
+import { getPlainTextPreview } from '@/lib/utils/textPreview';
 
 export const ProductCard = ({ product }: { product: ProductDetails }) => {
     const addItem = useCartStore((state) => state.addItem);
@@ -110,7 +110,7 @@ export const ProductCard = ({ product }: { product: ProductDetails }) => {
                 </Link>
 
                 <div className="text-xs text-neutral-500 line-clamp-2">
-                    {formatText(product.description ?? '')}
+                    {getPlainTextPreview(product.description ?? '', 100)}
                 </div>
             </CardContent>
 
