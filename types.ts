@@ -98,6 +98,8 @@ export interface ProductFilters {
     medicalFields: string[];
 }
 
+
+// Checkout and Order Types
 export type DeliveryMethod = 'delivery' | 'postalDelivery';
 export interface OrderFormData {
     // Customer Info

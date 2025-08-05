@@ -44,7 +44,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ images }) => {
                                             Dezinfectanți
                                         </h3>
                                         <p className="text-sm text-gray-500 dark:text-gray-400">
-                                            Profesioanli
+                                            Profesionali
                                         </p>
                                     </div>
                                     <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-cyan-500 transition-colors" />
