@@ -33,7 +33,7 @@ import { useRouter } from 'next/navigation';
 
 export const NavBarButtons: React.FC = () => {
   return (
-    <Menubar className='border-1 border-gray-300 dark:border-neutral-700'>
+    <Menubar className='hidden lg:flex border-1 border-gray-300 dark:border-neutral-700'>
         <MenubarMenu>
             <MenubarTrigger> 
                 <ChevronDown size={18}/> 
