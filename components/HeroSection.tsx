@@ -33,50 +33,53 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ images }) => {
                             Descoperă categoriile noastre:
                         </p>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                            {/* Dezinfectanți */}
+                            {/* Style 1: Minimal Glass/Blur Effect - Dezinfectanți */}
                             <Link href="/products?category=disinfectants" className="group">
-                                <div className="flex items-center space-x-3 p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700  transition-all duration-300 hover:shadow-lg hover:scale-103">
-                                    <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-lg flex items-center justify-center">
-                                        <Droplets className="w-6 h-6 text-white" />
+                                <div className="flex items-center space-x-3 p-5 backdrop-blur-sm bg-white/80 dark:bg-gray-800 rounded-2xl border-b-5 border-slate-400 hover:border-slate-600 dark:border-gray-600 hover:dark:border-gray-300 transition-all duration-500 hover:backdrop-blur-md hover:shadow-xl hover:-translate-y-1">
+                                    <div className="flex-shrink-0 w-10 h-10 bg-slate-100 dark:bg-gray-800 rounded-xl flex items-center justify-center group-hover:bg-slate-200 dark:group-hover:bg-gray-700 transition-colors duration-300">
+                                        <Droplets className="w-5 h-5 text-gray-700 dark:text-gray-300" />
                                     </div>
                                     <div className="flex-1">
-                                        <h3 className="font-semibold text-gray-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
+                                        <h3 className="font-medium text-gray-900 dark:text-white transition-colors">
                                             Dezinfectanți
                                         </h3>
                                         <p className="text-sm text-gray-500 dark:text-gray-400">
                                             Profesionali
                                         </p>
                                     </div>
-                                    <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-cyan-500 transition-colors" />
+                                    <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300 group-hover:translate-x-1 transition-all duration-300" />
                                 </div>
                             </Link>
 
-                            {/* Echipamente Medicina Generală */}
+                            {/* Style 2: Monochrome with Subtle Shadow - Echipamente */}
                             <Link href="/products?category=equipment" className="group">
-                                <div className="flex items-center space-x-3 p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700  transition-all duration-300 hover:shadow-lg hover:scale-103">
-                                    <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-r from-cyan-500 to-slate-500 rounded-lg flex items-center justify-center">
-                                        <Stethoscope className="w-6 h-6 text-white" />
+                                <div className="flex items-center space-x-3 p-5 backdrop-blur-sm bg-white/80 dark:bg-gray-800 rounded-2xl border-b-4 border-slate-400 hover:border-slate-600 dark:border-gray-600 hover:dark:border-gray-300 transition-all duration-500 hover:backdrop-blur-md hover:shadow-xl hover:-translate-y-1">
+                                    <div className="flex-shrink-0 w-10 h-10 bg-slate-100 dark:bg-gray-800 rounded-xl flex items-center justify-center group-hover:bg-slate-200 dark:group-hover:bg-gray-700 transition-colors duration-300">
+                                        <Stethoscope className="w-5 h-5 text-gray-700 dark:text-gray-300" />
                                     </div>
                                     <div className="flex-1">
-                                        <h3 className="font-semibold text-gray-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
+                                        <h3 className="font-medium text-gray-900 dark:text-white transition-colors">
                                             Echipamente
                                         </h3>
                                         <p className="text-sm text-gray-500 dark:text-gray-400">
                                             Medicale
                                         </p>
                                     </div>
-                                    <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-cyan-500 transition-colors" />
+                                    <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300 group-hover:translate-x-1 transition-all duration-300" />
                                 </div>
                             </Link>
 
-                            {/* Toate Produsele - Main CTA */}
+                            {/* Style 3: Dark Minimalist with Accent Line - Toate Produsele */}
                             <Link href="/products" className="group sm:col-span-2 lg:col-span-1">
-                                <div className="lg:h-[82px] flex items-center justify-center space-x-3 p-4 bg-gradient-to-r from-cyan-600 to-slate-400 hover:from-cyan-700 hover:to-slate-500 rounded-xl transition-all duration-300 hover:shadow-lg hover:scale-103">
-                                    <ShoppingCart className="w-6 h-6 text-white" />
-                                    <span className="font-semibold text-white">
+                                <div className="relative lg:h-[82px] flex items-center justify-center space-x-3 p-5 bg-primary dark:bg-gray-100 rounded-2xl border border-gray-800 dark:border-gray-200 transition-all duration-500 hover:bg-gray-800 dark:hover:bg-gray-50 hover:shadow-2xl hover:scale-[1.02] overflow-hidden">
+                                    {/* Subtle accent line */}
+                                    <div className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-gray-600 dark:via-gray-400 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                                    
+                                    <ShoppingCart className="w-5 h-5 text-white dark:text-gray-900" />
+                                    <span className="font-medium text-white dark:text-gray-900">
                                         Toate produsele
                                     </span>
-                                    <ArrowRight className="w-5 h-5 text-white group-hover:translate-x-1 transition-transform" />
+                                    <ArrowRight className="w-4 h-4 text-white dark:text-gray-900 group-hover:translate-x-1 transition-transform duration-300" />
                                 </div>
                             </Link>
                         </div>
