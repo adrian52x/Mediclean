@@ -5,43 +5,43 @@ const data = [
   {
     label: 'LEGAL',
     links: [
+      // {
+      //   label: 'Privacy Policy',
+      //   url: '/privacy',
+      // },
       {
-        label: 'Privacy Policy',
-        url: '/privacy',
-      },
-      {
-        label: 'Terms & Conditions',
-        url: '/terms',
+        label: 'Termeni & Conditii',
+        url: '#terms',
       },
     ],
   },
   {
-    label: 'RESOURCES',
+    label: 'RESURSE',
     links: [
-      {
-        label: 'Blog',
-        url: '/blog',
-      },
-      {
-        label: 'About',
-        url: '/about',
-      },
+      // {
+      //   label: 'Blog',
+      //   url: '/blog',
+      // },
+      // {
+      //   label: 'Locatie',
+      //   url: '#location',
+      // },
       {
         label: 'Contact',
-        url: '/contact',
+        url: '#services',
       },
     ],
   },
   {
     label: 'SUPPORT',
     links: [
+      // {
+      //   label: 'Telegram',
+      //   url: '/telegram',
+      // },
       {
-        label: 'Telegram',
-        url: '/telegram',
-      },
-      {
-        label: 'FAQ',
-        url: '/faq',
+        label: 'Intrebari',
+        url: '#faq',
       },
     ],
   },
