@@ -35,8 +35,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ images }) => {
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                             {/* Style 1: Minimal Glass/Blur Effect - Dezinfectanți */}
                             <Link href="/products?category=disinfectants" className="group">
-                                <div className="flex items-center space-x-3 p-5 backdrop-blur-sm bg-white/80 dark:bg-gray-800 rounded-2xl border-b-5 border-slate-400 hover:border-slate-600 dark:border-gray-600 hover:dark:border-gray-300 transition-all duration-500 hover:backdrop-blur-md hover:shadow-xl hover:-translate-y-1">
-                                    <div className="flex-shrink-0 w-10 h-10 bg-slate-100 dark:bg-gray-800 rounded-xl flex items-center justify-center group-hover:bg-slate-200 dark:group-hover:bg-gray-700 transition-colors duration-300">
+                                <div className="flex items-center space-x-3 p-5 backdrop-blur-sm bg-white/80 dark:bg-card rounded-2xl border-b-4 border-slate-400 hover:border-slate-600 dark:border-gray-600 hover:dark:border-gray-300 transition-all duration-500 hover:backdrop-blur-md hover:shadow-xl hover:-translate-y-1 overflow-hidden">
+                                    <div className="w-10 h-10 bg-slate-100 dark:bg-card rounded-xl flex items-center justify-center group-hover:bg-slate-200 dark:group-hover:bg-neutral-800 transition-colors duration-300">
                                         <Droplets className="w-5 h-5 text-gray-700 dark:text-gray-300" />
                                     </div>
                                     <div className="flex-1">
@@ -53,8 +53,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ images }) => {
 
                             {/* Style 2: Monochrome with Subtle Shadow - Echipamente */}
                             <Link href="/products?category=equipment" className="group">
-                                <div className="flex items-center space-x-3 p-5 backdrop-blur-sm bg-white/80 dark:bg-gray-800 rounded-2xl border-b-4 border-slate-400 hover:border-slate-600 dark:border-gray-600 hover:dark:border-gray-300 transition-all duration-500 hover:backdrop-blur-md hover:shadow-xl hover:-translate-y-1">
-                                    <div className="flex-shrink-0 w-10 h-10 bg-slate-100 dark:bg-gray-800 rounded-xl flex items-center justify-center group-hover:bg-slate-200 dark:group-hover:bg-gray-700 transition-colors duration-300">
+                                <div className="flex items-center space-x-3 p-5 backdrop-blur-sm bg-white/80 dark:bg-card rounded-2xl border-b-4 border-slate-400 hover:border-slate-600 dark:border-gray-600 hover:dark:border-gray-300 transition-all duration-500 hover:backdrop-blur-md hover:shadow-xl hover:-translate-y-1 overflow-hidden">
+                                    <div className="w-10 h-10 bg-slate-100 dark:bg-card rounded-xl flex items-center justify-center group-hover:bg-slate-200 dark:group-hover:bg-neutral-800 transition-colors duration-300">
                                         <Stethoscope className="w-5 h-5 text-gray-700 dark:text-gray-300" />
                                     </div>
                                     <div className="flex-1">
@@ -69,12 +69,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ images }) => {
                                 </div>
                             </Link>
 
-                            {/* Style 3: Dark Minimalist with Accent Line - Toate Produsele */}
+                            {/* Style 3: Dark Minimalist - Toate Produsele */}
                             <Link href="/products" className="group sm:col-span-2 lg:col-span-1">
                                 <div className="relative lg:h-[82px] flex items-center justify-center space-x-3 p-5 bg-primary dark:bg-gray-100 rounded-2xl border border-gray-800 dark:border-gray-200 transition-all duration-500 hover:bg-gray-800 dark:hover:bg-gray-50 hover:shadow-2xl hover:scale-[1.02] overflow-hidden">
-                                    {/* Subtle accent line */}
-                                    <div className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-gray-600 dark:via-gray-400 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                                    
                                     <ShoppingCart className="w-5 h-5 text-white dark:text-gray-900" />
                                     <span className="font-medium text-white dark:text-gray-900">
                                         Toate produsele
