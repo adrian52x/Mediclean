@@ -17,9 +17,9 @@ export default function LogoWithText() {
             className="text-[1rem] font-bold tracking-wide md:text-[1.5rem]"
             id="main-text"
           >
-            MEDICLEAN
+            DEZINFECT
           </span>
-          <span
+            <span
             className="text-muted-foreground text-[0.5rem] uppercase md:text-[0.6rem]"
             style={{
               width: '100%',
@@ -27,9 +27,9 @@ export default function LogoWithText() {
               transform: 'scaleX(0.85)',
               transformOrigin: 'left',
             }}
-          >
-            DESINFECTANTS & MEDICAL SUPPLIES
-          </span>
+            >
+            DEZINFECTANȚI & CONSUMABILE MEDICALE
+            </span>
         </div>
       </Link>
     </div>
