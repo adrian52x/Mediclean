@@ -66,11 +66,12 @@ export default function Navbar({ session }: { session: any }) {
 
 function LoginDialog() {
   return (
-    <Link href="/auth">
-      <Button className="flex gap-2 font-medium">
-        <LogInIcon className="h-4" />
-        <p>Login</p>
-      </Button>
-    </Link>
+    // <Link href="/auth">
+    //   <Button className="flex gap-2 font-medium">
+    //     <LogInIcon className="h-4" />
+    //     <p>Login</p>
+    //   </Button>
+    // </Link>
+    <></>
   );
 }
