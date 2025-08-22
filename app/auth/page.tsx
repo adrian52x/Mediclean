@@ -11,19 +11,10 @@ export default function page() {
   const handleLoginWithOAuth = async () => {
     const supabase = supabaseBrowser();
 
-    // Explicitly set the correct redirect URL based on the current domain
-    const currentOrigin = window.location.origin;
-    const redirectUrl = `${currentOrigin}/auth/callback`;
-
-    console.log('OAuth redirect URL:', redirectUrl); // Debug log
-
     supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: redirectUrl,
-        queryParams: {
-          prompt: 'select_account', // Force account selection to ensure fresh auth
-        },
+        redirectTo: `${window.location.origin}/auth/callback`,
       },
     });
   };
