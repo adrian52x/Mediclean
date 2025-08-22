@@ -18,7 +18,7 @@ import { MobileMenuTrigger } from './MobileMenuTrigger';
 export default function Navbar({ session }: { session: any }) {
   const pathname = usePathname(); // Get the current route
 
-  //console.log('session navbar', session);
+  console.log('session navbar', session);
 
   const navClasses = cn(
     'sticky top-0 z-50 border-b transition-all duration-300',
@@ -66,12 +66,11 @@ export default function Navbar({ session }: { session: any }) {
 
 function LoginDialog() {
   return (
-    // <Link href="/auth">
-    //   <Button className="flex gap-2 font-medium">
-    //     <LogInIcon className="h-4" />
-    //     <p>Login</p>
-    //   </Button>
-    // </Link>
-    <></>
+    <Link href="/auth">
+      <Button className="flex gap-2 font-medium">
+        <LogInIcon className="h-4" />
+        <p>Login test</p>
+      </Button>
+    </Link>
   );
 }
