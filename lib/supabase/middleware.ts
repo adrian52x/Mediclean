@@ -21,16 +21,9 @@ export async function updateSession(request: NextRequest) {
           supabaseResponse = NextResponse.next({
             request,
           });
-          cookiesToSet.forEach(({ name, value, options }) => {
-            // Ensure cookies work across different domains
-            const cookieOptions = {
-              ...options,
-              domain: undefined, // Let the browser handle domain automatically
-              secure: process.env.NODE_ENV === 'production',
-              sameSite: 'lax' as const,
-            };
-            supabaseResponse.cookies.set(name, value, cookieOptions);
-          });
+          cookiesToSet.forEach(({ name, value, options }) =>
+            supabaseResponse.cookies.set(name, value, options),
+          );
         },
       },
     },
