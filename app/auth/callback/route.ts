@@ -14,32 +14,13 @@ export async function GET(request: Request) {
     if (!error) {
       const forwardedHost = request.headers.get('x-forwarded-host'); // original origin before load balancer
       const isLocalEnv = process.env.NODE_ENV === 'development';
-      
-      // Add a small delay and force a fresh redirect to ensure session is properly set
-      const redirectUrl = new URL(next, origin);
-      
       if (isLocalEnv) {
         // we can be sure that there is no load balancer in between, so no need to watch for X-Forwarded-Host
-        const response = NextResponse.redirect(redirectUrl.toString());
-        // Force cache headers to ensure fresh session data
-        response.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate');
-        response.headers.set('Pragma', 'no-cache');
-        response.headers.set('Expires', '0');
-        return response;
+        return NextResponse.redirect(`${origin}${next}`);
       } else if (forwardedHost) {
-        redirectUrl.host = forwardedHost;
-        redirectUrl.protocol = 'https:';
-        const response = NextResponse.redirect(redirectUrl.toString());
-        response.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate');
-        response.headers.set('Pragma', 'no-cache');
-        response.headers.set('Expires', '0');
-        return response;
+        return NextResponse.redirect(`https://${forwardedHost}${next}`);
       } else {
-        const response = NextResponse.redirect(redirectUrl.toString());
-        response.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate');
-        response.headers.set('Pragma', 'no-cache');
-        response.headers.set('Expires', '0');
-        return response;
+        return NextResponse.redirect(`${origin}${next}`);
       }
     }
   }

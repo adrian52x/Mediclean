@@ -3,6 +3,9 @@ import Navbar from '@/components/navbar/navbar';
 import ThemeToggle from '@/components/theme-toggle';
 import { supabaseServer } from '@/lib/supabase/server';
 
+// Force dynamic rendering to prevent caching of session state
+export const dynamic = 'force-dynamic';
+
 export default async function DashboardLayout({
   children,
 }: {

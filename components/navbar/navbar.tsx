@@ -69,7 +69,7 @@ function LoginDialog() {
     <Link href="/auth">
       <Button className="flex gap-2 font-medium">
         <LogInIcon className="h-4" />
-        <p>Login test2</p>
+        <p>Login test3</p>
       </Button>
     </Link>
   );
