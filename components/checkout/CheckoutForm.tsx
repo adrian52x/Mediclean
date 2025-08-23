@@ -21,6 +21,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import { OrderFormData } from '@/types';
+import { generateOrderId, validateEmail } from '@/lib/utils';
 
 export function CheckoutForm() {
     const router = useRouter();
@@ -39,6 +40,7 @@ export function CheckoutForm() {
     });
 
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [emailError, setEmailError] = useState('');
 
     // Redirect if cart is empty
     if (cartItems.length === 0) {
@@ -65,6 +67,12 @@ export function CheckoutForm() {
 
     const handleInputChange = (field: keyof OrderFormData, value: string) => {
         setFormData(prev => ({ ...prev, [field]: value }));
+        
+        // Validate email in real-time
+        if (field === 'email') {
+            const error = validateEmail(value);
+            setEmailError(error);
+        }
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -72,12 +80,9 @@ export function CheckoutForm() {
         setIsSubmitting(true);
 
         try {
-            // Simulate API call delay
-            await new Promise(resolve => setTimeout(resolve, 1000));
-
-            // Mock order processing - log order details
+            // Order details object
             const orderDetails = {
-                orderId: `MED-${Date.now()}`,
+                orderId: generateOrderId(),
                 timestamp: new Date().toISOString(),
                 customer: {
                     name: formData.name,
@@ -109,7 +114,7 @@ export function CheckoutForm() {
                 }
             };
 
-            console.log('🛒 ORDER SUBMITTED:', orderDetails);
+            console.log('🛒 ORDER PROCESSED:', orderDetails);
 
             // Send order confirmation email with Resend
             try {
@@ -126,27 +131,27 @@ export function CheckoutForm() {
                 
                 if (emailResult.success) {
                     console.log('✅ Email sent successfully with Resend:', emailResult.messageId);
+                    alert(`Comanda ta a fost înregistrată! Un email de confirmare a fost trimis la ${formData.email}.`);
+                    
+                    clearCart();
+                    setIsSubmitting(false);
+
                 } else {
-                    console.error('❌ Failed to send email with Resend:', emailResult.error);
-                    // Continue with order processing even if email fails
+                    console.error(emailResult.error.message);
+                    alert(`A apărut o eroare la procesarea comenzii. Te rugăm să încerci din nou.`);
+
                 }
             } catch (emailError) {
                 console.error('❌ Resend email service error:', emailError);
-                // Continue with order processing even if email fails
+                alert(`Eroare la trimiterea emailului. Te rugăm să încerci din nou.`);
             }
 
-            // Clear cart and redirect to success page
-            clearCart();
             setIsSubmitting(false);
-            
-            // In a real app, you'd redirect to an order confirmation page
-            alert(`Comanda ta #${orderDetails.orderId} a fost înregistrată! Un email de confirmare a fost trimis la ${formData.email}.`);
-            router.push('/');
 
         } catch (error) {
             console.error('❌ Order submission error:', error);
             setIsSubmitting(false);
-            alert('A apărut o eroare la procesarea comenzii. Te rugăm să încerci din nou.');
+            alert('Eroare la procesarea comenzii. Te rugăm să încerci din nou.');
         }
     }
 
@@ -217,7 +222,11 @@ export function CheckoutForm() {
                                         onChange={(e) => handleInputChange('email', e.target.value)}
                                         required
                                         placeholder="exemplu@email.com"
+                                        className={emailError ? 'border-red-500 focus:border-red-500' : ''}
                                     />
+                                    {emailError && (
+                                        <p className="text-red-500 text-sm mt-1">{emailError}</p>
+                                    )}
                                 </div>
                                 <div>
                                     <Label className="mb-1" htmlFor="bankDetails">Rechizite bancare (opțional)</Label>
@@ -404,7 +413,7 @@ export function CheckoutForm() {
                                 type="submit"
                                 onClick={handleSubmit}
                                 disabled={isSubmitting || !formData.name || !formData.phone || !formData.email || 
-                                !formData.address || !formData.city}
+                                !formData.address || !formData.city || emailError !== ''}
                                 className="w-full"
                                 size="lg"
                             >

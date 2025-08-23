@@ -23,7 +23,7 @@ const ordersEmailTemplate = (orderDetails: OrderDetails) => {
     <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Confirmare comandă - Mediclean</title>
+      <title>Confirmare comandă - Dezinfect</title>
       <style>
         body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; }
         .container { max-width: 600px; margin: 0 auto; padding: 20px; }
@@ -128,16 +128,16 @@ const ordersEmailTemplate = (orderDetails: OrderDetails) => {
           <div class="contact-info">
             <h4>📞 Ai întrebări?</h4>
             <p>Nu ezita să ne contactezi pentru orice informații suplimentare:</p>
-            <p><strong>Email:</strong> comenzi@mediclean.md</p>
-            <p><strong>Telefon:</strong> +373 22 123 456</p>
+            <p><strong>Email:</strong> bunic.cristian@gmail.com</p>
+            <p><strong>Telefon:</strong> 079410042</p>
           </div>
         </div>
 
         <div class="footer">
-          <h3>🏥 Mediclean</h3>
+          <h3>🏥 <a href="https://www.dezinfect.md" target="_blank" style="color: white; text-decoration: none;">www.dezinfect.md</a></h3>
           <p>Dezinfectanți profesionali și echipamente medicale</p>
-          <p>str. Medicina 15, Chișinău, MD-2004</p>
-          <p>© 2025 Mediclean. Toate drepturile rezervate.</p>
+          <p>Str. Nicolae Zelinski 36/6, Chișinău</p>
+          <p>© 2025 Dezinfect. Toate drepturile rezervate.</p>
         </div>
       </div>
     </body>
@@ -146,44 +146,61 @@ const ordersEmailTemplate = (orderDetails: OrderDetails) => {
 };
 
 export const sendOrderConfirmationWithResend = async (orderDetails: OrderDetails) => {
-  try {
-    console.log('📧 Starting Resend email service...');
-    console.log('📧 Resend API Key:', process.env.RESEND_API_KEY_ORDERS ? 'Configured' : 'Missing');
+    try {
+        console.log('📧 Starting Resend email service...');
+        console.log('📧 Resend API Key:', process.env.RESEND_API_KEY_ORDERS ? 'Configured' : 'Missing');
 
-    if (!process.env.RESEND_API_KEY_ORDERS) {
-      throw new Error('RESEND_API_KEY_ORDERS is not configured');
+        if (!process.env.RESEND_API_KEY_ORDERS) {
+            throw new Error('RESEND_API_KEY_ORDERS is not configured');
+        }
+
+        const emailResult = await resend.emails.send({
+            from: 'Dezinfect-MD <Comenzi@dezinfect.md>',
+            to: [orderDetails.customer.email],
+            cc: [process.env.CC_EMAIL!], // CC yourself on orders
+            subject: `Confirmare comandă #${orderDetails.orderId} - Dezinfect.md`,
+            html: ordersEmailTemplate(orderDetails),
+        });
+
+        console.log('✅ Resend email result:', emailResult);
+        console.log('✅ Resend email ID:', emailResult.data?.id);
+        
+        // Check if Resend returned an error in the response
+        if (emailResult.error) {
+            return { 
+                success: false, 
+                error: emailResult.error,
+                service: 'resend'
+            };
+        }
+
+        // Check if we got data back
+        if (!emailResult.data) {
+            return { 
+                success: false, 
+                error: 'No data returned from Resend',
+                service: 'resend'
+            };
+        }
+        
+        return { 
+            success: true, 
+            messageId: emailResult.data.id || 'sent',
+            service: 'resend',
+            fullResponse: emailResult
+        };
+
+    } catch (error) {
+        return { 
+            success: false, 
+            error: error,
+            service: 'resend'
+        };
     }
-
-    const emailResult = await resend.emails.send({
-      from: 'Mediclean <Comenzi@resend.dev>',
-      //to: [orderDetails.customer.email, process.env.GMAIL_EMAIL!],
-      to: [process.env.SITE_EMAIL!],
-      subject: `Confirmare comandă #${orderDetails.orderId} - Mediclean`,
-      html: ordersEmailTemplate(orderDetails),
-    });
-
-    console.log('✅ Resend email result:', emailResult);
-    console.log('✅ Resend email ID:', emailResult.data?.id);
-    
-    return { 
-      success: true, 
-      messageId: emailResult.data?.id || 'sent',
-      service: 'resend',
-      fullResponse: emailResult
-    };
-
-  } catch (error) {
-    console.error('❌ Failed to send email with Resend:', error);
-    return { 
-      success: false, 
-      error: error,
-      service: 'resend'
-    };
-  }
 };
 
 
 // TO DO
-export const sendConsultationEmailWithResend = async (email: string, subject: string, message: string) => {
+// export const sendConsultationEmailWithResend = async (email: string, subject: string, message: string) => {
 
-}
+// }

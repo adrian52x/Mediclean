@@ -104,3 +104,27 @@ export function getPrimaryImage(product: ProductDetails): string {
     // The first image in the array is the primary image
     return product.product_images[0]?.url || '/images/mediclean-logo.jpg';
 }
+
+// Example: DEZ-23/08/2025-1435-67
+export function generateOrderId() {
+    const now = new Date();
+    const day = now.getDate().toString().padStart(2, '0');
+    const month = (now.getMonth() + 1).toString().padStart(2, '0');
+    const year = now.getFullYear();
+    const hour = now.getHours().toString().padStart(2, '0');
+    const minute = now.getMinutes().toString().padStart(2, '0');
+    const random2digits = Math.floor(10 + Math.random() * 90); // 2-digit random
+    return `DEZ-${day}/${month}/${year}-${hour}${minute}-${random2digits}`;
+};
+
+// Email validation function
+export function validateEmail(email: string) {
+    const emailRegex = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
+    if (!email) {
+        return '';
+    }
+    if (!emailRegex.test(email)) {
+        return 'Adresa de email nu este validă';
+    }
+    return '';
+};

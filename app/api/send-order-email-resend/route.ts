@@ -22,7 +22,6 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        console.log('📧 Sending order confirmation with Resend...');
         console.log('📧 Order ID:', orderDetails.orderId);
         console.log('📧 Customer email:', orderDetails.customer.email);
 
@@ -38,11 +37,11 @@ export async function POST(request: NextRequest) {
                 service: 'resend'
             });
         } else {
-            console.error('❌ Failed to send email with Resend:', emailResult.error);
+            console.error('❌ Failed to send email with Resend - Route error:', emailResult.error);
             return NextResponse.json(
                 {
                 success: false,
-                error: 'Failed to send email with Resend',
+                error: emailResult.error,
                 details: emailResult.error,
                 service: 'resend'
                 },
@@ -55,7 +54,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json(
             {
                 success: false,
-                error: 'Internal server error in Resend endpoint',
+                error: 'Internal server error',
                 details: error instanceof Error ? error.message : 'Unknown error',
                 service: 'resend'
             },
