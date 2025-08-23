@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { useCartStore } from '@/lib/stores/cartStore';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -9,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Separator } from '@/components/ui/separator';
-import { ArrowLeft, Package, Truck, User } from 'lucide-react';
+import { ArrowLeft, Package, Truck, User, Mail, Shield, Check } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -24,7 +23,6 @@ import { OrderFormData } from '@/types';
 import { generateOrderId, validateEmail } from '@/lib/utils';
 
 export function CheckoutForm() {
-    const router = useRouter();
     const { cartItems, cartCount, totalPrice, clearCart } = useCartStore();
     
     const [formData, setFormData] = useState<OrderFormData>({
@@ -41,6 +39,12 @@ export function CheckoutForm() {
 
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [emailError, setEmailError] = useState('');
+    
+    // Email verification states
+    const [emailVerificationStep, setEmailVerificationStep] = useState<'none' | 'sending' | 'sent' | 'verified'>('none');
+    const [verificationCode, setVerificationCode] = useState('');
+    const [verificationError, setVerificationError] = useState('');
+    const [isVerifying, setIsVerifying] = useState(false);
 
     // Redirect if cart is empty
     if (cartItems.length === 0) {
@@ -72,6 +76,83 @@ export function CheckoutForm() {
         if (field === 'email') {
             const error = validateEmail(value);
             setEmailError(error);
+            
+            // Reset verification state if email changes
+            if (emailVerificationStep !== 'none') {
+                setEmailVerificationStep('none');
+                setVerificationCode('');
+                setVerificationError('');
+            }
+        }
+    };
+
+    const sendVerificationCode = async () => {
+        if (emailError || !formData.email) {
+            setVerificationError('Te rugăm să introduci o adresă de email validă.');
+            return;
+        }
+
+        setEmailVerificationStep('sending');
+        setVerificationError('');
+
+        try {
+            const response = await fetch('/api/send-verification-code', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email: formData.email }),
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                setEmailVerificationStep('sent');
+            } else {
+                setVerificationError(result.error || 'Eroare la trimiterea codului de verificare.');
+                setEmailVerificationStep('none');
+            }
+        } catch (error) {
+            console.error('Error sending verification code:', error);
+            setVerificationError('Eroare la trimiterea codului de verificare.');
+            setEmailVerificationStep('none');
+        }
+    };
+
+    const verifyEmailCode = async () => {
+        if (!verificationCode || verificationCode.length !== 6) {
+            setVerificationError('Te rugăm să introduci codul de 6 cifre.');
+            return;
+        }
+
+        setIsVerifying(true);
+        setVerificationError('');
+
+        try {
+            const response = await fetch('/api/verify-email-code', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    email: formData.email, 
+                    code: verificationCode 
+                }),
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                setEmailVerificationStep('verified');
+                setVerificationCode('');
+            } else {
+                setVerificationError(result.error || 'Cod de verificare invalid.');
+            }
+        } catch (error) {
+            console.error('Error verifying code:', error);
+            setVerificationError('Eroare la verificarea codului.');
+        } finally {
+            setIsVerifying(false);
         }
     };
 
@@ -215,18 +296,104 @@ export function CheckoutForm() {
                                 </div>
                                 <div>
                                     <Label className="mb-1" htmlFor="email">Email *</Label>
-                                    <Input
-                                        id="email"
-                                        type="email"
-                                        value={formData.email}
-                                        onChange={(e) => handleInputChange('email', e.target.value)}
-                                        required
-                                        placeholder="exemplu@email.com"
-                                        className={emailError ? 'border-red-500 focus:border-red-500' : ''}
-                                    />
-                                    {emailError && (
-                                        <p className="text-red-500 text-sm mt-1">{emailError}</p>
-                                    )}
+                                    <div className="space-y-3">
+                                        <div className="flex gap-2">
+                                            <Input
+                                                id="email"
+                                                type="email"
+                                                value={formData.email}
+                                                onChange={(e) => handleInputChange('email', e.target.value)}
+                                                required
+                                                placeholder="exemplu@email.com"
+                                                className={emailError ? 'border-red-500 focus:border-red-500' : ''}
+                                                disabled={emailVerificationStep === 'verified'}
+                                            />
+                                            {emailVerificationStep === 'none' && !emailError && formData.email && (
+                                                <Button
+                                                    type="button"
+                                                    onClick={sendVerificationCode}
+                                                    variant="outline"
+                                                    size="sm"
+                                                    className="whitespace-nowrap"
+                                                    disabled={false}
+                                                >
+                                                    <Mail className="w-4 h-4 mr-1" />
+                                                    Verifică
+                                                </Button>
+                                            )}
+                                            {emailVerificationStep === 'verified' && (
+                                                <div className="flex items-center px-3 py-2 bg-green-50 border border-green-200 rounded-md">
+                                                    <Check className="w-4 h-4 text-green-600" />
+                                                </div>
+                                            )}
+                                        </div>
+                                        
+                                        {emailError && (
+                                            <p className="text-red-500 text-sm">{emailError}</p>
+                                        )}
+                                        
+                                        {emailVerificationStep === 'sending' && (
+                                            <div className="flex items-center gap-2 text-blue-600 text-sm">
+                                                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
+                                                Se trimite codul de verificare...
+                                            </div>
+                                        )}
+                                        
+                                        {emailVerificationStep === 'sent' && (
+                                            <div className="p-3 bg-blue-50 dark:bg-slate-800/80 border rounded-lg">
+                                                <div className="flex items-center gap-2 text-sm mb-2">
+                                                    <Shield className="w-4 h-4" />
+                                                    Cod de verificare trimis la:  {formData.email}
+                                                </div>
+                                                <div className="flex gap-2">
+                                                    <Input
+                                                        type="text"
+                                                        placeholder="Introdu codul de 6 cifre"
+                                                        value={verificationCode}
+                                                        onChange={(e) => {
+                                                            const value = e.target.value.replace(/\D/g, '').slice(0, 6);
+                                                            setVerificationCode(value);
+                                                            setVerificationError('');
+                                                        }}
+                                                        maxLength={6}
+                                                        className="text-center font-mono text-lg tracking-widest"
+                                                    />
+                                                    <Button
+                                                        type="button"
+                                                        onClick={verifyEmailCode}
+                                                        disabled={isVerifying || verificationCode.length !== 6}
+                                                        size="sm"
+                                                    >
+                                                        {isVerifying ? 'Verifică...' : 'Confirmă'}
+                                                    </Button>
+                                                </div>
+                                                <div className="flex justify-between items-center mt-2">
+                                                    <button
+                                                        type="button"
+                                                        onClick={sendVerificationCode}
+                                                        className="text-blue-600 text-sm hover:underline cursor-pointer"
+                                                        disabled={false}
+                                                    >
+                                                        Retrimite codul
+                                                    </button>
+                                                    <span className="text-xs text-gray-500">
+                                                        Codul expiră în 10 minute
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        )}
+                                        
+                                        {emailVerificationStep === 'verified' && (
+                                            <div className="flex items-center gap-2 text-green-600 text-sm">
+                                                <Check className="w-4 h-4" />
+                                                Email verificat cu succes!
+                                            </div>
+                                        )}
+                                        
+                                        {verificationError && (
+                                            <p className="text-red-500 text-sm">{verificationError}</p>
+                                        )}
+                                    </div>
                                 </div>
                                 <div>
                                     <Label className="mb-1" htmlFor="bankDetails">Rechizite bancare (opțional)</Label>
@@ -413,12 +580,21 @@ export function CheckoutForm() {
                                 type="submit"
                                 onClick={handleSubmit}
                                 disabled={isSubmitting || !formData.name || !formData.phone || !formData.email || 
-                                !formData.address || !formData.city || emailError !== ''}
+                                !formData.address || !formData.city || emailError !== '' || emailVerificationStep !== 'verified'}
                                 className="w-full"
                                 size="lg"
                             >
                                 {isSubmitting ? 'Se procesează...' : `Finalizare comandă - ${totalPrice.toFixed(2)} MDL`}
                             </Button>
+
+                            {emailVerificationStep !== 'verified' && formData.email && !emailError && (
+                                <div className="text-center p-3 bg-amber-50 border border-amber-200 rounded-lg">
+                                    <p className="text-amber-800 text-sm">
+                                        <Shield className="w-4 h-4 inline mr-1" />
+                                        Te rugăm să verifici adresa de email pentru a finaliza comanda.
+                                    </p>
+                                </div>
+                            )}
 
                             <p className="text-sm text-gray-300">
                                 * Dupa plasarea comenzii, veți fi contactat în mai puțin de 24 de ore.
