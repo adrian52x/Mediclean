@@ -29,7 +29,7 @@ export const ProductPageInfo: React.FC<ProductPageInfoProps> = ({ product }) => 
                             {product.category === 'equipment'
                                 ? 'Echipament'
                                 : product.category === 'disinfectants'
-                                ? 'Dezinfectanti'
+                                ? 'Dezinfectanți'
                                 : product.category}
                         </Badge>
 

@@ -59,7 +59,7 @@ export function CartNav() {
                 <DrawerContent>
                     <div className="mx-auto md:w-full max-w-md">
                         <DrawerHeader>
-                            <DrawerTitle>Produse în cos  ({cartCount})</DrawerTitle>
+                            <DrawerTitle>Produse în coș  ({cartCount})</DrawerTitle>
                             <DrawerDescription>Total MDL: {totalPrice.toFixed(2)}</DrawerDescription>
                         </DrawerHeader>
                         <div className="p-4 pb-0 max-h-96 overflow-y-auto md:max-w-2xl md:mx-auto">
@@ -122,7 +122,7 @@ export function CartNav() {
                                     className="w-full" 
                                     onClick={handleCheckout}
                                 >
-                                    Checkout - {totalPrice.toFixed(2)} MDL
+                                    Finalizează - {totalPrice.toFixed(2)} MDL
                                 </Button>
                             )}
                             <DrawerClose asChild>

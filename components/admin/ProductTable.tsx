@@ -214,7 +214,7 @@ export default function ProductTable() {
                             {product.category === 'equipment'
                                 ? 'Echipament'
                                 : product.category === 'disinfectants'
-                                ? 'Dezinfectanti'
+                                ? 'Dezinfectanți'
                                 : product.category}
                         </Badge>
                     </td>

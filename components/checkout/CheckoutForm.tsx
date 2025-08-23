@@ -168,7 +168,7 @@ export function CheckoutForm() {
                         </BreadcrumbItem>
                         <BreadcrumbSeparator/>
                         <BreadcrumbItem>
-                            <BreadcrumbPage className="text-lg">Checkout</BreadcrumbPage>
+                            <BreadcrumbPage className="text-lg">Finalizare comandă</BreadcrumbPage>
                         </BreadcrumbItem>
                     </BreadcrumbList>
             </Breadcrumb>

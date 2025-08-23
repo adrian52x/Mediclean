@@ -26,7 +26,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 
-export const MobileMenuTrigger: React.FC = () => {
+export const MobileMenuButton: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -130,9 +130,14 @@ export const MobileMenuTrigger: React.FC = () => {
                                     </Button>
                                 </Link>
                                 
-                                <Button variant="secondary" className="w-full justify-start cursor-default" disabled>
+                                <Button variant="secondary" className="w-full justify-start cursor-default">
                                     <Phone className="h-4 w-4 mr-2" />
-                                    +373 123 456 789
+                                    <span className="select-text cursor-text">079410042</span>
+                                </Button>
+
+                                <Button variant="secondary" className="w-full justify-start cursor-default">
+                                    <Phone className="h-4 w-4 mr-2" />
+                                    <span className="select-text cursor-text">079509564</span>
                                 </Button>
                             </div>
                         </AccordionContent>

@@ -92,7 +92,7 @@ export const ProductCard = ({ product }: { product: ProductDetails }) => {
                         {product.category === 'equipment'
                             ? 'Echipament'
                             : product.category === 'disinfectants'
-                            ? 'Dezinfectanti'
+                            ? 'Dezinfectanți'
                             : product.category}
                     </Badge>
 

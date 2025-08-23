@@ -13,7 +13,7 @@ import LogoWithText from './logo-with-text';
 import { usePathname } from 'next/navigation';
 import { CartNav } from './CartNav';
 import { NavBarButtons, UserNavButton } from './NavbarButtons';
-import { MobileMenuTrigger } from './MobileMenuTrigger';
+import { MobileMenuButton } from './MobileMenuButton';
 
 export default function Navbar({ session }: { session: any }) {
   const pathname = usePathname(); // Get the current route
@@ -45,7 +45,7 @@ export default function Navbar({ session }: { session: any }) {
                 <NavBarButtons />
 
                 {/* Mobile Menu Trigger */}
-                <MobileMenuTrigger />
+                <MobileMenuButton />
 
                 {/* Cart Icon */}
                 <CartNav />

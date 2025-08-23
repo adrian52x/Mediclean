@@ -21,16 +21,16 @@ const items = [
     url: "/",
     icon: Home,
   },
-  {
-    title: "Products",
-    url: "/admin",
-    icon: Logs,
-  },
-  {
-    title: "Orders",
-    url: "/admin",
-    icon: ShoppingCart,
-  },
+  // {
+  //   title: "Products",
+  //   url: "/admin",
+  //   icon: Logs,
+  // },
+  // {
+  //   title: "Orders",
+  //   url: "/admin",
+  //   icon: ShoppingCart,
+  // },
 ]
  
 export function AdminSidebar() {

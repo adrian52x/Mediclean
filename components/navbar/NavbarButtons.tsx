@@ -64,7 +64,7 @@ export const NavBarButtons: React.FC = () => {
                 <Link href="/products?category=equipment">
                     <MenubarItem>
                         <Stethoscope/>
-                        Echipament
+                        Echipamente
                     </MenubarItem>
                 </Link>
             </MenubarContent>
@@ -97,10 +97,16 @@ export const NavBarButtons: React.FC = () => {
                     <MenubarItem>
                             <MapPin /> Str. Nicolae Zelinski 36/6.
                     </MenubarItem>
-                    <MenubarItem disabled className='cursor-default'>
-                            <Phone /> +373 123 456 789
-                    </MenubarItem>
                 </Link>
+                <MenubarItem className="cursor-default" onClick={(e) => e.preventDefault()}>
+                    <Phone className="pointer-events-none" />
+                    <span className="select-text cursor-text pointer-events-auto">079410042</span>
+                </MenubarItem>
+                <MenubarItem className="cursor-default" onClick={(e) => e.preventDefault()}>
+                    <Phone className="pointer-events-none" />
+                    <span className="select-text cursor-text pointer-events-auto">079509564</span>
+                </MenubarItem>
+
             </MenubarContent>
         </MenubarMenu>
     </Menubar>
