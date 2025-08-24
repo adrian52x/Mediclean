@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
       <body>
         <div class="container">
           <div class="header">
-            <h1>🔐 Verificare Email</h1>
+            <h1>🔐 Verificare Email - Dezinfect MD</h1>
             <p>Codul tău de verificare</p>
           </div>
           <div class="content">
@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
             </div>
           </div>
           <div class="footer">
-            <p>© 2025 Dezinfect. Toate drepturile rezervate.</p>
+            <p>© 2025 Dezinfect MD. Toate drepturile rezervate.</p>
           </div>
         </div>
       </body>
@@ -62,9 +62,9 @@ export async function POST(request: NextRequest) {
 
     // Send verification email
     const emailResult = await resend.emails.send({
-      from: 'Dezinfect <orders@dezinfect.md>',
+      from: 'Dezinfect MD <noreply@dezinfect.md>',
       to: email,
-      subject: 'Cod de verificare pentru comanda ta',
+      subject: 'Cod verificare Email',
       html: emailHtml,
     });
 

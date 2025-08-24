@@ -150,7 +150,7 @@ export const ProductPagePurchaseAndPdf: React.FC<ProductPagePurchaseAndPdfProps>
                                 <iframe
                                     src={`${product.doc_url}?v=${new Date(product.updated_at).getTime()}`}
                                     width="100%"
-                                    height="700px"
+                                    height="550px"
                                     className="border rounded"
                                     allow="fullscreen"
                                 />

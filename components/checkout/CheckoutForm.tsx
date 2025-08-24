@@ -237,7 +237,7 @@ export function CheckoutForm() {
     }
 
     return (
-        <div className="container mx-auto px-4 py-8 max-w-6xl">
+        <div className="px-4 py-8 max-w-6xl">
             {/* Header */}
             <Breadcrumb className="mb-5">
                     <BreadcrumbList>
@@ -261,8 +261,7 @@ export function CheckoutForm() {
 
             <div className="grid lg:grid-cols-2 gap-8">
                 {/* Order Form */}
-                <div className="space-y-6">
-                    <form onSubmit={handleSubmit} className="space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-6">
                         {/* Customer Information */}
                         <Card>
                             <CardHeader>
@@ -506,18 +505,18 @@ export function CheckoutForm() {
                                 </div>
                             </CardContent>
                         </Card>
-                    </form>
-                </div>
+                </form>
 
                 {/* Order Summary */}
                 <div className="space-y-6">
-                    <Card>
-                        <CardHeader>
-                            <CardTitle className="flex items-center gap-2">
-                                <Package className="w-5 h-5" />
-                                Sumar comandă ({cartCount} {cartCount === 1 ? 'produs' : 'produse'})
-                            </CardTitle>
-                        </CardHeader>
+                    <div className="lg:sticky lg:top-20">
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className="flex items-center gap-2">
+                                    <Package className="w-5 h-5" />
+                                    Sumar comandă ({cartCount} {cartCount === 1 ? 'produs' : 'produse'})
+                                </CardTitle>
+                            </CardHeader>
                         <CardContent className="space-y-4">
                             {/* Cart Items */}
                             <div className="space-y-3 max-h-100 overflow-y-auto">
@@ -601,6 +600,7 @@ export function CheckoutForm() {
                             </p>
                         </CardContent>
                     </Card>
+                    </div>
                 </div>
             </div>
         </div>

@@ -130,6 +130,7 @@ const ordersEmailTemplate = (orderDetails: OrderDetails) => {
             <p>Nu ezita să ne contactezi pentru orice informații suplimentare:</p>
             <p><strong>Email:</strong> bunic.cristian@gmail.com</p>
             <p><strong>Telefon:</strong> 079410042</p>
+            <p><strong>Telefon:</strong> 079509564</p>
           </div>
         </div>
 

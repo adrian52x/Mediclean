@@ -36,7 +36,7 @@ export const ProductPageView: React.FC<ProductPageViewProps> = ({ productId }) =
     if (!product) return <div>Produsul nu a fost găsit.</div>;
 
     return (
-        <div className="w-full mt-4 rounded-lg text-black dark:text-white">
+        <div className="px-4 py-8 text-black dark:text-white">
             <Breadcrumb className="mb-5">
                     <BreadcrumbList>
                         <BreadcrumbItem>
