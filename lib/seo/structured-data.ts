@@ -3,8 +3,8 @@ import { Metadata } from 'next'
 // Base site configuration
 const SITE_CONFIG = {
   name: 'Dezinfect MD',
-  url: 'https://dezinfect.md',
-  logo: 'https://dezinfect.md/images/med-logo.png',
+  url: 'https://www.dezinfect.md',
+  logo: 'https://www.dezinfect.md/images/med-logo.png',
   description: 'Magazin online cu dezinfectanți profesionali și echipamente medicale în Moldova',
   address: {
     street: 'Str. Nicolae Zelinski 36/6',
@@ -12,12 +12,8 @@ const SITE_CONFIG = {
     country: 'MD'
   },
   contact: {
-    phone: '+373-XXX-XXX',
+    phone: '+37379410042',
     email: 'contact@dezinfect.md'
-  },
-  social: {
-    facebook: 'https://www.facebook.com/dezinfectmd',
-    instagram: 'https://www.instagram.com/dezinfectmd'
   }
 }
 
