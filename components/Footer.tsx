@@ -89,10 +89,10 @@ function Trademark() {
         <div className="mb-6 hidden md:mb-0 md:block">
             <span className="flex flex-col">
                 <h2 className="text-sm font-semibold whitespace-nowrap uppercase">
-                MEDICLEAN
+                DEZINFECT MD
                 </h2>
                 <span className="mt-2 text-sm text-neutral-500 dark:text-neutral-400">
-                © {new Date().getFullYear()} MEDICLEAN™ . All Rights Reserved.
+                © {new Date().getFullYear()} DEZINFECT™ . All Rights Reserved.
                 </span>
             </span>
         </div>
