@@ -246,10 +246,6 @@ export function generateOrganizationSchema() {
       "telephone": SITE_CONFIG.contact.phone,
       "contactType": "customer service",
       "availableLanguage": ["Romanian", "Russian"]
-    },
-    "sameAs": [
-      SITE_CONFIG.social.facebook,
-      SITE_CONFIG.social.instagram
-    ]
+    }
   };
 }
