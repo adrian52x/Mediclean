@@ -15,8 +15,8 @@ export const metadata: Metadata = {
   keywords: ['dezinfectanți Moldova', 'echipamente medicale Chișinău', 'consumabile medicale', 'sterilizare medicală', 'dezinfecție profesională Moldova'],
   openGraph: {
     title: 'Dezinfect MD - Dezinfectanți și Echipamente Medicale Moldova',
-    description: 'Cel mai mare magazin online de dezinfectanți și echipamente medicale din Moldova',
-    url: 'https://dezinfect.md',
+    description: 'Magazin online cu dezinfectanți profesionali și echipamente medicale în Moldova.',
+    url: 'https://www.dezinfect.md',
   },
 };
 
