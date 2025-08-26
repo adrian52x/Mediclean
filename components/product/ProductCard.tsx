@@ -41,20 +41,20 @@ export const ProductCard = ({ product }: { product: ProductDetails }) => {
         return 0;
     }, [hasPrice, hasVolumes, product.price, product.product_volumes_price, selectedVolumeIndex]);
     
-    // Get current volume (if applicable) - keeping as function since it's simple
-    const getCurrentVolume = () => {
+    // Get current volume (if applicable) - wrapped in useCallback for stable reference
+    const getCurrentVolume = useCallback(() => {
         if (hasVolumes) {
             return product.product_volumes_price[selectedVolumeIndex]?.volume;
         }
         return undefined;
-    };
+    }, [hasVolumes, product.product_volumes_price, selectedVolumeIndex]);
     
     // Memoize the add to cart handler to prevent recreation on every render
     const handleAddToCart = useCallback((e: React.MouseEvent) => {
         e.preventDefault();
         addItem(product, quantity, getCurrentVolume());
         toast.success(`[${quantity}] ${product.title}${getCurrentVolume() ? ` (${getCurrentVolume()})` : ''} - adaugat în coș!`);
-    }, [addItem, product, quantity, selectedVolumeIndex]); // selectedVolumeIndex affects getCurrentVolume
+    }, [addItem, product, quantity, getCurrentVolume]); // getCurrentVolume uses selectedVolumeIndex
 
     return (
         <Card className="h-full flex flex-col">
@@ -116,33 +116,39 @@ export const ProductCard = ({ product }: { product: ProductDetails }) => {
 
             {/* Footer that sticks to bottom */}
             <CardFooter className="flex flex-col gap-2 px-4 mt-auto"> 
-                {/* Price */}
-                <div className="w-full">
-                    <h2 className="font-bold text-2xl flex items-baseline gap-1">
-                        <span>{currentPrice}</span>
-                        <span className="text-base font-normal">MDL</span>
-                    </h2>
-                </div>
-                
-                {/* Volume Selection for liquid products */}
-                {hasVolumes && (
-                    <div className="w-full">
-                        <p className="text-xs mb-2">Volume:</p>
-                        <div className="flex gap-1 flex-wrap">
-                            {product.product_volumes_price.map((volumePrice, index) => (
-                                <Button
-                                    key={index}
-                                    size="sm"
-                                    variant={selectedVolumeIndex === index ? "default" : "outline"}
-                                    className="text-xs px-2 py-1 cursor-pointer border-2"
-                                    onClick={() => setSelectedVolumeIndex(index)}
-                                >
-                                    {volumePrice.volume}
-                                </Button>
-                            ))}
-                        </div>
+                {/* Price and Volume Selection in flex row */}
+                <div className="w-full flex justify-between items-center gap-4">
+                    {/* Volume Selection for liquid products OR empty spacer */}
+                    <div className="flex-shrink-0">
+                        {hasVolumes ? (
+                            <>
+                                <p className="text-xs mb-2">Volume:</p>
+                                <div className="flex gap-1 flex-wrap">
+                                    {product.product_volumes_price.map((volumePrice, index) => (
+                                        <Button
+                                            key={index}
+                                            size="sm"
+                                            variant={selectedVolumeIndex === index ? "default" : "outline"}
+                                            className="text-xs px-2 py-1 cursor-pointer border-2"
+                                            onClick={() => setSelectedVolumeIndex(index)}
+                                        >
+                                            {volumePrice.volume}
+                                        </Button>
+                                    ))}
+                                </div>
+                            </>
+                        ) : (
+                            <div>{/* Empty spacer to push price to the right */}</div>
+                        )}
                     </div>
-                )}
+                    {/* Price */}
+                    <div>
+                        <h2 className="font-bold text-2xl flex items-baseline gap-1">
+                            <span>{currentPrice}</span>
+                            <span className="text-base font-normal">MDL</span>
+                        </h2>
+                    </div>
+                </div>
                 
                 {/* Quantity and Add to Cart - Show for both types */}
                 <div className="flex flex-wrap items-center gap-2 w-full">
