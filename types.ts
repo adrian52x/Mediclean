@@ -69,6 +69,21 @@ export interface UploadFileResult {
   error: any;
 }
 
+export interface EmailVerificationResponse {
+    success: boolean;
+    error?: string;
+    message?: string; // Added by the API routes
+}
+
+export interface OrderEmailResponse {
+    success: boolean;
+    error?: any;
+    messageId?: string;
+    service?: string;
+    message?: string; // Added by the API route
+    details?: any; // Added by the API route on error
+}
+
 export interface ProductType {
   product_type_id: string;
   type_name: string;
@@ -126,7 +141,11 @@ export interface OrderDetails {
   };
   delivery: {
     method: string;
-    address: any;
+    address: {
+      street: string;
+      city: string;
+      postalCode: string;
+    };
     notes: string;
   };
   items: Array<{
@@ -140,8 +159,6 @@ export interface OrderDetails {
   summary: {
     totalItems: number;
     totalPrice: number;
-    deliveryFee: number;
-    finalTotal: number;
     currency: string;
   };
 }

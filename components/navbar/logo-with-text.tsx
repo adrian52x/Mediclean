@@ -17,7 +17,7 @@ export default function LogoWithText() {
             className="text-[1rem] font-bold tracking-wide md:text-[1.5rem]"
             id="main-text"
           >
-            DEZINFECT
+            DEZINFECT MD
           </span>
             <span
             className="text-muted-foreground text-[0.5rem] uppercase md:text-[0.6rem]"

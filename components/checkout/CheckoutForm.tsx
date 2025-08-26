@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import { useCartStore } from '@/lib/stores/cartStore';
+import { EmailAPI } from '@/lib/api/EmailAPI';
+import { OrderDetails, OrderFormData } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -19,7 +21,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
-import { OrderFormData } from '@/types';
 import { generateOrderId, validateEmail } from '@/lib/utils';
 
 export function CheckoutForm() {
@@ -95,26 +96,12 @@ export function CheckoutForm() {
         setEmailVerificationStep('sending');
         setVerificationError('');
 
-        try {
-            const response = await fetch('/api/send-verification-code', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email: formData.email }),
-            });
+        const result = await EmailAPI.sendVerificationCode(formData.email);
 
-            const result = await response.json();
-
-            if (result.success) {
-                setEmailVerificationStep('sent');
-            } else {
-                setVerificationError(result.error || 'Eroare la trimiterea codului de verificare.');
-                setEmailVerificationStep('none');
-            }
-        } catch (error) {
-            console.error('Error sending verification code:', error);
-            setVerificationError('Eroare la trimiterea codului de verificare.');
+        if (result.success) {
+            setEmailVerificationStep('sent');
+        } else {
+            setVerificationError(result.error || 'Eroare la trimiterea codului de verificare.');
             setEmailVerificationStep('none');
         }
     };
@@ -128,32 +115,16 @@ export function CheckoutForm() {
         setIsVerifying(true);
         setVerificationError('');
 
-        try {
-            const response = await fetch('/api/verify-email-code', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ 
-                    email: formData.email, 
-                    code: verificationCode 
-                }),
-            });
+        const result = await EmailAPI.verifyEmailCode(formData.email, verificationCode);
 
-            const result = await response.json();
-
-            if (result.success) {
-                setEmailVerificationStep('verified');
-                setVerificationCode('');
-            } else {
-                setVerificationError(result.error || 'Cod de verificare invalid.');
-            }
-        } catch (error) {
-            console.error('Error verifying code:', error);
-            setVerificationError('Eroare la verificarea codului.');
-        } finally {
-            setIsVerifying(false);
+        if (result.success) {
+            setEmailVerificationStep('verified');
+            setVerificationCode('');
+        } else {
+            setVerificationError(result.error || 'Cod de verificare invalid.');
         }
+
+        setIsVerifying(false);
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -162,7 +133,7 @@ export function CheckoutForm() {
 
         try {
             // Order details object
-            const orderDetails = {
+            const orderDetails: OrderDetails = {
                 orderId: generateOrderId(),
                 timestamp: new Date().toISOString(),
                 customer: {
@@ -198,33 +169,13 @@ export function CheckoutForm() {
             console.log('🛒 ORDER PROCESSED:', orderDetails);
 
             // Send order confirmation email with Resend
-            try {
-                console.log('📧 Sending email with Resend...');
-                const emailResponse = await fetch('/api/send-order-email-resend', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(orderDetails),
-                });
-
-                const emailResult = await emailResponse.json();
-                
-                if (emailResult.success) {
-                    console.log('✅ Email sent successfully with Resend:', emailResult.messageId);
-                    alert(`Comanda ta a fost înregistrată! Un email de confirmare a fost trimis la ${formData.email}.`);
-                    
-                    clearCart();
-                    setIsSubmitting(false);
-
-                } else {
-                    console.error(emailResult.error.message);
-                    alert(`A apărut o eroare la procesarea comenzii. Te rugăm să încerci din nou.`);
-
-                }
-            } catch (emailError) {
-                console.error('❌ Resend email service error:', emailError);
-                alert(`Eroare la trimiterea emailului. Te rugăm să încerci din nou.`);
+            const emailResult = await EmailAPI.sendOrderConfirmationEmail(orderDetails);
+            
+            if (emailResult.success) {
+                alert(`Comanda ta a fost înregistrată! Un email de confirmare a fost trimis la ${formData.email}.`);
+                clearCart();
+            } else {
+                alert(`A apărut o eroare la procesarea comenzii. Te rugăm să încerci din nou.`);
             }
 
             setIsSubmitting(false);
