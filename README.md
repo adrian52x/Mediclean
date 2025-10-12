@@ -25,7 +25,7 @@ supabase.com
 
 npm install @supabase/ssr @supabase/supabase-js
 
-Inside .env
+.env
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 
@@ -97,19 +97,6 @@ https://support.google.com/sites/answer/97459?hl=en
 google analytics
 
 
-Categories -> change to Produse
-
-in produse o sa fie 2 categorii + serviciu
-
-o sa fie un singur serviciu - remove (Services button from navbar)
-langa servicu - formular: nume, prenume, institutie, nr telefon, email.
-
-produs:
-nume, descriere, cantitate, volum(optinal), document (optional pdf/img)
-
-
-
-vezi toate produsele - click - pagina noua, display 3 main categorii (clickable)
 
 !!! NEXT_PUBLIC_ exposes this value to the browser. Verify it is safe to share publicly. - CHECK this later
 
@@ -119,9 +106,6 @@ TO DO :
 Images --> Supabase storage
 1. In admin show orphan images - option to delete all
 
+2. Save orders in db for admin (orderNumber, customerInfo, products??, dateTime)
 
-3. Save orders in db for admin (orderNumber, customerInfo, products??, dateTime)
-
-
-6. Remove console logs
-7. make Mobile Navbar responsive
+3. Remove console logs
