@@ -116,10 +116,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ images }) => {
                 </div> */}
                 <div className="relative hidden lg:block pt-5 flex h-[32rem] sm:w-full">
                     <div className="sm:absolute left-[30px] h-[50%] w-[50%] rounded-3xl drop-shadow-[0_4px_10px_rgba(10,50,100,0.7)] dark:drop-shadow-[0_4px_18px_rgba(56,189,248,0.21)] overflow-clip border-8 border-gray-200 dark:border-gray-950 z-30">
-                    <Image src={images[4].url} alt="buildind plan image" width={1300} height={1300} className="w-full h-full object-cover z-30" />
+                    <Image src={images[0].url} alt="buildind plan image" width={1300} height={1300} className="w-full h-full object-cover z-30" />
                     </div>
                     <div className="sm:absolute right-0 bottom-[130px] h-[50%] w-[50%] rounded-3xl drop-shadow-[0_4px_10px_rgba(10,50,100,0.7)] dark:drop-shadow-[0_4px_18px_rgba(56,189,248,0.2)] overflow-clip border-8 border-gray-200 dark:border-gray-950 z-20">
-                    <Image src={images[0].url} alt="working-on-housing-project" height={1300} width={1300} className="z-10 w-full h-full object-cover" />
+                    <Image src={images[4].url} alt="working-on-housing-project" height={1300} width={1300} className="z-10 w-full h-full object-cover" />
                     </div>
                     <div className="sm:absolute left-[100px] bottom-[-50px] h-[50%] w-[50%] rounded-3xl drop-shadow-[0_4px_10px_rgba(10,50,100,0.7)] dark:drop-shadow-[0_4px_18px_rgba(56,189,248,0.2)] overflow-clip border-8 border-gray-200 dark:border-gray-950 z-10">
                     <Image src={images[1].url} alt="working-on-housing-project" height={1300} width={1300} className="z-10 w-full h-full object-cover" />
