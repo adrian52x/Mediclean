@@ -4,7 +4,7 @@ import { Resend } from 'resend';
 interface ResendConfig {
     apiKey: string;
     fromAddress: string;
-    ccAddress?: string;
+    ccAddresses?: string[];
 }
 
 // Resend Email Service with Singleton Pattern
@@ -21,7 +21,10 @@ class ResendEmailService {
         this.config = {
             apiKey: process.env.RESEND_API_KEY_ORDERS,
             fromAddress: 'Dezinfect-MD <Comenzi@dezinfect.md>',
-            ccAddress: process.env.CC_EMAIL,
+            ccAddresses: [
+                process.env.CC_EMAIL,
+                process.env.CC_EMAIL2,
+            ].filter((email): email is string => !!email), // Remove undefined/null values
         };
 
         this.resend = new Resend(this.config.apiKey);
@@ -46,7 +49,7 @@ class ResendEmailService {
                 to: [orderDetails.customer.email],
                 subject: `Confirmare comandă #${orderDetails.orderId} - Dezinfect.md`,
                 html: this.generateOrderEmailTemplate(orderDetails),
-                ...(this.config.ccAddress && { cc: [this.config.ccAddress] })
+                ...(this.config.ccAddresses && this.config.ccAddresses.length > 0 && { cc: this.config.ccAddresses })
             };
 
             const emailResult = await this.resend.emails.send(emailPayload);
