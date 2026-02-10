@@ -18,7 +18,7 @@ import { useCartStore } from '@/lib/stores/cartStore';
 import { toast } from 'sonner';
 import { getPlainTextPreview } from '@/lib/utils/textPreview';
 
-export const ProductCard = ({ product }: { product: ProductDetails }) => {
+export const ProductCard = ({ product, priority = false }: { product: ProductDetails; priority?: boolean }) => {
     const addItem = useCartStore((state) => state.addItem);
     const [quantity, setQuantity] = useState(1);
     
@@ -68,6 +68,9 @@ export const ProductCard = ({ product }: { product: ProductDetails }) => {
                             alt={product?.title || 'Placeholder image'}
                             fill
                             sizes="(min-width: 1000px) 30vw, 50vw"
+                            quality={65}
+                            priority={priority}
+                            loading={priority ? undefined : "lazy"}
                             style={{ objectFit: 'cover' }}
                         />
                     </div>
