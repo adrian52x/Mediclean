@@ -23,7 +23,7 @@ interface ProductPageViewProps {
 export const ProductPageView: React.FC<ProductPageViewProps> = ({ productId }) => {
     const { product, isPending } = useGetProductById(productId);
 
-    console.log("Product data:", product);
+    //console.log("Product data:", product);
 
     if (isPending) {
         return (

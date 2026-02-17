@@ -253,15 +253,15 @@ export const ProductUpdateSheet: React.FC<ProductUpdateSheetProps> = ({
                         return !nv || cv.volume !== nv.volume || cv.price !== Number(nv.price);
                     });
                 
-                console.log('Volume comparison:', {
-                    currentVolumes: sortedCurrent,
-                    newVolumes: sortedNew,
-                    volumesChanged
-                });
+                // console.log('Volume comparison:', {
+                //     currentVolumes: sortedCurrent,
+                //     newVolumes: sortedNew,
+                //     volumesChanged
+                // });
             }
             
             if (priceTypeChanged || volumesChanged) {
-                console.log('Updating volumes because:', { priceTypeChanged, volumesChanged });
+                //console.log('Updating volumes because:', { priceTypeChanged, volumesChanged });
                 
                 // Delete existing volume prices if any
                 if (currentVolumes.length > 0) {
@@ -279,12 +279,12 @@ export const ProductUpdateSheet: React.FC<ProductUpdateSheetProps> = ({
                     await addProductVolumePrice.mutateAsync(volumeData);
                 }
             } else {
-                console.log('Skipping volume update - no changes detected');
+                //console.log('Skipping volume update - no changes detected');
             }
 
             // 6. Handle image database updates
             if (imagesToDelete.length > 0 || newImageUrls.length > 0) {
-                console.log('Updating images:', { imagesToDelete: imagesToDelete.length, newImages: newImageUrls.length });
+                //console.log('Updating images:', { imagesToDelete: imagesToDelete.length, newImages: newImageUrls.length });
                 
                 // Calculate what the final image list should be
                 const currentImages = selectedProduct.product_images || [];
@@ -310,10 +310,10 @@ export const ProductUpdateSheet: React.FC<ProductUpdateSheetProps> = ({
                     await addProductImage.mutateAsync(imageData);
                 }
                 
-                console.log('Images updated successfully. Final count:', allFinalImageUrls.length);
-                console.log('Final images:', allFinalImageUrls);
+                //console.log('Images updated successfully. Final count:', allFinalImageUrls.length);
+                //console.log('Final images:', allFinalImageUrls);
             } else {
-                console.log('Skipping image update - no changes detected');
+                //console.log('Skipping image update - no changes detected');
             }
 
             toast.success("Product updated successfully!");

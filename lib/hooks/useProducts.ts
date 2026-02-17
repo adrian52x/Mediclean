@@ -96,7 +96,7 @@ export const useUpdateProduct = () => {
         mutationFn: ({ id, updates }: { id: string; updates: Partial<InsertProduct> }) => 
             ProductsAPI.updateProduct(id, updates),
         onSuccess: (data, variables) => {
-            console.log("HOOK CALLED: Product updated successfully:", data);
+            //console.log("HOOK CALLED: Product updated successfully:", data);
             
             // Invalidate the specific product and lists
             queryClient.invalidateQueries({ queryKey: ["product", variables.id] });

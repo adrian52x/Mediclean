@@ -32,7 +32,7 @@ export function CartNav() {
     const removeItem = useCartStore((state) => state.removeItem);
     const updateQuantity = useCartStore((state) => state.updateQuantity);
 
-    console.log('🔄 CartNav render, count:', cartCount, 'items:', cartItems);
+    //console.log('🔄 CartNav render, count:', cartCount, 'items:', cartItems);
 
     const handleCheckout = () => {
         setIsOpen(false); // Close the drawer

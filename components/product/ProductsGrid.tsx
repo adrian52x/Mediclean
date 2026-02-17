@@ -8,7 +8,7 @@ import Link from 'next/link';
 export const ProductsGrid: React.FC = () => {
     //const { products, isPending, isError } = useGetProducts();
     const { products, isPending, isError } = useGetNewProducts();
-    console.log('Products:', products);
+    //console.log('Products:', products);
     
 
     if (isPending) {

@@ -42,7 +42,7 @@ class ResendEmailService {
      */
     async sendOrderConfirmation(orderDetails: OrderDetails): Promise<OrderEmailResponse> {
         try {
-            console.log(`📧 [EmailService] Sending order confirmation for order: ${orderDetails.orderId}`);
+            //console.log(`📧 [EmailService] Sending order confirmation for order: ${orderDetails.orderId}`);
             
             const emailPayload = {
                 from: this.config.fromAddress,

@@ -102,7 +102,7 @@ export async function isAdminServerSide(): Promise<boolean> {
 
   const userId = authData.user.id;
 
-  console.log(userId);
+  //console.log(userId);
 
   // Query the users table to check the role
   const { data: userData, error: userError } = await supabase
@@ -112,7 +112,7 @@ export async function isAdminServerSide(): Promise<boolean> {
     .eq('id', userId)
     .single();
 
-  console.log(userData);
+  //console.log(userData);
 
   if (userError || !userData) {
     console.error('Error fetching user role:', userError);

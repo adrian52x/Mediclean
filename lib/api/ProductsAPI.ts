@@ -92,7 +92,7 @@ export class ProductsAPI {
                 // Extract just 'aaaa_500_1.png'
                 const match = img.url.match(/\/product-images\/(.+)$/);
                 const filename = match ? match[1] : null;
-                console.log("Image URL:", img.url, "Extracted filename:", filename);
+                //console.log("Image URL:", img.url, "Extracted filename:", filename);
                 return filename;
             })
             .filter(Boolean);

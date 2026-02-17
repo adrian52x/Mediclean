@@ -75,7 +75,7 @@ class SupabaseEmailVerificationService {
 
     async generateCode(email: string): Promise<string> {
         try {
-            console.log(`📧 [SupabaseEmailVerificationService] Generating verification code for: ${email}`);
+            //console.log(`📧 [SupabaseEmailVerificationService] Generating verification code for: ${email}`);
             
             // Clean up expired codes first
             await this.cleanupExpiredCodes();

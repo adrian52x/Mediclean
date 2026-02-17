@@ -166,7 +166,7 @@ export function CheckoutForm() {
                 }
             };
 
-            console.log('🛒 ORDER PROCESSED:', orderDetails);
+            //console.log('🛒 ORDER PROCESSED:', orderDetails);
 
             // Send order confirmation email with Resend
             const emailResult = await EmailAPI.sendOrderConfirmationEmail(orderDetails);

@@ -97,6 +97,7 @@ export const ProductFiltersComponent: React.FC<ProductFiltersProps> = ({
                         <div key={category.value} className="flex items-center space-x-2">
                             <Checkbox
                                 id={`category-${category.value}`}
+                                className="cursor-pointer"
                                 checked={filters.categories.includes(category.value)}
                                 onCheckedChange={(checked) => 
                                     handleCategoryChange(category.value, checked === true)
@@ -104,7 +105,7 @@ export const ProductFiltersComponent: React.FC<ProductFiltersProps> = ({
                             />
                             <Label 
                                 htmlFor={`category-${category.value}`}
-                                className="text-sm cursor-pointer"
+                                className="text-sm cursor-pointer hover:underline"
                             >
                                 {category.label}
                             </Label>
@@ -131,7 +132,7 @@ export const ProductFiltersComponent: React.FC<ProductFiltersProps> = ({
                                 />
                                 <Label 
                                     htmlFor={`productType-${productType.value}`}
-                                    className="text-sm cursor-pointer"
+                                    className="text-sm cursor-pointer hover:underline"
                                 >
                                     {productType.label}
                                 </Label>
@@ -161,7 +162,7 @@ export const ProductFiltersComponent: React.FC<ProductFiltersProps> = ({
                         />
                         <Label 
                             htmlFor="medical-stomatologie"
-                            className="text-sm cursor-pointer"
+                            className="text-sm cursor-pointer hover:underline"
                         >
                             Stomatologie
                         </Label>
@@ -176,7 +177,7 @@ export const ProductFiltersComponent: React.FC<ProductFiltersProps> = ({
                         />
                         <Label 
                             htmlFor="medical-medicina-generala"
-                            className="text-sm cursor-pointer"
+                            className="text-sm cursor-pointer hover:underline"
                         >
                             Medicină generală
                         </Label>

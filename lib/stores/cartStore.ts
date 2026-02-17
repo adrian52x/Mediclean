@@ -41,7 +41,7 @@ export const useCartStore = create<CartStore>()(
 
             // Actions
             addItem: (product: ProductDetails, quantity = 1, volume?: string) => {
-                console.log('🛒 Zustand addItem called:', { productId: product.id, quantity, volume });
+                //console.log('🛒 Zustand addItem called:', { productId: product.id, quantity, volume });
                 
                 const itemKey = `${product.id}_${volume || 'default'}`;
                 
@@ -54,7 +54,7 @@ export const useCartStore = create<CartStore>()(
                         // Item exists, update quantity
                         newCartItems = [...state.cartItems];
                         newCartItems[existingItemIndex].quantity += quantity;
-                        console.log(`🛒 Updated existing item: ${newCartItems[existingItemIndex].title} quantity: ${newCartItems[existingItemIndex].quantity}`);
+                        //console.log(`🛒 Updated existing item: ${newCartItems[existingItemIndex].title} quantity: ${newCartItems[existingItemIndex].quantity}`);
                     } else {
                         // New item, add to cart
                         const newItem: CartItem = {
@@ -69,7 +69,7 @@ export const useCartStore = create<CartStore>()(
                         image: product.product_images?.[0]?.url || '/images/mediclean-logo.jpg',
                         };
                         
-                        console.log('🛒 Added new item:', newItem);
+                        //console.log('🛒 Added new item:', newItem);
                         newCartItems = [...state.cartItems, newItem];
                     }
                     
@@ -85,7 +85,7 @@ export const useCartStore = create<CartStore>()(
             },
 
             removeItem: (itemId: string) => {
-                console.log('🗑️ Removing item:', itemId);
+                //console.log('🗑️ Removing item:', itemId);
                 set((state: CartStore) => {
                     const newCartItems = state.cartItems.filter((item: CartItem) => item.id !== itemId);
                     const { cartCount, totalPrice } = calculateComputedValues(newCartItems);
@@ -104,7 +104,7 @@ export const useCartStore = create<CartStore>()(
                     return;
                 }
 
-                console.log('📝 Updating quantity:', itemId, 'to', quantity);
+                //console.log('📝 Updating quantity:', itemId, 'to', quantity);
                 set((state: CartStore) => {
                     const newCartItems = state.cartItems.map((item: CartItem) =>
                         item.id === itemId ? { ...item, quantity } : item
@@ -120,7 +120,7 @@ export const useCartStore = create<CartStore>()(
             },
 
             clearCart: () => {
-                console.log('🧹 Clearing cart');
+                //console.log('🧹 Clearing cart');
                 set({ cartItems: [], cartCount: 0, totalPrice: 0 });
             },
         }),
