@@ -7,6 +7,8 @@ import { Toaster } from '@/components/ui/sonner';
 import { StructuredData } from '@/components/SEO/StructuredData';
 import { generateLocalBusinessSchema, generateWebsiteSchema, generateOrganizationSchema } from '@/lib/seo/structured-data';
 import GoogleAnalytics from '@/components/SEO/GoogleAnalytics';
+import NavigationProgress from '@/components/NavigationProgress';
+import LinkHandler from '@/components/LinkHandler';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -63,6 +65,8 @@ export default async function RootLayout({
                 <GoogleAnalytics GA_MEASUREMENT_ID="G-H8BQVBM821" />
             </head>
             <body className={`${inter.className} antialiased`}>
+                <NavigationProgress />
+                <LinkHandler />
                 <ThemeProvider
                     attribute="class"
                     defaultTheme="system"
