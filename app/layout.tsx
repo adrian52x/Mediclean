@@ -9,6 +9,7 @@ import { generateLocalBusinessSchema, generateWebsiteSchema, generateOrganizatio
 import GoogleAnalytics from '@/components/SEO/GoogleAnalytics';
 import NavigationProgress from '@/components/NavigationProgress';
 import LinkHandler from '@/components/LinkHandler';
+import { Suspense } from 'react';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -65,7 +66,9 @@ export default async function RootLayout({
                 <GoogleAnalytics GA_MEASUREMENT_ID="G-H8BQVBM821" />
             </head>
             <body className={`${inter.className} antialiased`}>
-                <NavigationProgress />
+                <Suspense fallback={null}>
+                    <NavigationProgress />
+                </Suspense>
                 <LinkHandler />
                 <ThemeProvider
                     attribute="class"
