@@ -13,7 +13,7 @@ export const ProductPageImage: React.FC<ProductPageImageProps> = ({ product }) =
     const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
     return (
-        <div className="border rounded-xl p-5 bg-white dark:bg-neutral-900">
+        <div className="border rounded-xl p-5 bg-white dark:bg-neutral-900 flex flex-col justify-between">
             {/* Main Image */}
             <div className="mb-4 relative h-[400px] w-full">
                 <Image
@@ -39,11 +39,10 @@ export const ProductPageImage: React.FC<ProductPageImageProps> = ({ product }) =
                             }`}
                             onClick={() => setSelectedImageIndex(index + 1)}
                         >
-                            <Image
+                            <img
                                 src={imageData.url}
                                 alt={`${product.title} - Image ${index + 1}`}
-                                fill
-                                className="object-cover"
+                                className="object-cover w-full h-full"
                             />
                         </div>
                     ))}
