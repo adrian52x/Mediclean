@@ -44,7 +44,7 @@ const createSuccessResponse = (messageId: string) => {
 
 export async function POST(request: NextRequest) {
     try {
-        console.log('📧 [API] Order confirmation email endpoint called');
+        //console.log('📧 [API] Order confirmation email endpoint called');
 
         // Parse and validate request body
         let orderDetails: OrderDetails;

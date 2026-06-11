@@ -1,4 +1,3 @@
-mediclean1234!
 
 npx create-next-app@latest
 
@@ -29,7 +28,6 @@ npm install @supabase/ssr @supabase/supabase-js
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 
-create supabase folder (inside lib)
 
 - create browser.ts and server.ts
   https://supabase.com/docs/guides/auth/server-side/creating-a-client?queryGroups=environment&environment=client
@@ -85,22 +83,19 @@ Supabase Auth/Storage	      ❌	✅
 Edge/Serverless ready	      ❌ (limited)	✅
 Type safety	                ✅	❌ (unless generated)
 
-TO DO:
-Find out how to create custom roles in supabase.
 
 continue page protection role
 https://www.youtube.com/watch?v=WUD1RLSd3U0
 
-finish the navbar
 
 https://support.google.com/sites/answer/97459?hl=en
 google analytics
 
 
 
-!!! NEXT_PUBLIC_ exposes this value to the browser. Verify it is safe to share publicly. - CHECK this later
+!!! NEXT_PUBLIC_ exposes this value to the browser.
 
-npx shadcn@latest add sonner
+mediclean1234!
 
 TO DO :
 Images --> Supabase storage
@@ -108,4 +103,3 @@ Images --> Supabase storage
 
 2. Save orders in db for admin (orderNumber, customerInfo, products??, dateTime)
 
-3. Remove console logs
