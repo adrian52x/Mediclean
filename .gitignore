@@ -10,9 +10,6 @@
 !.yarn/releases
 !.yarn/versions
 
-# Primsa generated files
-/prisma/generated
-
 # testing
 /coverage
 
@@ -42,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# others
+todo.md

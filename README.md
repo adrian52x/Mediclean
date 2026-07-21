@@ -1,105 +1,74 @@
+# Dezinfect MD
 
-npx create-next-app@latest
+Online store for professional medical **disinfectants** and **equipment**, serving the Moldovan market (clinics, dental practices, hospitals). Live at **[dezinfect.md](https://www.dezinfect.md)**.
 
-Inlucded:
+> Project codename: `mediclean`. UI language: Romanian.
 
-- typescript
-- ESLint
-- TailwindCSS
-- App Router
+## Features
 
-Installed:
-npm install --save-dev prettier prettier-plugin-tailwindcss
+- 🛍️ **Product catalog** with category, product-type, and medical-field filtering + real-time search
+- 💧 **Volume-based pricing** for disinfectants (e.g. 100ml / 500ml / 1L, each priced separately)
+- 🛒 **Cart & checkout** with email verification before order placement
+- 📧 **Order confirmation emails** to customers and the business
+- 🔐 **Admin panel** for managing products, images, and pricing
+- 🌗 **Light/dark theme**, responsive design
+- 🔎 **SEO-optimized** — dynamic metadata, JSON-LD structured data, sitemap
 
-npx tailwindcss-cli@latest init
+## Tech stack
 
-npx shadcn@latest init
+| | |
+|---|---|
+| Framework | Next.js 15 (App Router, React 19) |
+| Language | TypeScript |
+| Database & Auth | Supabase (PostgreSQL, Storage, Auth) |
+| Data fetching | TanStack Query |
+| State | Zustand |
+| UI | Tailwind CSS v4, shadcn/ui (Radix), daisyUI |
+| Email | Resend |
+| Hosting | Vercel |
 
-npm install react-icons
+## Getting started
 
-supabase.com
+```bash
+# 1. Install dependencies
+npm install
 
-- create project
-- api key
+# 2. Configure environment
+#    Create .env and .env.local (see docs/environment.md for the full list)
 
-npm install @supabase/ssr @supabase/supabase-js
+# 3. Run the dev server
+npm run dev          # http://localhost:3000
+```
 
-.env
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+You'll need a **Supabase** project (Postgres + Storage + Auth with Google OAuth) and a **Resend** account. See **[docs/environment.md](./docs/environment.md)** for the complete setup and environment variables.
 
+## Scripts
 
-- create browser.ts and server.ts
-  https://supabase.com/docs/guides/auth/server-side/creating-a-client?queryGroups=environment&environment=client
+```bash
+npm run dev      # start dev server (Turbopack)
+npm run build    # production build
+npm run start    # run the production build
+npm run lint     # eslint
+npm run format   # prettier
+```
 
-for OAuth:
-create callback folder (inside auth)
+## Project structure (high level)
 
-- create route.ts
-  https://supabase.com/docs/guides/auth/social-login/auth-google?queryGroups=environment&environment=client
+```
+app/          Next.js routes (storefront, admin, API routes)
+components/   UI components (product, admin, checkout, navbar, ui/…)
+lib/          Data access (api/, hooks/), services, stores, supabase clients, seo, utils
+docs/         Detailed internal documentation
+```
 
-# Prisma
+> Data access is via the Supabase JavaScript SDK directly — there is no ORM.
 
-npm install prisma @prisma/client
-npx prisma init
-Add .env file
-Update schema.prisma
-npx prisma generate
-npx prisma migrate dev --name migration1 (create a migration with name migration1)
+## Documentation
 
-npx prisma studio // for visualization
+Detailed docs live in **[`docs/`](./docs/README.md)** — architecture, data model, data layer, products, cart & checkout, auth & admin, email, SEO, routing, conventions, and environment.
 
-Add policies to tables in supabase
-In supabase: Storage -> New bucket (for images) -> Add policy
+Contributors using AI assistants: see **[CLAUDE.md](./CLAUDE.md)** for repo-specific guidance.
 
-# Generate types
+## License
 
-npx supabase login
-npx supabase gen types typescript --project-id sfnpgydezdiiexmftraz --schema public > types_db.ts
-
-# If you want to be able to call Rest APIs from Supabase.
-
-Example In Postman: base_url/rest/v1/products
-Run this in SQL Editor (Supabase)
-
-- Docs https://supabase.com/docs/guides/api/using-custom-schemas
-
-GRANT USAGE ON SCHEMA public TO anon, authenticated, service_role;
-GRANT ALL ON ALL TABLES IN SCHEMA public TO anon, authenticated, service_role;
-GRANT ALL ON ALL ROUTINES IN SCHEMA public TO anon, authenticated, service_role;
-GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO anon, authenticated, service_role;
-ALTER DEFAULT PRIVILEGES FOR ROLE postgres IN SCHEMA public GRANT ALL ON TABLES TO anon, authenticated, service_role;
-ALTER DEFAULT PRIVILEGES FOR ROLE postgres IN SCHEMA public GRANT ALL ON ROUTINES TO anon, authenticated, service_role;
-ALTER DEFAULT PRIVILEGES FOR ROLE postgres IN SCHEMA public GRANT ALL ON SEQUENCES TO anon, authenticated, service_role;
-
-Then add policy to your Table:
-Example: Policy Command (Select) -> Target Roles (anon + authenticated)
-
-Summary Table
-Use Case	               Prisma	Supabase Client
-Full DB control	            ✅	❌
-RLS/Policies enforced	      ❌	✅
-Supabase Auth/Storage	      ❌	✅
-Edge/Serverless ready	      ❌ (limited)	✅
-Type safety	                ✅	❌ (unless generated)
-
-
-continue page protection role
-https://www.youtube.com/watch?v=WUD1RLSd3U0
-
-
-https://support.google.com/sites/answer/97459?hl=en
-google analytics
-
-
-
-!!! NEXT_PUBLIC_ exposes this value to the browser.
-
-mediclean1234!
-
-TO DO :
-Images --> Supabase storage
-1. In admin show orphan images - option to delete all
-
-2. Save orders in db for admin (orderNumber, customerInfo, products??, dateTime)
-
+Private / proprietary.
