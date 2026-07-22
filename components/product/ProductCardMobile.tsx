@@ -60,6 +60,8 @@ export const ProductCardMobile = ({ product, priority = false }: { product: Prod
                             loading={priority ? undefined : 'lazy'}
                             style={{ objectFit: 'cover' }}
                         />
+                        {/* Subtle gradient at the bottom of the image */}
+                        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-14 rounded-b-lg bg-gradient-to-t from-black/30 to-transparent" />
                     </div>
                 </Link>
             </CardHeader>
