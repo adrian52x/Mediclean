@@ -1,6 +1,7 @@
 'use client';
 import { useGetNewProducts, useGetProducts } from '@/lib/hooks/useProducts';
-import { ProductCard, ProductSkeleton } from './ProductCard';
+import { ProductSkeleton } from './ProductCard';
+import { ResponsiveProductCard } from './ResponsiveProductCard';
 import { Button } from '../ui/button';
 import { WrapText } from 'lucide-react';
 import Link from 'next/link';
@@ -28,12 +29,12 @@ export const ProductsGrid: React.FC = () => {
     return (
         <>
             <div
-                className="mb-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                className="mb-10 grid grid-cols-2 gap-3 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4"
                 id="products"
             >
                 {products && products.map((product, index) => (
-                    <ProductCard product={product} key={product.id} priority={index < 4} />
-                ))} 
+                    <ResponsiveProductCard product={product} key={product.id} priority={index < 4} />
+                ))}
             </div> 
 
             <div className="flex justify-center">
@@ -50,7 +51,7 @@ export const ProductsGrid: React.FC = () => {
 
 export const ProductSkeletonGrid = () => {
   return (
-    <div className="mb-4 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+    <div className="mb-4 grid grid-cols-2 gap-3 sm:grid-cols-2 sm:gap-6 md:grid-cols-3 xl:grid-cols-4">
       {[...Array(12)].map((_, index) => (
         <ProductSkeleton key={index} />
       ))}

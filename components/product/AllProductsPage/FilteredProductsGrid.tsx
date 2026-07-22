@@ -2,7 +2,7 @@
 
 import { useMemo } from 'react';
 import { useGetProducts } from '@/lib/hooks/useProducts';
-import { ProductCard } from '../ProductCard';
+import { ResponsiveProductCard } from '../ResponsiveProductCard';
 import { ProductDetails, ProductFilters } from '@/types';
 import { filterProducts } from '@/lib/utils';
 import { Skeleton } from '../../ui/skeleton';
@@ -25,7 +25,7 @@ export const FilteredProductsGrid: React.FC<FilteredProductsGridProps> = ({
 
     if (isPending) {
         return (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-2 gap-3 md:grid-cols-2 md:gap-6 lg:grid-cols-3">
                 {Array.from({ length: 6 }).map((_, index) => (
                     <div key={index} className="space-y-4">
                         <Skeleton className="h-48 w-full" />
@@ -58,9 +58,9 @@ export const FilteredProductsGrid: React.FC<FilteredProductsGridProps> = ({
     }
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-2 md:gap-6 lg:grid-cols-3">
             {filteredProducts.map((product: ProductDetails) => (
-                <ProductCard key={product.id} product={product} />
+                <ResponsiveProductCard key={product.id} product={product} />
             ))}
         </div>
     );

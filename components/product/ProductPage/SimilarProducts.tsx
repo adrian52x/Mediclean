@@ -2,7 +2,7 @@
 
 import { useMemo } from 'react';
 import { useGetProducts } from '@/lib/hooks/useProducts';
-import { ProductCard } from '../ProductCard';
+import { ResponsiveProductCard } from '../ResponsiveProductCard';
 import { ProductDetails } from '@/types';
 import { Loader } from '../../ui/loader';
 import { SectionHeading } from '../../ui/section-heading';
@@ -53,9 +53,9 @@ export const SimilarProducts: React.FC<SimilarProductsProps> = ({
                 `}
             />
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">
                 {similarProducts.map((product) => (
-                    <ProductCard key={product.id} product={product} />
+                    <ResponsiveProductCard key={product.id} product={product} />
                 ))}
             </div>
         </div>

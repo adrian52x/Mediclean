@@ -100,9 +100,9 @@ export const ProductCard = ({ product, priority = false }: { product: ProductDet
                     </Badge>
 
                     {/* Subcategory/type badge */}
-                    <Badge variant="primary" className="w-fit">
+                    {/* <Badge variant="primary" className="w-fit">
                         {product.product_type?.type_name}
-                    </Badge>
+                    </Badge> */}
                 </div>
 
                 {/* Clickable Title */}
