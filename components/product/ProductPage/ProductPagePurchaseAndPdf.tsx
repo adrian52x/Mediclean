@@ -57,6 +57,19 @@ export const ProductPagePurchaseAndPdf: React.FC<ProductPagePurchaseAndPdfProps>
         toast.success(`Added ${quantity}x ${product.title}${getCurrentVolume() ? ` (${getCurrentVolume()})` : ''} to cart!`);
     }, [addItem, product, quantity, selectedVolumeIndex]);
 
+    // Build the PDF URL. doc_url is the full Supabase URL; serve it via our own
+    // domain (/docs/<file>) using the rewrite in next.config.ts, falling back to
+    // the original URL if the filename can't be extracted. Cache-busted by updated_at.
+    const pdfUrl = useMemo(() => {
+        if (!product?.doc_url) return null;
+        const cacheBust = `?v=${new Date(product.updated_at).getTime()}`;
+        const filename = product.doc_url.match(/\/product-pdfs\/(.+)$/)?.[1];
+        return filename ? `/docs/${filename}${cacheBust}` : `${product.doc_url}${cacheBust}`;
+    }, [product?.doc_url, product?.updated_at]);
+
+    const pdfTriggerClasses =
+        "flex gap-4 items-center h-fit w-full border rounded-xl p-3 hover:dark:bg-neutral-800 hover:bg-zinc-200 bg-white dark:bg-neutral-900 cursor-pointer";
+
     return (
         <div className='flex flex-col gap-4'>
             <div className="flex flex-col h-fit justify-between w-full border rounded-xl p-5 bg-white dark:bg-neutral-900">
@@ -135,29 +148,50 @@ export const ProductPagePurchaseAndPdf: React.FC<ProductPagePurchaseAndPdfProps>
                 </div>
             </div>
 
-            {product.doc_url && (
-                <Dialog>
-                    <DialogTrigger asChild>
-                        <div className="flex gap-4 items-center h-fit w-full border rounded-xl p-3 hover:dark:bg-neutral-800 hover:bg-zinc-200 bg-white dark:bg-neutral-900 cursor-pointer">
-                            <FileText/>
-                            <p>Documentatie produs</p>
-                        </div>
-                    </DialogTrigger>
-                    <DialogContent className="lg:max-w-[1000px]">
-                        <DialogHeader>
-                            <DialogTitle>PDF</DialogTitle>
-                            <DialogDescription>
-                                <iframe
-                                    src={`${product.doc_url}?v=${new Date(product.updated_at).getTime()}`}
-                                    width="100%"
-                                    height="550px"
-                                    className="border rounded"
-                                    allow="fullscreen"
-                                />
-                            </DialogDescription>
-                        </DialogHeader>
-                    </DialogContent>
-                </Dialog>
+            {pdfUrl && (
+                <>
+                    {/* Desktop (sm+): in-page modal with an embedded iframe viewer.
+                        Iframe PDF embedding works in desktop/Android browsers. */}
+                    <div className="hidden sm:block">
+                        <Dialog>
+                            <DialogTrigger asChild>
+                                <div className={pdfTriggerClasses}>
+                                    <FileText />
+                                    <p>Documentatie produs</p>
+                                </div>
+                            </DialogTrigger>
+                            <DialogContent className="lg:max-w-[1000px]">
+                                <DialogHeader>
+                                    <DialogTitle>PDF</DialogTitle>
+                                    <DialogDescription>
+                                        <iframe
+                                            src={pdfUrl}
+                                            width="100%"
+                                            height="550px"
+                                            className="border rounded"
+                                            allow="fullscreen"
+                                        />
+                                    </DialogDescription>
+                                </DialogHeader>
+                            </DialogContent>
+                        </Dialog>
+                    </div>
+
+                    {/* Mobile (below sm): open the PDF in a new tab. iOS Safari (WebKit)
+                        only renders the first page of an iframe-embedded PDF, so a
+                        top-level navigation is required to get the full native viewer. */}
+                    <a
+                        href={pdfUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`${pdfTriggerClasses} block sm:hidden`}
+                    >
+                        <span className="flex gap-4 items-center">
+                            <FileText />
+                            <span>Documentatie produs</span>
+                        </span>
+                    </a>
+                </>
             )}
         </div>
     );
