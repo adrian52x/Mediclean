@@ -72,7 +72,7 @@ export const ProductFiltersComponent: React.FC<ProductFiltersProps> = ({
                             filters.medicalFields.length > 0;
 
     return (
-        <div className="w-full bg-white dark:bg-neutral-900 border rounded-xl p-6 max-h-[85vh] overflow-y-auto">
+        <div className="w-full bg-white dark:bg-neutral-900 border rounded-xl p-6 lg:max-h-[85vh] lg:overflow-y-auto">
             {/* Header */}
             <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold">Filtrează produsele</h3>
