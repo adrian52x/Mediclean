@@ -48,14 +48,14 @@ export const ProductCardMobile = ({ product, priority = false }: { product: Prod
             {/* Clickable Image (shorter than desktop) */}
             <CardHeader className="p-1.5">
                 <Link href={`/products/${product.id}`}>
-                    <div className="relative h-40 w-full cursor-pointer">
+                    <div className="relative h-32 w-full cursor-pointer">
                         <Image
                             className="rounded-t-lg"
                             src={getPrimaryImage(product)}
                             alt={product?.title || 'Placeholder image'}
                             fill
                             sizes="50vw"
-                            quality={60}
+                            quality={50}
                             priority={priority}
                             loading={priority ? undefined : 'lazy'}
                             style={{ objectFit: 'cover' }}
@@ -83,34 +83,28 @@ export const ProductCardMobile = ({ product, priority = false }: { product: Prod
             </CardContent>
 
             <CardFooter className="flex flex-col items-stretch gap-3 px-2.5 mt-auto">
-                {/* Volume selection (left) and price (right), same row as desktop */}
-                <div className="w-full flex justify-between items-center gap-2">
-                    {/* Volume Selection for liquid products OR empty spacer */}
-                    <div className="flex-shrink-0">
-                        {hasVolumes ? (
-                            <div className="flex gap-1 flex-wrap">
-                                {product.product_volumes_price.map((volumePrice, index) => (
-                                    <Button
-                                        key={index}
-                                        size="sm"
-                                        variant={selectedVolumeIndex === index ? 'default' : 'outline'}
-                                        className="h-6 text-[11px] px-1.5 py-0 cursor-pointer border-2"
-                                        onClick={() => setSelectedVolumeIndex(index)}
-                                    >
-                                        {volumePrice.volume}
-                                    </Button>
-                                ))}
-                            </div>
-                        ) : (
-                            <div>{/* Empty spacer to push price to the right */}</div>
-                        )}
+                {/* Volume selection — own row, left-aligned (only for volume-priced products) */}
+                {hasVolumes && (
+                    <div className="flex gap-1 flex-wrap">
+                        {product.product_volumes_price.map((volumePrice, index) => (
+                            <Button
+                                key={index}
+                                size="sm"
+                                variant={selectedVolumeIndex === index ? 'default' : 'outline'}
+                                className="h-6 text-[11px] px-1.5 py-0 cursor-pointer border-2"
+                                onClick={() => setSelectedVolumeIndex(index)}
+                            >
+                                {volumePrice.volume}
+                            </Button>
+                        ))}
                     </div>
-                    {/* Price */}
-                    <h2 className="font-bold text-lg flex items-baseline gap-1">
-                        <span>{currentPrice}</span>
-                        <span className="text-xs font-normal">MDL</span>
-                    </h2>
-                </div>
+                )}
+
+                {/* Price — own row, right-aligned */}
+                <h2 className="self-end font-bold text-lg flex items-baseline gap-1">
+                    <span>{currentPrice}</span>
+                    <span className="text-xs font-normal">MDL</span>
+                </h2>
 
                 {/* Single add-to-cart button (quantity fixed at 1) */}
                 <Button

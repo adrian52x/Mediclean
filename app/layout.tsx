@@ -78,7 +78,7 @@ export default async function RootLayout({
                 >
                     <TanstackQueryProvider>
                         {children}
-                        <Toaster closeButton richColors position="top-center"/>
+                        <Toaster closeButton richColors position="top-center" offset={80} mobileOffset={72} />
                     </TanstackQueryProvider>
                 </ThemeProvider>
             </body>

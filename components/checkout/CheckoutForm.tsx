@@ -188,7 +188,7 @@ export function CheckoutForm() {
     }
 
     return (
-        <div className="px-4 py-8 max-w-6xl">
+        <div className="mx-auto w-full max-w-6xl py-8">
             {/* Header */}
             <Breadcrumb className="mb-5">
                     <BreadcrumbList>
