@@ -4,16 +4,27 @@ import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '../ui/button';
-import { ShoppingCart } from 'lucide-react';
+import { ChevronDown, ShoppingCart } from 'lucide-react';
 import { ProductDetails } from '@/types';
 import { getPrimaryImage } from '@/lib/utils';
 import { useState, useMemo, useCallback } from 'react';
 import { useCartStore } from '@/lib/stores/cartStore';
 import { toast } from 'sonner';
+import { getPlainTextPreview } from '@/lib/utils/textPreview';
+import { formatText } from '@/lib/utils/textFormatter';
+import {
+    Drawer,
+    DrawerContent,
+    DrawerDescription,
+    DrawerFooter,
+    DrawerHeader,
+    DrawerTitle,
+} from '@/components/ui/drawer';
 
 // Compact product card for small screens (2-column grid, ~170px wide).
-// Trimmed vs. the desktop ProductCard: no description, shorter image,
-// category badge only, and a single "Adaugă" button (quantity defaults to 1 —
+// Trimmed vs. the desktop ProductCard: shorter image, category badge only,
+// a 2-line description preview that opens a bottom drawer with the full text,
+// and a single "Adaugă" button (quantity defaults to 1 —
 // full quantity/volume control lives on the product page).
 // Rendered only below the `sm` breakpoint; the desktop ProductCard handles sm+.
 export const ProductCardMobile = ({ product, priority = false }: { product: ProductDetails; priority?: boolean }) => {
@@ -25,6 +36,13 @@ export const ProductCardMobile = ({ product, priority = false }: { product: Prod
     }), [product.price, product.product_volumes_price]);
 
     const [selectedVolumeIndex, setSelectedVolumeIndex] = useState(0);
+    const [isDescriptionOpen, setIsDescriptionOpen] = useState(false);
+
+    // Short plain-text teaser; the full (formatted) text lives in the drawer
+    const descriptionPreview = useMemo(
+        () => getPlainTextPreview(product.description ?? '', 80),
+        [product.description]
+    );
 
     const currentPrice = useMemo(() => {
         if (hasPrice) return product.price;
@@ -82,6 +100,25 @@ export const ProductCardMobile = ({ product, priority = false }: { product: Prod
                         {product.title}
                     </h2>
                 </Link>
+
+                {/* Description teaser — tapping anywhere on it opens the full text in a drawer.
+                    The explicit "Vezi mai mult" row is the affordance (no hover on touch). */}
+                {product.description && (
+                    <button
+                        type="button"
+                        onClick={() => setIsDescriptionOpen(true)}
+                        aria-label={`Vezi descrierea completă pentru ${product.title}`}
+                        className="mt-0.5 text-left cursor-pointer"
+                    >
+                        <p className="text-[11px] leading-snug text-neutral-500 dark:text-neutral-400 line-clamp-2">
+                            {descriptionPreview}
+                        </p>
+                        <span className="mt-1 inline-flex items-center gap-0.5 text-[11px] font-medium text-cyan-700 dark:text-cyan-400">
+                            Vezi mai mult
+                            <ChevronDown className="size-3" />
+                        </span>
+                    </button>
+                )}
             </CardContent>
 
             <CardFooter className="flex flex-col items-stretch gap-3 px-2.5 mt-auto">
@@ -118,6 +155,57 @@ export const ProductCardMobile = ({ product, priority = false }: { product: Prod
                     Adaugă <ShoppingCart />
                 </Button>
             </CardFooter>
+
+            {/* Full description in a bottom drawer — same pattern as the cart,
+                so the grid never reflows and the sheet stays thumb-reachable. */}
+            <Drawer open={isDescriptionOpen} onOpenChange={setIsDescriptionOpen}>
+                <DrawerContent>
+                    <div className="mx-auto w-full max-w-md">
+                        <DrawerHeader className="text-left">
+                            <DrawerTitle className="text-base leading-snug">{product.title}</DrawerTitle>
+                            <DrawerDescription className="sr-only">Descrierea produsului</DrawerDescription>
+                        </DrawerHeader>
+
+                        <div className="px-4 flex gap-2 flex-wrap">
+                            {product.stomatologie && (
+                                <Badge variant="primary" className="w-fit">
+                                    Stomatologie
+                                </Badge>
+                            )}
+                            {product.medicina_generala && (
+                                <Badge variant="primary" className="w-fit whitespace-nowrap">
+                                    Medicină generală
+                                </Badge>
+                            )}
+                            {product.product_type?.type_name && (
+                                <Badge variant="primary" className="w-fit">
+                                    {product.product_type.type_name}
+                                </Badge>
+                            )}
+                        </div>
+
+                        <div className="mt-3 max-h-[45vh] overflow-y-auto px-4 text-sm leading-relaxed text-neutral-700 dark:text-neutral-300">
+                            {formatText(product.description ?? '')}
+                        </div>
+
+                        <DrawerFooter className="gap-2">
+                            <Button
+                                className="w-full cursor-pointer"
+                                onClick={(e) => {
+                                    handleAddToCart(e);
+                                    setIsDescriptionOpen(false);
+                                }}
+                                disabled={currentPrice === 0}
+                            >
+                                Adaugă în coş — {currentPrice} MDL <ShoppingCart />
+                            </Button>
+                            <Button asChild variant="outline" className="w-full">
+                                <Link href={`/products/${product.id}`}>Vezi pagina produsului</Link>
+                            </Button>
+                        </DrawerFooter>
+                    </div>
+                </DrawerContent>
+            </Drawer>
         </Card>
     );
 };
