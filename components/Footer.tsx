@@ -1,50 +1,17 @@
 import Link from 'next/link';
 import { Separator } from './ui/separator';
+import CookieSettingsButton from './CookieSettingsButton';
 
 const data = [
   {
     label: 'LEGAL',
     links: [
-      // {
-      //   label: 'Privacy Policy',
-      //   url: '/privacy',
-      // },
       {
-        label: 'Termeni & Conditii',
-        url: '#terms',
+        label: 'Politica de confidențialitate',
+        url: '/privacy',
       },
     ],
-  },
-  {
-    label: 'RESURSE',
-    links: [
-      // {
-      //   label: 'Blog',
-      //   url: '/blog',
-      // },
-      // {
-      //   label: 'Locatie',
-      //   url: '#location',
-      // },
-      {
-        label: 'Contact',
-        url: '#services',
-      },
-    ],
-  },
-  {
-    label: 'SUPPORT',
-    links: [
-      // {
-      //   label: 'Telegram',
-      //   url: '/telegram',
-      // },
-      {
-        label: 'Intrebari',
-        url: '#faq',
-      },
-    ],
-  },
+  }
 ];
 
 export default function Footer() {
@@ -62,7 +29,7 @@ export default function Footer() {
 
 function Links() {
     return (
-        <div className="grid grid-cols-3 justify-evenly gap-8 text-end sm:gap-6 mx-auto md:mx-0">
+        <div className="grid grid-cols-1 justify-evenly gap-8 text-end sm:gap-6 mx-auto md:mx-0">
             {data.map(({ label, links }) => (
                 <div key={label}>
                 <h2 className="mb-3 text-sm uppercase">{label}</h2>
@@ -77,6 +44,9 @@ function Links() {
                         </Link>
                     </li>
                     ))}
+                    <li>
+                      <CookieSettingsButton />
+                    </li>
                 </ul>
                 </div>
             ))}

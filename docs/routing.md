@@ -9,6 +9,7 @@ The app uses the **App Router** with **route groups** (folders in parentheses th
 /products                 → app/(mediclean)/(routes)/products/page.tsx  Product listing (+ ?category=)
 /products/[id]            → app/(mediclean)/(routes)/products/[id]/page.tsx  Product detail
 /checkout                 → app/(mediclean)/(routes)/checkout/page.tsx  Checkout
+/privacy                  → app/(mediclean)/(routes)/privacy/page.tsx   Privacy policy, including cookies
 /admin                    → app/(mediclean)/(protected)/admin/page.tsx  Admin dashboard (gated)
 /auth                     → app/auth/page.tsx                           Login (Google OAuth)
 /auth/callback            → app/auth/callback/route.ts                  OAuth callback handler
@@ -20,7 +21,7 @@ The app uses the **App Router** with **route groups** (folders in parentheses th
 
 ## Route groups & layouts
 
-- **`app/layout.tsx`** — root layout for everything. Sets up fonts (Inter), global CSS, `ThemeProvider`, `TanstackQueryProvider`, the `sonner` Toaster, SEO structured data, Google Analytics, and the nav progress bar. `<html lang="ro">`.
+- **`app/layout.tsx`** — root layout for everything. Sets up fonts (Inter), global CSS, `ThemeProvider`, `TanstackQueryProvider`, the `sonner` Toaster, SEO structured data, the cookie consent banner (which loads Google Analytics after consent), and the nav progress bar. `<html lang="ro">`.
 
 - **`(mediclean)`** — a grouping folder; no layout of its own beyond containing the two sub-groups.
 

@@ -21,7 +21,7 @@ Everything SEO-related lives here:
 - **Metadata:** exported from page `metadata` objects or `generateMetadata()` functions. Root defaults in `app/layout.tsx`; per-page overrides in the page files.
 - **Sitemap:** `app/sitemap.ts` generates `/sitemap.xml`.
 - **robots:** `public/robots.txt`.
-- **Analytics:** `components/SEO/GoogleAnalytics.tsx`, mounted in the root layout with `GA_MEASUREMENT_ID="G-H8BQVBM821"`.
+- **Analytics:** `components/SEO/GoogleAnalytics.tsx`, rendered by `components/CookieConsent.tsx` only after the visitor accepts cookies. The measurement ID `G-H8BQVBM821` is set in the root layout.
 
 ## SEO content blocks
 

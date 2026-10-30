@@ -44,7 +44,7 @@ Route: `/checkout` (`app/(mediclean)/(routes)/checkout/page.tsx`). One big clien
    - Changing the email address resets verification.
 4. **Delivery method** — `'delivery'` (free in Chișinău) or `'postalDelivery'` (+fee). Address fields are required for both.
 5. **Order summary** — line items, quantities, per-item totals, grand total (currency **MDL**).
-6. **Submit** — disabled until name, phone, email, address, city are filled, email has no validation error, **and** email is verified.
+6. **Submit** — disabled until name, phone, email, address, city are filled, email has no validation error, **and** email is verified. A notice below the button links to the privacy policy.
 
 ### On submit (`handleSubmit`)
 Builds an `OrderDetails` object (`types.ts`) with:

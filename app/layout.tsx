@@ -6,7 +6,7 @@ import TanstackQueryProvider from '@/providers/TanstackQueryProvider';
 import { Toaster } from '@/components/ui/sonner';
 import { StructuredData } from '@/components/SEO/StructuredData';
 import { generateLocalBusinessSchema, generateWebsiteSchema, generateOrganizationSchema } from '@/lib/seo/structured-data';
-import GoogleAnalytics from '@/components/SEO/GoogleAnalytics';
+import CookieConsent from '@/components/CookieConsent';
 import NavigationProgress from '@/components/NavigationProgress';
 import LinkHandler from '@/components/LinkHandler';
 import { Suspense } from 'react';
@@ -63,7 +63,6 @@ export default async function RootLayout({
                 <StructuredData data={generateLocalBusinessSchema()} />
                 <StructuredData data={generateWebsiteSchema()} />
                 <StructuredData data={generateOrganizationSchema()} />
-                <GoogleAnalytics GA_MEASUREMENT_ID="G-H8BQVBM821" />
             </head>
             <body className={`${inter.className} antialiased`}>
                 <Suspense fallback={null}>
@@ -79,6 +78,7 @@ export default async function RootLayout({
                     <TanstackQueryProvider>
                         {children}
                         <Toaster closeButton richColors position="top-center" offset={80} mobileOffset={72} />
+                        <CookieConsent gaMeasurementId="G-H8BQVBM821" />
                     </TanstackQueryProvider>
                 </ThemeProvider>
             </body>

@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 
 // Base site configuration
-const SITE_CONFIG = {
+export const SITE_CONFIG = {
   name: 'Dezinfect MD',
   url: 'https://www.dezinfect.md',
   logo: 'https://www.dezinfect.md/images/med-logo.png',
@@ -12,8 +12,7 @@ const SITE_CONFIG = {
     country: 'MD'
   },
   contact: {
-    phone: '+37379410042',
-    email: 'contact@dezinfect.md'
+    phone: '+37379410042'
   }
 }
 

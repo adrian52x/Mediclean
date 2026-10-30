@@ -36,6 +36,7 @@ npm run format   # prettier
 - **Secrets/server work**: service singletons in `lib/services/` behind API routes in `app/api/`, exposed via a `fetch` wrapper. Never put the service-role key or Resend keys in client code.
 - **Server components by default**; push `'use client'` to leaf components. `params`/`searchParams` are async — `await` them.
 - Match the **formatting/indentation of the file you're editing** (the repo mixes 2- and 4-space).
+- **Tracking and data changes**: non-essential cookies or trackers must load only through `components/CookieConsent.tsx`. Update `/privacy` when you add a cookie, a third-party service, or a new kind of customer data.
 - Ignore `components/bin/` and `*.txt` action files — legacy/dead.
 
 ## Working style in this repo

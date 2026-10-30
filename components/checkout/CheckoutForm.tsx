@@ -547,6 +547,19 @@ export function CheckoutForm() {
                                 {isSubmitting ? 'Se procesează...' : `Finalizare comandă - ${totalPrice.toFixed(2)} MDL`}
                             </Button>
 
+                            <p className="text-xs text-muted-foreground">
+                                Prin plasarea comenzii, confirmi că ai citit{' '}
+                                <Link
+                                    href="/privacy"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="underline underline-offset-4 hover:text-foreground"
+                                >
+                                    Politica de confidențialitate
+                                </Link>
+                                .
+                            </p>
+
                             {emailVerificationStep !== 'verified' && formData.email && !emailError && (
                                 <div className="text-center p-3 bg-amber-50 border border-amber-200 rounded-lg">
                                     <p className="text-amber-800 text-sm">
@@ -556,7 +569,7 @@ export function CheckoutForm() {
                                 </div>
                             )}
 
-                            <p className="text-sm text-gray-400">
+                            <p className="text-xs text-muted-foreground tex">
                                 * Dupa plasarea comenzii, veți fi contactat în mai puțin de 24 de ore.
                             </p>
                         </CardContent>
