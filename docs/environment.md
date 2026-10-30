@@ -47,6 +47,7 @@ Two files (both gitignored):
 | `CC_EMAIL2` | Second CC on order emails | No |
 | `RESEND_API_KEY_ORDERS` | Resend key for order-confirmation emails | No — secret |
 | `RESEND_API_KEY_VERIFICATION` | Resend key for verification-code emails | No — secret |
+| `EMAIL_VERIFICATION_TOKEN_SECRET` | Signs the checkout email-verification token, minimum 32 characters. Generate with `openssl rand -hex 32`. If missing, verification fails and no orders can be placed | No — secret |
 
 ### ⚠️ `NEXT_PUBLIC_` warning
 Any var prefixed `NEXT_PUBLIC_` is **bundled into client JS and visible to anyone**. The admin emails are public by design (they're just an allow-list), but the actual security depends on Supabase RLS, not on hiding these. **Never** put a secret behind `NEXT_PUBLIC_`. `SUPABASE_SERVICE_ROLE_KEY` and both Resend keys are correctly non-public — keep them that way.

@@ -73,6 +73,7 @@ export interface EmailVerificationResponse {
     success: boolean;
     error?: string;
     message?: string; // Added by the API routes
+    verificationToken?: string; // Returned after a correct code, required to place an order
 }
 
 export interface OrderEmailResponse {
@@ -82,6 +83,7 @@ export interface OrderEmailResponse {
     service?: string;
     message?: string; // Added by the API route
     details?: any; // Added by the API route on error
+    code?: 'EMAIL_NOT_VERIFIED'; // Verification token missing, invalid or expired
 }
 
 export interface ProductType {

@@ -33,7 +33,15 @@ Rules:
 
 Key methods:
 - `sendVerificationCodeEmail(email)` — generates + stores + emails the code (used by the API route).
-- `verifyCode(email, inputCode)` — validates.
+- `verifyCode(email, inputCode)` — validates, and returns a `verificationToken` on success.
+
+## Verification token — `lib/services/emailVerificationToken.ts`
+
+The server keeps no record of verified emails, so a correct code returns a signed token instead. It's an HMAC-SHA256 signature over the normalized email and an expiry, valid for **30 minutes**, signed with `EMAIL_VERIFICATION_TOKEN_SECRET`.
+
+The checkout sends it in the `x-email-verification-token` header. The order route returns **401** with `code: 'EMAIL_NOT_VERIFIED'` if the token is missing, invalid, expired, or issued for a different email, and the checkout then asks the customer to verify again.
+
+A token can be reused until it expires. This is deliberate, so a failed send can be retried, and it can only ever send to the address it was issued for.
 
 ## Order confirmation — `ResendEmailService`
 
@@ -44,8 +52,8 @@ File: `lib/services/resendEmailService.ts`. Singleton, uses `RESEND_API_KEY_ORDE
 ## API routes (`app/api/`)
 
 - `send-verification-code/route.ts` — POST `{ email }` → sends a code.
-- `verify-email-code/route.ts` — POST `{ email, code }` → verifies.
-- `send-order-email-resend/route.ts` — POST `OrderDetails` → sends the order email. Has explicit validation + structured error/success responses.
+- `verify-email-code/route.ts` — POST `{ email, code }` → verifies and returns `verificationToken`.
+- `send-order-email-resend/route.ts` — POST `OrderDetails` with the verification token header → sends the order email. Has explicit validation + structured error/success responses.
 
 ## Gotchas
 

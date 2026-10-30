@@ -2,6 +2,7 @@
 import { createClient } from '@supabase/supabase-js';
 import { Resend } from 'resend';
 import { EmailVerificationResponse } from '@/types';
+import { createEmailVerificationToken } from '@/lib/services/emailVerificationToken';
 
 interface VerificationData {
     id: string;
@@ -173,15 +174,19 @@ class SupabaseEmailVerificationService {
             const newAttempts = verificationData.attempts + 1;
             
             if (verificationData.code === inputCode) {
+                // Create the token first, so a config error doesn't consume the code
+                const verificationToken = createEmailVerificationToken(email);
+
                 // Code is correct - delete it
                 await this.supabase
                     .from('verification_codes')
                     .delete()
                     .eq('email', email);
-                
-                return { 
+
+                return {
                     success: true,
-                    message: 'Email verified successfully'
+                    message: 'Email verified successfully',
+                    verificationToken
                 };
             } else {
                 // Code is wrong - check if this was the last attempt

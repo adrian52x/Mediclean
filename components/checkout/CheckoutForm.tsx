@@ -44,6 +44,7 @@ export function CheckoutForm() {
     // Email verification states
     const [emailVerificationStep, setEmailVerificationStep] = useState<'none' | 'sending' | 'sent' | 'verified'>('none');
     const [verificationCode, setVerificationCode] = useState('');
+    const [verificationToken, setVerificationToken] = useState('');
     const [verificationError, setVerificationError] = useState('');
     const [isVerifying, setIsVerifying] = useState(false);
 
@@ -82,6 +83,7 @@ export function CheckoutForm() {
             if (emailVerificationStep !== 'none') {
                 setEmailVerificationStep('none');
                 setVerificationCode('');
+                setVerificationToken('');
                 setVerificationError('');
             }
         }
@@ -117,8 +119,9 @@ export function CheckoutForm() {
 
         const result = await EmailAPI.verifyEmailCode(formData.email, verificationCode);
 
-        if (result.success) {
+        if (result.success && result.verificationToken) {
             setEmailVerificationStep('verified');
+            setVerificationToken(result.verificationToken);
             setVerificationCode('');
         } else {
             setVerificationError(result.error || 'Cod de verificare invalid.');
@@ -169,11 +172,18 @@ export function CheckoutForm() {
             //console.log('🛒 ORDER PROCESSED:', orderDetails);
 
             // Send order confirmation email with Resend
-            const emailResult = await EmailAPI.sendOrderConfirmationEmail(orderDetails);
-            
+            const emailResult = await EmailAPI.sendOrderConfirmationEmail(orderDetails, verificationToken);
+
             if (emailResult.success) {
                 alert(`Comanda ta a fost înregistrată! Un email de confirmare a fost trimis la ${formData.email}.`);
                 clearCart();
+            } else if (emailResult.code === 'EMAIL_NOT_VERIFIED') {
+                // The token expired while the form was open, so ask for a new code
+                const message = 'Verificarea emailului a expirat. Te rugăm să verifici din nou adresa de email.';
+                setEmailVerificationStep('none');
+                setVerificationToken('');
+                setVerificationError(message);
+                alert(message);
             } else {
                 alert(`A apărut o eroare la procesarea comenzii. Te rugăm să încerci din nou.`);
             }
@@ -546,7 +556,7 @@ export function CheckoutForm() {
                                 </div>
                             )}
 
-                            <p className="text-sm text-gray-300">
+                            <p className="text-sm text-gray-400">
                                 * Dupa plasarea comenzii, veți fi contactat în mai puțin de 24 de ore.
                             </p>
                         </CardContent>

@@ -34,11 +34,12 @@ export class EmailAPI {
     /**
      * Send order confirmation email using Resend
      */
-    static async sendOrderConfirmationEmail(orderDetails: OrderDetails): Promise<OrderEmailResponse> {
+    static async sendOrderConfirmationEmail(orderDetails: OrderDetails, verificationToken: string): Promise<OrderEmailResponse> {
         const response = await fetch('/api/send-order-email-resend', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'x-email-verification-token': verificationToken,
             },
             body: JSON.stringify(orderDetails),
         });

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { resendEmailService } from '@/lib/services/resendEmailService';
+import { isEmailVerificationTokenValid } from '@/lib/services/emailVerificationToken';
 import { OrderDetails } from '@/types';
 
 // Validation functions
@@ -58,6 +59,20 @@ export async function POST(request: NextRequest) {
         const validation = validateOrderDetails(orderDetails);
         if (!validation.isValid) {
             return createErrorResponse(validation.error!, undefined, 400);
+        }
+
+        // Only send to an address that passed code verification
+        const verificationToken = request.headers.get('x-email-verification-token');
+        if (!isEmailVerificationTokenValid(verificationToken, orderDetails.customer.email)) {
+            return NextResponse.json(
+                {
+                    success: false,
+                    error: 'Email is not verified',
+                    code: 'EMAIL_NOT_VERIFIED',
+                    service: 'resend'
+                },
+                { status: 401 }
+            );
         }
 
         // Call email service

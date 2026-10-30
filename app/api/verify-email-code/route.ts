@@ -17,7 +17,8 @@ export async function POST(request: NextRequest) {
         if (result.success) {
             return NextResponse.json({
                 success: true,
-                message: 'Email verified successfully'
+                message: 'Email verified successfully',
+                verificationToken: result.verificationToken
             });
         } else {
             return NextResponse.json(

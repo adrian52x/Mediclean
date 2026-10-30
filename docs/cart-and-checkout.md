@@ -39,7 +39,7 @@ Route: `/checkout` (`app/(mediclean)/(routes)/checkout/page.tsx`). One big clien
 2. **Customer form** — name, phone, email, optional bank details.
 3. **Email verification (required to submit):**
    - User clicks "Verifică" → `EmailAPI.sendVerificationCode(email)` → a 6-digit code is emailed (see [email.md](./email.md)).
-   - User enters the code → `EmailAPI.verifyEmailCode(email, code)`.
+   - User enters the code → `EmailAPI.verifyEmailCode(email, code)`, which returns a signed token that the order request must include (see [email.md](./email.md)).
    - State machine: `emailVerificationStep: 'none' | 'sending' | 'sent' | 'verified'`.
    - Changing the email address resets verification.
 4. **Delivery method** — `'delivery'` (free in Chișinău) or `'postalDelivery'` (+fee). Address fields are required for both.
@@ -51,7 +51,7 @@ Builds an `OrderDetails` object (`types.ts`) with:
 - `orderId` from `generateOrderId()` → format `DEZ-DD/MM/YYYY-HHMM-RR` (see `lib/utils.ts`).
 - `timestamp`, customer info, delivery info, mapped cart items, and a summary.
 
-Then calls `EmailAPI.sendOrderConfirmationEmail(orderDetails)`. On success: `alert(...)` confirmation + `clearCart()`. On failure: an error `alert`.
+Then calls `EmailAPI.sendOrderConfirmationEmail(orderDetails)`. On success: `alert(...)` confirmation + `clearCart()`. If the verification token expired: verification resets and the customer is asked to verify again. On other failures: an error `alert`.
 
 ### ⚠️ Important limitation
 **Orders are not saved anywhere.** The only durable output of a checkout is the confirmation email sent via Resend. Persisting orders to the DB (order number, customer, items, timestamp) is an open TODO (`todo.md`). If a task involves "order history", "admin orders list", or "resend an order", that data layer **does not exist yet** and must be built.
