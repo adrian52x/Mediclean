@@ -58,6 +58,7 @@ File: `lib/services/resendEmailService.ts`. Singleton, uses `RESEND_API_KEY_ORDE
 ## Gotchas
 
 - **Two Resend keys.** Don't assume one key covers both flows; verification and orders are separated intentionally.
+- **Order values are untrusted.** Wrap any new customer value in `escapeHtml()` in the order email template.
 - The verification service **must stay server-side** — it holds the service role key. Never import it into a client component.
 - Sender domain is `dezinfect.md`; that domain must be verified in Resend for delivery to work.
 - Order confirmations are the **only** persistence of an order right now (see [cart-and-checkout.md](./cart-and-checkout.md) — orders aren't written to the DB).

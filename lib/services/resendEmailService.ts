@@ -1,6 +1,15 @@
 import { OrderDetails, OrderEmailResponse } from '@/types';
 import { Resend } from 'resend';
 
+// Order values come from the customer, so they must never be treated as HTML
+const escapeHtml = (value: unknown): string =>
+    String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+
 interface ResendConfig {
     apiKey: string;
     fromAddress: string;
@@ -131,7 +140,7 @@ class ResendEmailService {
                 <div class="container">
                     <div class="header">
                         <h1>🎉 Confirmare comandă</h1>
-                        <h2>Comanda #${orderDetails.orderId}</h2>
+                        <h2>Comanda #${escapeHtml(orderDetails.orderId)}</h2>
                         <p>Mulțumim pentru încrederea acordată!</p>
                     </div>
                     
@@ -139,15 +148,15 @@ class ResendEmailService {
                         <div class="order-info">
                             <h3>📋 Detalii comandă</h3>
                             <p><strong>Data comenzii:</strong> ${formatDate(orderDetails.timestamp)}</p>
-                            <p><strong>Număr comandă:</strong> ${orderDetails.orderId}</p>
+                            <p><strong>Număr comandă:</strong> ${escapeHtml(orderDetails.orderId)}</p>
                         </div>
 
                         <div class="order-info">
                             <h3>👤 Informații client</h3>
-                            <p><strong>Nume:</strong> ${orderDetails.customer.name}</p>
-                            <p><strong>Telefon:</strong> ${orderDetails.customer.phone}</p>
-                            <p><strong>Email:</strong> ${orderDetails.customer.email}</p>
-                            <p><strong>Rechizite bancare:</strong> ${orderDetails.customer.bankDetails}</p>
+                            <p><strong>Nume:</strong> ${escapeHtml(orderDetails.customer.name)}</p>
+                            <p><strong>Telefon:</strong> ${escapeHtml(orderDetails.customer.phone)}</p>
+                            <p><strong>Email:</strong> ${escapeHtml(orderDetails.customer.email)}</p>
+                            <p><strong>Rechizite bancare:</strong> ${escapeHtml(orderDetails.customer.bankDetails)}</p>
                         </div>
 
                         <div class="order-info">
@@ -158,13 +167,13 @@ class ResendEmailService {
                             ${
                                 orderDetails.delivery.address && typeof orderDetails.delivery.address === 'object'
                                     ? `
-                                        <p><strong>Adresa:</strong> ${orderDetails.delivery.address.street}</p>
-                                        <p><strong>Oraș:</strong> ${orderDetails.delivery.address.city}</p>
-                                        ${orderDetails.delivery.address.postalCode ? `<p><strong>Cod poștal:</strong> ${orderDetails.delivery.address.postalCode}</p>` : ''}
+                                        <p><strong>Adresa:</strong> ${escapeHtml(orderDetails.delivery.address.street)}</p>
+                                        <p><strong>Oraș:</strong> ${escapeHtml(orderDetails.delivery.address.city)}</p>
+                                        ${orderDetails.delivery.address.postalCode ? `<p><strong>Cod poștal:</strong> ${escapeHtml(orderDetails.delivery.address.postalCode)}</p>` : ''}
                                     `
                                     : ''
                             }
-                            ${orderDetails.delivery.notes ? `<p><strong>Observații:</strong> ${orderDetails.delivery.notes}</p>` : ''}
+                            ${orderDetails.delivery.notes ? `<p><strong>Observații:</strong> ${escapeHtml(orderDetails.delivery.notes)}</p>` : ''}
                         </div>
 
                         <h3>🛒 Produse comandate</h3>
@@ -181,11 +190,11 @@ class ResendEmailService {
                             <tbody>
                                 ${orderDetails.items.map(item => `
                                     <tr>
-                                        <td><strong>${item.title}</strong></td>
-                                        <td>${item.volume || '-'}</td>
-                                        <td>${item.price.toFixed(2)} ${orderDetails.summary.currency}</td>
-                                        <td>${item.quantity}</td>
-                                        <td><strong>${item.total.toFixed(2)} ${orderDetails.summary.currency}</strong></td>
+                                        <td><strong>${escapeHtml(item.title)}</strong></td>
+                                        <td>${escapeHtml(item.volume || '-')}</td>
+                                        <td>${item.price.toFixed(2)} ${escapeHtml(orderDetails.summary.currency)}</td>
+                                        <td>${escapeHtml(item.quantity)}</td>
+                                        <td><strong>${item.total.toFixed(2)} ${escapeHtml(orderDetails.summary.currency)}</strong></td>
                                     </tr>
                                 `).join('')}
                             </tbody>
@@ -202,7 +211,7 @@ class ResendEmailService {
 
                             <div class="total-row total-final">
                                 <span>TOTAL DE PLATĂ: </span>
-                                <span>${orderDetails.summary.totalPrice.toFixed(2)} ${orderDetails.summary.currency}</span>
+                                <span>${orderDetails.summary.totalPrice.toFixed(2)} ${escapeHtml(orderDetails.summary.currency)}</span>
                             </div>
                             <p>Veți fi contactat în mai puțin de 24 de ore</p>
                         </div>

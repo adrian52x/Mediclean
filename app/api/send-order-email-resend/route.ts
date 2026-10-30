@@ -3,6 +3,8 @@ import { resendEmailService } from '@/lib/services/resendEmailService';
 import { isEmailVerificationTokenValid } from '@/lib/services/emailVerificationToken';
 import { OrderDetails } from '@/types';
 
+const ORDER_ID_PATTERN = /^DEZ-\d{2}\/\d{2}\/\d{4}-\d{4}-\d{2}$/;
+
 // Validation functions
 const validateOrderDetails = (orderDetails: any): { isValid: boolean; error?: string } => {
     if (!orderDetails) {
@@ -15,6 +17,11 @@ const validateOrderDetails = (orderDetails: any): { isValid: boolean; error?: st
 
     if (!orderDetails.orderId) {
         return { isValid: false, error: 'Order ID is required' };
+    }
+
+    // The order ID goes into the plain-text subject, so it must match generateOrderId()
+    if (typeof orderDetails.orderId !== 'string' || !ORDER_ID_PATTERN.test(orderDetails.orderId)) {
+        return { isValid: false, error: 'Invalid order ID' };
     }
 
     return { isValid: true };
