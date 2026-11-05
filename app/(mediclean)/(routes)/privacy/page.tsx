@@ -41,18 +41,7 @@ export default function PrivacyPage() {
             </p>
 
             <section className={sectionClass}>
-                <h2 className={headingClass}>1. Cine suntem</h2>
-                <p>Operatorul datelor este:</p>
-                <ul className={listClass}>
-                    <li>&quot;ERICON&quot; S.R.L., care administrează magazinul {SITE_CONFIG.name}</li>
-                    <li>IDNO: 1003600000316</li>
-                    <li>Adresa: {SITE_CONFIG.address.street}, {SITE_CONFIG.address.city}, Republica Moldova</li>
-                    <li>Telefon: {SITE_CONFIG.contact.phone}</li>
-                </ul>
-            </section>
-
-            <section className={sectionClass}>
-                <h2 className={headingClass}>2. Ce date colectăm</h2>
+                <h2 className={headingClass}>1. Ce date colectăm</h2>
                 <p>Când plasezi o comandă, colectăm datele pe care le introduci în formular:</p>
                 <ul className={listClass}>
                     <li>nume, telefon și adresă de email</li>
@@ -72,7 +61,7 @@ export default function PrivacyPage() {
             </section>
 
             <section className={sectionClass}>
-                <h2 className={headingClass}>3. De ce folosim datele</h2>
+                <h2 className={headingClass}>2. De ce folosim datele</h2>
                 <ul className={listClass}>
                     <li>
                         <strong>Procesarea și livrarea comenzilor:</strong> pentru a încheia și a executa
@@ -93,7 +82,7 @@ export default function PrivacyPage() {
             </section>
 
             <section className={sectionClass}>
-                <h2 className={headingClass}>4. Cine primește datele</h2>
+                <h2 className={headingClass}>3. Cine primește datele</h2>
                 <p>Nu vindem datele tale. Le transmitem doar furnizorilor care ne ajută să operăm site-ul:</p>
                 <ul className={listClass}>
                     <li><strong>Resend:</strong> trimiterea emailurilor de verificare și de confirmare a comenzii</li>
@@ -109,7 +98,7 @@ export default function PrivacyPage() {
             </section>
 
             <section className={sectionClass}>
-                <h2 className={headingClass}>5. Cât timp păstrăm datele</h2>
+                <h2 className={headingClass}>4. Cât timp păstrăm datele</h2>
                 <p>
                     Nu salvăm comenzile într-o bază de date a site-ului. Detaliile comenzii sunt transmise prin
                     email către tine și către noi. Le păstrăm atât timp cât este necesar pentru a procesa
@@ -121,7 +110,7 @@ export default function PrivacyPage() {
             </section>
 
             <section className={sectionClass}>
-                <h2 className={headingClass}>6. Drepturile tale</h2>
+                <h2 className={headingClass}>5. Drepturile tale</h2>
                 <p>În condițiile legii, ai dreptul:</p>
                 <ul className={listClass}>
                     <li>să afli ce date deținem despre tine și să primești o copie</li>
@@ -131,14 +120,14 @@ export default function PrivacyPage() {
                     <li>să îți retragi oricând acordul, fără a afecta prelucrările făcute anterior</li>
                 </ul>
                 <p>
-                    Pentru a-ți exercita drepturile, contactează-ne la telefon sau la adresa din secțiunea 1. Ai
+                    Pentru a-ți exercita drepturile, contactează-ne folosind datele de contact de pe site. Ai
                     și dreptul să depui o plângere la Centrul Național pentru Protecția Datelor cu Caracter
                     Personal (datepersonale.md).
                 </p>
             </section>
 
             <section className={sectionClass}>
-                <h2 className={headingClass}>7. Securitatea datelor</h2>
+                <h2 className={headingClass}>6. Securitatea datelor</h2>
                 <p>
                     Folosim măsuri tehnice și organizatorice pentru a proteja datele, inclusiv conexiuni
                     criptate și acces limitat. Totuși, nicio metodă de transmitere sau stocare nu este complet
@@ -147,7 +136,7 @@ export default function PrivacyPage() {
             </section>
 
             <section id="cookies" className={`${sectionClass} scroll-mt-24`}>
-                <h2 className={headingClass}>8. Cookie-uri</h2>
+                <h2 className={headingClass}>7. Cookie-uri</h2>
                 <p>
                     Cookie-urile și stocarea locală sunt mici fișiere și date păstrate în browserul tău. Cele
                     necesare fac site-ul să funcționeze și nu pot fi dezactivate din site. Cookie-urile de analiză
@@ -186,7 +175,7 @@ export default function PrivacyPage() {
             </section>
 
             <section className={sectionClass}>
-                <h2 className={headingClass}>9. Modificări</h2>
+                <h2 className={headingClass}>8. Modificări</h2>
                 <p>
                     Putem actualiza această politică. Versiunea actuală este mereu pe această pagină, iar data
                     ultimei actualizări este afișată la început.
